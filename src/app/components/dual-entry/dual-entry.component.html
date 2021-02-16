@@ -1,0 +1,87 @@
+<div [formGroup]="parentform" class="form-group row col-sm-12">
+    <label class="col-form-label col-sm-{{elementclass}}" for="{{name}}">{{labelname}}
+        <span class="required" *ngIf="required">*</span>
+    </label>
+    <div class="col-sm-{{5 - elementclass}} ">
+        <input type="{{type}}" (cut) ="false" (copy)="false" 
+        (paste)="false" class="form-control pwd" 
+        name="{{name}}" formControlName="{{name}}" placeholder="{{placeholder}}" *ngIf="type == 'text'">
+
+        <select formControlName="{{name}}" class="form-control" name="{{name}}" *ngIf="type == 'dropdown'">
+            <option [ngValue]="null" disabled>{{placeholder}}</option>
+            <option *ngFor="let option of options" [ngValue]="option">{{option.name}}</option>
+        </select>
+
+        <small class="text-danger"
+            *ngIf="parentform.get(name).hasError('required') && ( parentform.get(name).touched || submitted)">
+            Required Field
+        </small>
+        <small class="text-danger"
+            *ngIf="parentform.get(name).hasError('minlength')">
+            The minimum length for this field is {{parentform.get(name).errors.minlength.requiredLength}} characters
+        </small>
+        <small class="text-danger"
+            *ngIf="parentform.get(name).hasError('maxlength')">
+            The maximum length for this field is {{parentform.get(name).errors.maxlength.requiredLength}} characters
+        </small>
+        <small class="text-danger"
+            *ngIf="parentform.get(name).hasError('pattern')">
+            {{patternerror}}
+        </small>
+        <small class="text-danger"
+            *ngIf="parentform.get(name).hasError('invalidDate')">
+           Invalid Date Format
+        </small>
+        <small class="text-danger"
+            *ngIf="parentform.get(name).hasError('ageLimit')">
+           Age should be between {{mininput}} and {{maxinput}}
+        </small>
+        <small class="text-danger"
+            *ngIf="parentform.get(name).hasError('invalidPhonenumber')">
+           Invalid Mobile Number
+        </small>
+    </div>
+    <label class="col-form-label col-sm-{{elementclass + 1}}" for="{{dualname}}">Re-enter {{labelname}}
+        <span class="required" *ngIf="required">*</span>
+    </label>
+    <div class="col-sm-{{ 5 - elementclass }}">
+        <input type="{{type}}" (cut) ="false" (copy)="false" 
+        (paste)="false" id="{{dualname}}" class="form-control" 
+        name="{{dualname}}" formControlName="{{dualname}}" placeholder="{{placeholder}}"  *ngIf="type == 'text'">
+        <select formControlName="{{dualname}}" class="form-control" name="{{dualname}}" *ngIf="type == 'dropdown'">
+            <option [ngValue]="null" disabled>{{placeholder}}</option>
+            <option *ngFor="let option of options" [ngValue]="option">{{option.name}}</option>
+        </select>
+        <small class="text-danger"
+            *ngIf="parentform.get(dualname).hasError('required') && ( parentform.get(dualname).touched || submitted)">
+            Required Field
+        </small>
+        <!-- <small class="text-danger"
+            *ngIf="parentform.get(dualname).hasError('minlength')">
+            The minimum length for this field is {{parentform.get(name).errors.minlength.requiredLength}} characters
+        </small>
+        <small class="text-danger"
+            *ngIf="parentform.get(dualname).hasError('maxlength')">
+            The maximum length for this field is {{parentform.get(name).errors.maxlength.requiredLength}} characters
+        </small>
+        <small class="text-danger"
+            *ngIf="parentform.get(dualname).hasError('pattern')">
+            {{patternerror}}
+        </small> -->
+        <small class="text-danger"
+          *ngIf="parentform.get(dualname).hasError('mustMatch')">{{labelname}}s must match
+        </small>
+        <!-- <small class="text-danger"
+            *ngIf="parentform.get(dualname).hasError('invalidDate')">
+           Invalid Date Format
+        </small>
+        <small class="text-danger"
+            *ngIf="parentform.get(dualname).hasError('ageLimit')">
+           Age should be between {{mininput}} and {{maxinput}}
+        </small>
+        <small class="text-danger"
+            *ngIf="parentform.get(dualname).hasError('invalidPhonenumber')">
+           Invalid Mobile Number
+        </small> -->
+    </div> 
+</div> 

@@ -1,0 +1,43 @@
+<div [formGroup]="parentform" class="row col-sm-12 nopadding nomargin" >
+    <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>Document Type<span class="required">*</span></th>
+                <th>Sub Document Type<span class="required">*</span></th>
+                <th>Unique ID<span class="required">*</span></th>
+                <th>Identifier Type<span class="required">*</span></th>
+                <th>Valid Till</th>
+                <th>Identifier File<span class="required">*</span></th>
+            </tr>
+        </thead>
+       <tbody >
+            <tr>
+                <td>
+                    <select  class="form-control" formControlName="documents">
+                        <option [ngValue]="null" disabled>Select Document Type</option>
+                        <!-- <option *ngFor="let option of options" [ngValue]="option[optionvalue]">{{option[displayfield]}}</option> -->
+                    </select><br/>
+                    <!-- <select formControlName="confirmdocumentType" class="form-control">
+                        <option [ngValue]="null" disabled>Select Document Type</option>
+                        <option *ngFor="let option of options" [ngValue]="option[optionvalue]">{{option[displayfield]}}</option>
+                    </select> -->
+                    <!-- <select id="conformDocumentTypeArr[{{$index}}]"  name="conformDocumentTypeArr" ng-model="documentTypeArr1[$index]"
+                        ng-options="documenttype as documenttype.name for documenttype in documenttypes | filter:{show:'!No'}"
+                        value="{{documenttype}}" required="required" class="form-control" ng-disabled="(documentTypeArr[$index].name == 'Aadhar' || documentTypeArr[$index].name == 'Aadhaar Enrollment Number') && formData.isDemoAuthEnabledState"
+                        data-ng-change="addDocumentType($index, documenttype, false); validateDocumentFields(documentTypeArr[$index],documentTypeArr1[$index], identifierFile)">
+                    </select>  -->
+                </td>
+                <td>
+                </td>
+                <td>
+                </td> 
+                <td>
+                </td> 
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
