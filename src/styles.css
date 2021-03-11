@@ -78,9 +78,12 @@
     border-color: var(--blue) !important;
     border-radius: 0px !important;
   }
-  .btn-primary:hover, .btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus{
+  .btn{
+    border-radius: 0px !important;
+  }
+  .btn:hover, .btn:not(:disabled):not(.disabled).active:focus, .btn:not(:disabled):not(.disabled):active:focus{
     /* box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5); */
-    box-shadow: 0px 0px 25px 0px rgba(10, 10, 10, 0.229608) !important;
+    box-shadow: 0px 0px 15px 0px rgba(4, 5, 5, 0.129608) !important;
   }
   .ng-wizard-theme-arrows {
     border-radius: 0px !important;
@@ -126,3 +129,70 @@
   padding-top: 20px !important;
   padding-bottom:  20px !important;
 }
+input:disabled {
+  background-color: #e9ecef;
+}
+/* tooltip */
+.tooltip-example {
+  text-align: center;
+  padding: 0 50px;
+}
+.tooltip-example [tooltip] {
+  display: inline-block;
+  margin: 50px 20px;
+  width: 180px;
+  height: 50px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  line-height: 50px;
+  text-align: center;
+}
+.ng-tooltip {
+  position: absolute;
+  max-width: 150px;
+  font-size: 14px;
+  text-align: center;
+  color: #f8f8f2;
+  padding: 3px 8px;
+  background: black;
+  border-radius: 4px;
+  z-index: 1000;
+  opacity: 0;
+}
+.ng-tooltip:after {
+  content: "";
+  position: absolute;
+  border-style: solid;
+}
+.ng-tooltip-top:after {
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-color: black transparent transparent transparent;
+}
+.ng-tooltip-bottom:after {
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-color: transparent transparent black transparent;
+}
+.ng-tooltip-left:after {
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-color: transparent transparent transparent black;
+}
+.ng-tooltip-right:after {
+  top: 50%;
+  right: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-color: transparent black transparent transparent;
+}
+.ng-tooltip-show {
+  opacity: 1;
+}
+/* tooltip */

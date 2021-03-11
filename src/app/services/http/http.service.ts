@@ -67,8 +67,11 @@ export class HttpService {
     return response;
   }
 
-  public codeValuesResource(codeName ?: String):any {
-    let response = this._http.get( `${this.baseUrl}/codes/codevalues/${codeName ? codeName : ''}`);
+  public codeValuesResource(codeName ?: string,context ?:string):any {
+    let params = new HttpParams();
+    params = context ? params.append('context', context ) : params;
+
+    let response = this._http.get( `${this.baseUrl}/codes/codevalues/${codeName ? codeName : ''}`, { params: params });
     return response;
   }
 

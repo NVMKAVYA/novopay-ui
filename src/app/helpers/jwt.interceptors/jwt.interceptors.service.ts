@@ -39,7 +39,7 @@ export class JwtInterceptor implements HttpInterceptor{
             'Content-Type': 'application/json; charset=utf-8',
             'Novobank-TenantId' : 'default'
         },
-        params: (req.params ? req.params : new HttpParams()).set('isCompressionRequired', 'true' )
+        // params: (req.params ? req.params : new HttpParams()).set('isCompressionRequired', 'true' )
         })).pipe(tap((event: HttpEvent<any>) => { 
           if (event instanceof HttpResponse) {
             setTimeout(() => {this.loader.hide();}, 0)

@@ -85,6 +85,12 @@
     #sidebar-wrapper.toggled {
         display: none;
     }
+    #content.toggled {
+      width: 100%;
+    }
+    #content {
+      width: 82vw;
+    }
   }  
   @media (max-width: 768px) {
     #sidebar-wrapper {

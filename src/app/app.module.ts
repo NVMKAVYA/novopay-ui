@@ -12,6 +12,8 @@ import { UserIdleModule } from 'angular-user-idle';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+
+
 import { NgxPaginationModule } from 'ngx-pagination'; 
 import { NgWizardModule, NgWizardConfig, THEME } from 'ng-wizard';
 import { DpDatePickerModule } from 'ng2-date-picker';
@@ -28,6 +30,8 @@ import { ErrorInterceptor } from './helpers/error.interceptors/error.interceptor
 // pipes
 import { SearchPipe } from 'src/app/pipes/search/search.pipe';
 import { DatePipe } from '@angular/common';
+
+import { TooltipDirective } from 'src/app/directives/tootip.directive';
 
 import { DualEntryComponent } from './components/dual-entry/dual-entry.component';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
@@ -49,7 +53,8 @@ const ngWizardConfig: NgWizardConfig = {
     SearchPipe,
     DualEntryComponent,
     DropdownComponent,
-    DocumentUploadComponent
+    DocumentUploadComponent,
+    TooltipDirective
   ],
   imports: [
     BrowserModule,AppRoutingModule,HttpClientModule,FormsModule,NgxWebstorageModule.forRoot(),

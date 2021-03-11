@@ -1,16 +1,18 @@
 <div class="pt-3 pb-2 mb-3">
     <h1 class="h2">Create Client</h1>
 </div>
+<p  *ngIf="parentFormError" class="required">**Fill all the required details to submit</p>
 <div class="card" *ngIf="dropdownOptions">
   <form [formGroup]="qdeForm">
-  <ng-wizard>
+  <ng-wizard [config]="config">
     <ng-wizard-step [title]="'Personal Details'" 
       [canExit]="validateCanExit.bind(this,'personalDetails')"
        [canEnter]="actionOnEnter.bind(this)">
         <div class="form-group row col-sm-12">
           <app-dropdown [parentform]="qdeForm.controls.personalDetails"
             [name]="'customerTitleId'" [options]="dropdownOptions.customerTitlesOptions" [optionvalue] = "'id'"
-            [labelname]="'Title'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding">
+            [labelname]="'Title'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding"
+            (valuechange)="getGenders($event,value)" [emitEvent]="true">
           </app-dropdown>
         </div>
         <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" 
@@ -33,10 +35,11 @@
           [labelname]="'Date of Birth'" [required]="true" [mininput] ="18" [maxinput] ="60" 
           [submitted]="submitted">
         </dual-entry>
-        <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" 
+        <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" [optionvalue] = "'id'"
           [type]="'dropdown'" [name]="'gender'" [placeholder]="'Select gender'"
           [labelname]="'Gender'" [required]="true"
-          [submitted]="submitted" [options]="dropdownOptions.genderOptions">
+          [submitted]="submitted" [options]="dropdownOptions.genderOptions" 
+          (valuechange)="getCustomerTitles($event,value)" [emitEvent]="true">
         </dual-entry>
         <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" 
           [type]="'dropdown'" [name]="'category'" [placeholder]="'Select category'"
@@ -277,11 +280,13 @@
       </dual-entry> 
     </ng-wizard-step>
     
-    <ng-wizard-step [title]="'Document Details'" >
-      <app-document-upload [parentform]="qdeForm"
+    <ng-wizard-step [title]="'Document Details'" [canExit]="validateCanExit.bind(this,'documentDetails')"
+    [canEnter]="actionOnEnter.bind(this,'documentDetails')">
+      <app-document-upload [parentform]="qdeForm.controls.documentDetails"
          [submitted]="submitted" class="col-sm-6 nopadding"
-      ></app-document-upload>
+         *ngIf="activateDocumentTab"></app-document-upload>
     </ng-wizard-step>
   </ng-wizard>
   </form>
 </div>
+<br>

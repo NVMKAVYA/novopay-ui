@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpService } from 'src/app/services/http/http.service';
-import { STEP_STATE, StepValidationArgs } from 'ng-wizard';
+import { STEP_STATE, StepValidationArgs, NgWizardConfig } from 'ng-wizard';
 import { Constants } from 'src/app/models/Constants';
 import { DatePipe } from '@angular/common';
+import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
+import { LoaderService } from 'src/app/services/loader/loader.service';
 
 @Component({
   selector: 'app-create-client',
@@ -32,10 +34,41 @@ export class CreateClientComponent implements OnInit {
   enableSpouseDetailsTab : any = STEP_STATE.hidden;
   isSpouseMandatory : boolean = false;
   addressForm : any;
+  activateDocumentTab : boolean = false;
+  formData :any = {};
+  webChannelId : number;
+  parentFormError : boolean = false;
+  config: NgWizardConfig = {
+    toolbarSettings: {
+      toolbarExtraButtons: [
+        { text: 'Submit', class: 'btn btn-info', event: null  }
+      ],
+    }
+  }
+  @ViewChild('perfectScroll') perfectScroll: PerfectScrollbarComponent;
 
-  constructor(private fb: FormBuilder, private http: HttpService, private datePipe: DatePipe) { }
+  constructor(private fb: FormBuilder, private http: HttpService, private datePipe: DatePipe,
+    private loader : LoaderService) { }
 
   ngOnInit(): void {
+
+    this.http.clientTemplateResource().subscribe( data =>{
+      this.dropdownOptions = data;
+    })
+
+    this.http.codeValuesResource('ChannelTypes').subscribe( data =>{
+      for(var i=0;i<data.length;i++){
+        if (data[i].name == 'Web') {
+           this.webChannelId = data[i].id;
+           break;
+        }
+      }
+    })
+
+    this.http.getSalutationMatrix().subscribe( data =>{
+      this.salutationmatrices = data;
+    })
+
     this.maxActivationDate = this.datePipe.transform( new Date(), this.dateOfBirthFormat);
     this.datePickerConfig.max = this.maxActivationDate;
     this.qdeForm = this.fb.group({
@@ -53,15 +86,67 @@ export class CreateClientComponent implements OnInit {
       communicationAddressDetails : this.fb.group({
         addressLine :  [null ,[ Validators.required, Validators.maxLength(100),Validators.minLength(5)]],
         landMark : [null ,[ Validators.required, Validators.maxLength(100)]]
-      })
+      }),
+      documentDetails : this.fb.group({})
     })
-       
-    this.http.clientTemplateResource().subscribe( data =>{
-      this.dropdownOptions = data;
-    })
-
     this.addressForm = this.qdeForm.controls.addressDetails;
+    this.config.toolbarSettings.toolbarExtraButtons[0].event = ()=>{
+      this.loader.scrollToTop();
+      if(this.qdeForm.valid){
+        this.parentFormError = false;
+        this.formData.client = {};
+        this.formData.client.originationChannelTypeId = this.webChannelId;
+        this.formData.client.locale = Constants.lang;
+        this.formData.client.dateFormat = Constants.dateFormat2;
+        Object.keys(this.qdeForm.controls).forEach(formName =>{
+          let form = this.qdeForm.get(formName) as FormGroup;
+          Object.keys(form.controls).forEach(field =>{
+            if(!field.includes('confirm'))
+              this.formData.client[field] = form.get(field).value;
+          })
+        })   
+      }else{
+        this.parentFormError = true;
+      }
+    }
+  }
+  
+  getGenders(value){
+    if(value){
+        let genderOptions = [];
+        for( let i = 0; i < this.salutationmatrices.length; i ++){
+          if(this.salutationmatrices[i].salutationId == value){
+            genderOptions.push({ id : this.salutationmatrices[i].genderId, name : this.salutationmatrices[i].gender});
+          }
+        }
+        if(!genderOptions.length){
+          var name = this.dropdownOptions.customerTitleOptions.filter((title)=>{
+                return title.id == value
+          });
+          this.errorforSalutation = 'Gender for ' + name[0].name + ' is not configured';
+        }else{
+           this.dropdownOptions.genderOptions = genderOptions;
+        }
+    }; 
+  }
 
+  getCustomerTitles(value){
+    if(value){
+      let customerTitlesOptions = [];
+      for( let i = 0; i < this.salutationmatrices.length; i ++){
+        if(this.salutationmatrices[i].genderId == value){
+          customerTitlesOptions.push({ id : this.salutationmatrices[i].salutationId, name : this.salutationmatrices[i].salutation});
+        }
+      }
+      if(!customerTitlesOptions.length){
+        var name = this.dropdownOptions.genderOptions.filter((gender)=>{
+              return gender.id == value
+        });
+        this.errorforSalutation = 'Title for ' + name[0].name + ' is not configured' ;;
+      }else{
+         this.dropdownOptions.customerTitlesOptions = customerTitlesOptions;
+      }
+    }; 
   }
 
   getStates(value){
@@ -133,35 +218,15 @@ export class CreateClientComponent implements OnInit {
       this.http.getcountryDetailResource().subscribe(data =>{
         this.countryOptions = data
       })
+    }else if( form == 'documentDetails'){
+       this.activateDocumentTab = true
     }
     this.submitted =  false;
+    this.loader.scrollToTop();
     return true;
   }
 
-   // this.http.getSalutationMatrix().subscribe( data =>{
-    //   this.salutationmatrices = data;
-    // })
-
-    // this.qdeForm.controls.personalDetails.controls.customertitle.valueChanges.pipe().subscribe(() => {
-    //   if( this.qdeForm.controls.personalDetails.controls.customertitle.value){
-    //     let genderOptions = [];
-    //     for( let i = 0; i < this.salutationmatrices.length; i ++){
-    //       if(this.salutationmatrices[i].salutationId == this.qdeForm.controls.personalDetails.controls.customertitle.value){
-    //         genderOptions.push({ id : this.salutationmatrices[i].genderId, name : this.salutationmatrices[i].gender});
-    //       }
-    //     }
-    //     if(!genderOptions.length){
-    //       var name = this.customerTitleOptions.filter((title)=>{
-    //             return title.id == this.qdeForm.controls.personalDetails.controls.customertitle.value
-    //       });
-    //       this.errorforSalutation = 'Gender for ' + name[0].name + ' is not configured';
-    //     }else{
-    //        this.genderOptions = genderOptions;
-    //     }
-    //   };
-    // })
-
-    // stepChanged(args: StepChangedArgs) {
+  // stepChanged(args: StepChangedArgs) {
   //   console.log(args.step);
   // }
 

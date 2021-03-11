@@ -31,7 +31,7 @@
                 <input [(ngModel)]="filterMytasks" type="text" class="form-control mr-auto"
                 placeholder="Filter">
                 </div>
-                <a (click) = "getTasksforStaff(false,false,false)" class="ml-auto">
+                <a (click) = "getTasksforStaff(false,false,false)" class="ml-auto" type="button">
                     <span *ngIf="!pulledMytasks"><i class="fas fa-chevron-down" ></i></span>
                     <span *ngIf="pulledMytasks"><i class="fas fa-chevron-up" ></i></span>
                 </a>
@@ -59,7 +59,9 @@
                                 <td *ngIf="showColumn">{{task.vertical}}</td>
                                 <td *ngIf="showColumn">{{task.officeName}}</td>
                                 <td>{{task.taskDescription}}</td>
-                                <td class="text-center"><a (click)="unAssign(task.id)"><span class="fa fa-times-circle"></span></a></td>
+                                <td class="text-center"><a (click)="unAssign(task.id)"
+                                    tooltip="Unassign Task" placement="top"
+                                    type="button"><span class="fa fa-times-circle"></span></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -93,7 +95,7 @@
                 <input [(ngModel)]="filterOthertasks" type="text" class="form-control mr-auto"
                 placeholder="Filter">
                 </div>
-                <a (click) = "getOtherTasks(false, false,false)" class="ml-auto">
+                <a (click) = "getOtherTasks(false, false,false)" class="ml-auto" type="button">
                     <span *ngIf="!pulledOthertasks"><i class="fas fa-chevron-down" ></i></span>
                     <span *ngIf="pulledOthertasks"><i class="fas fa-chevron-up" ></i></span>
                 </a>
@@ -121,7 +123,8 @@
                             <td *ngIf="showColumn">{{task.vertical}}</td>
                             <td *ngIf="showColumn">{{task.officeName}}</td>
                             <td>{{task.taskDescription}}</td>
-                            <td class="text-center"><a (click)="assign(task.id)"><span class="fa fa-check-circle"></span></a></td>
+                            <td class="text-center"><a (click)="assign(task.id)" tooltip="Assign Task" placement="top"
+                                type="button"><span class="fa fa-check-circle"></span></a></td>
                         </tr>
                     </tbody>
                 </table>

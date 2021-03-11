@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { LoginCredentials } from 'src/app/models/LoginCredentials';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { LoaderService } from 'src/app/services/loader/loader.service';
 import { LoaderState } from 'src/app/models/Loader';
 import { Subscription } from 'rxjs';
+import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
+
 
 @Component({
   selector: 'app-root',
@@ -33,6 +35,14 @@ export class AppComponent implements OnInit {
     office :any = {};
     loading : boolean = false;
     private loaderSubscription : Subscription;
+    private scroll: PerfectScrollbarComponent;
+    @ViewChild('perfectScroll', { static: false }) set perfectScroll (perfectScroll: PerfectScrollbarComponent){
+      if(perfectScroll){
+        this.scroll = perfectScroll
+        this.loader.addScrollbarState(this.scroll);
+      }
+    };
+    
   
     constructor(private auth : AuthService, private http: HttpService, 
       private local: LocalStorageService, private global: DataService, private router: Router,
@@ -62,13 +72,13 @@ export class AppComponent implements OnInit {
             this.isLoginButtonDisabled = true;
             this.formInvalid = false;
             this.auth.login(this.loginCredentials).subscribe( data =>{
-                   this.isUserLoggedIn =  this.auth.isUserLoggedIn;
-                   this.isLoginButtonDisabled = false;
-                   this.currentUser = data[1];
-                   this.office = data[2];
                    this.loginCredentials = new LoginCredentials('', '');
                    this.local.store('configurations', data[0]);
+                   this.isLoginButtonDisabled = false;
                    this.checkRoleForDashboard(this.global.getConfiguration('bc-dashboard-task-roles')[0].value);
+                   this.isUserLoggedIn =  this.auth.isUserLoggedIn;
+                   this.currentUser = data[1];
+                   this.office = data[2];
                    console.log("Logged In");
             },error =>{
                    this.isLoginButtonDisabled = false;

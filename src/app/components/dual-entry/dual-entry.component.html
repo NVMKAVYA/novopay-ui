@@ -9,7 +9,7 @@
 
         <select formControlName="{{name}}" class="form-control" name="{{name}}" *ngIf="type == 'dropdown'">
             <option [ngValue]="null" disabled>{{placeholder}}</option>
-            <option *ngFor="let option of options" [ngValue]="option">{{option.name}}</option>
+            <option *ngFor="let option of options" [ngValue]="option[optionvalue]">{{option.name}}</option>
         </select>
 
         <small class="text-danger"
@@ -56,32 +56,8 @@
             *ngIf="parentform.get(dualname).hasError('required') && ( parentform.get(dualname).touched || submitted)">
             Required Field
         </small>
-        <!-- <small class="text-danger"
-            *ngIf="parentform.get(dualname).hasError('minlength')">
-            The minimum length for this field is {{parentform.get(name).errors.minlength.requiredLength}} characters
-        </small>
-        <small class="text-danger"
-            *ngIf="parentform.get(dualname).hasError('maxlength')">
-            The maximum length for this field is {{parentform.get(name).errors.maxlength.requiredLength}} characters
-        </small>
-        <small class="text-danger"
-            *ngIf="parentform.get(dualname).hasError('pattern')">
-            {{patternerror}}
-        </small> -->
         <small class="text-danger"
           *ngIf="parentform.get(dualname).hasError('mustMatch')">{{labelname}}s must match
         </small>
-        <!-- <small class="text-danger"
-            *ngIf="parentform.get(dualname).hasError('invalidDate')">
-           Invalid Date Format
-        </small>
-        <small class="text-danger"
-            *ngIf="parentform.get(dualname).hasError('ageLimit')">
-           Age should be between {{mininput}} and {{maxinput}}
-        </small>
-        <small class="text-danger"
-            *ngIf="parentform.get(dualname).hasError('invalidPhonenumber')">
-           Invalid Mobile Number
-        </small> -->
     </div> 
 </div> 

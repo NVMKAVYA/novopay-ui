@@ -9,6 +9,7 @@ export class LoaderService {
 
   private loaderSubject = new Subject<LoaderState>();
   loaderState = this.loaderSubject.asObservable();
+  scrollbarState: any;
 
   constructor() { }
   
@@ -19,4 +20,12 @@ export class LoaderService {
     this.loaderSubject.next(<LoaderState>{ show: false });
   }
 
+  addScrollbarState(data) {
+    this.scrollbarState =  data;
+  }
+
+  scrollToTop() {
+    this.scrollbarState.directiveRef.scrollTo(0,0);;
+  }
+ 
 }

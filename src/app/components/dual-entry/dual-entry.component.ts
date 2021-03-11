@@ -46,7 +46,7 @@ export class DualEntryComponent implements OnInit{
 
     this.parentform.addControl(this.dualname ,this.fb.control(null, [ 
       this.form.conditionalValidator(this.required, Validators.required),
-      this.mustMatch(this.name)  ]));
+      this.form.mustMatch(this.name, this.parentform)]));
     this.parentform.controls[this.dualname].disable();
 
     this.parentform.controls[this.name].valueChanges.subscribe(() => {
@@ -58,18 +58,6 @@ export class DualEntryComponent implements OnInit{
         this.parentform.controls[this.dualname].disable();
       }
     })
-  }
-
-  mustMatch( controlName: string ): ValidatorFn {
-    return (matchingControl: AbstractControl): { [key: string]: any } | null  =>{
-        const control = this.parentform.controls[controlName];
-
-        if (control.value !== matchingControl.value && control.value && matchingControl.value) {
-          return { mustMatch : true };
-        } else {
-          return null;
-        }
-    }
   }
 
   ageLimit(): ValidatorFn{

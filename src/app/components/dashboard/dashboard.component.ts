@@ -133,24 +133,28 @@ export class DashboardComponent implements OnInit {
 
   bulkTaskUnAssign(){
     let bulkTasksUnAssign = [];
-    this.unAssignTasksForStaff.forEach(element => {
-      bulkTasksUnAssign.push({taskId: element, staffId: this.auth.userData.staffId })
-    });
-    this.http.postTaskResource("bulkunassign",null,null,null,bulkTasksUnAssign).subscribe(data =>{
-      this.getTasksforStaff(true,bulkTasksUnAssign.length > 1 ? true : false,true);
-      this.getOtherTasks(true,false,false)
-    });
+    if(this.unAssignTasksForStaff.length){
+      this.unAssignTasksForStaff.forEach(element => {
+        bulkTasksUnAssign.push({taskId: element, staffId: this.auth.userData.staffId })
+      });
+      this.http.postTaskResource("bulkunassign",null,null,null,bulkTasksUnAssign).subscribe(data =>{
+        this.getTasksforStaff(true,bulkTasksUnAssign.length > 1 ? true : false,true);
+        this.getOtherTasks(true,false,false)
+      });
+    }
   }
 
   bulkTaskAssign(){
     let bulkTasksAssign = [];
-    this.assignTasksForStaff.forEach(element => {
-      bulkTasksAssign.push({taskId: element, staffId: this.auth.userData.staffId })
-    });
-    this.http.postTaskResource("bulkreassign",null,null,null,bulkTasksAssign).subscribe(data =>{
-      this.getOtherTasks(true,bulkTasksAssign.length > 1 ? true : false,true);
-      this.getTasksforStaff(true,false,false)
-    });
+    if(this.assignTasksForStaff.length){
+      this.assignTasksForStaff.forEach(element => {
+        bulkTasksAssign.push({taskId: element, staffId: this.auth.userData.staffId })
+      });
+      this.http.postTaskResource("bulkreassign",null,null,null,bulkTasksAssign).subscribe(data =>{
+        this.getOtherTasks(true,bulkTasksAssign.length > 1 ? true : false,true);
+        this.getTasksforStaff(true,false,false)
+      });
+    }
   }
 
   bulkSelection (assign: boolean) {

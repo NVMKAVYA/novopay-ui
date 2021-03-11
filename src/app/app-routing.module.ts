@@ -5,7 +5,9 @@ import { CreateClientComponent } from './components/create-client/create-client.
 
 const routes: Routes = [
   { path : 'home' , component : DashboardComponent },
-  { path : 'createclient', component : CreateClientComponent }
+  { path : 'createclient', component : CreateClientComponent },
+  { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
+  { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) }
 ];
 
 @NgModule({
