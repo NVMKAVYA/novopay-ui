@@ -10,6 +10,7 @@ import { concatMap, map } from 'rxjs/operators';
 import { LoginCredentials } from 'src/app/models/LoginCredentials';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data/data.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({ providedIn: 'root' })
 
@@ -20,9 +21,11 @@ export class AuthService {
     private subsidiary : boolean = false;
     private userLoggedIn : boolean = false;
     private officeDetails : any = {};
+    private tempUserData : any = {};
 
     constructor(private http: HttpService, private local: LocalStorageService,
-        private userIdle : UserIdleService, private router: Router, private global : DataService) {}
+        private userIdle : UserIdleService, private router: Router, private global : DataService,
+        private cookieService: CookieService) {}
     //getters
     public get userData(): any {
         return this.currentUserData;
@@ -57,6 +60,7 @@ export class AuthService {
         })).pipe(concatMap( (data2 : any)=>{
             if( data2.authenticated ){
                 this.currentUserData = data2;
+                this.tempUserData = data2;
                 if (!data2.shouldRenewPassword){
                     let bases = this.local.retrieve('bases');
                     if(bases) { // TODO
@@ -92,7 +96,11 @@ export class AuthService {
     private checkRoleForDashboard(bcDashBoardRoles):any{
         if(bcDashBoardRoles){
           if(bcDashBoardRoles.split(',').indexOf(this.currentUserData.roles[0].name) > -1){
-            this.router.navigate(['/home']);
+            let permission = this.tempUserData.permissions;
+            delete this.tempUserData.permissions;
+            this.cookieService.set( 'auth', JSON.stringify(this.tempUserData));
+            var cookie = this.cookieService.get( 'auth');
+            window.location.href = "http://localhost:9005/?baseApiUrl=https://localhost:8443/";
           }else{
             this.router.navigate(['/home']);
           }
