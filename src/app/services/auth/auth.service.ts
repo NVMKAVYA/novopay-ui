@@ -9,6 +9,7 @@ import { forkJoin } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { LoginCredentials } from 'src/app/models/LoginCredentials';
 import { Router } from '@angular/router';
+import { DataService } from 'src/app/services/data/data.service';
 
 @Injectable({ providedIn: 'root' })
 
@@ -18,9 +19,10 @@ export class AuthService {
     private bc : boolean = false;
     private subsidiary : boolean = false;
     private userLoggedIn : boolean = false;
+    private officeDetails : any = {};
 
     constructor(private http: HttpService, private local: LocalStorageService,
-        private userIdle : UserIdleService, private router: Router) {}
+        private userIdle : UserIdleService, private router: Router, private global : DataService) {}
     //getters
     public get userData(): any {
         return this.currentUserData;
@@ -36,6 +38,10 @@ export class AuthService {
 
     public get isUserLoggedIn():any{
         return this.userLoggedIn;
+    }
+
+    public get office():any{
+        return this.officeDetails;
     }
     
     public login(credentials: LoginCredentials) {
@@ -60,9 +66,9 @@ export class AuthService {
                         //TODO
                     }
                     this.userIdle.startWatching();
+                    this.userIdle.onTimerStart().subscribe();
                     this.userIdle.onTimeout().subscribe(() => {
-                        console.log('Time is up!');
-                        this.logout(); //Use subject/behaviour subject to pass user is logged out to app component
+                        this.logout();
                     }); 
                     const observables = [this.http.officeResource(data2.officeId), this.http.configurationResource()];
                     return forkJoin(observables); 
@@ -73,23 +79,38 @@ export class AuthService {
                 //TODO
             }
         })).pipe( map ((data3: any) =>{
+            this.officeDetails = data3[0];
             this.bc = data3[0].officeLevel.name.toLowerCase().indexOf("bc") > -1 ? true : false;
             this.subsidiary = data3[0].subsidiary;
             this.userLoggedIn = true;
-            return [data3[1], this.currentUserData,data3[0]];
+            this.local.store('configurations', data3[1]);
+            this.checkRoleForDashboard(this.global.getConfiguration('bc-dashboard-task-roles')[0].value);
+            return true;
         }))
     }
 
+    private checkRoleForDashboard(bcDashBoardRoles):any{
+        if(bcDashBoardRoles){
+          if(bcDashBoardRoles.split(',').indexOf(this.currentUserData.roles[0].name) > -1){
+            this.router.navigate(['/home']);
+          }else{
+            this.router.navigate(['/home']);
+          }
+        }else{
+          // TODO
+        }
+    }
+
     public logout():any{
-        return this.http.logoutResource().pipe(map((data: any) =>{
+        this.http.logoutResource().subscribe(() =>{
             this.currentUserData = {};
             this.bc = false;
             this.subsidiary = false;
             this.userLoggedIn = false;
-            this.userIdle.resetTimer();
+            this.userIdle.stopWatching();
             this.router.navigate(['/']);
             return true;
-        }))
+        })
     }
 
     private traverse (o) {

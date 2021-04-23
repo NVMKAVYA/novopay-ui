@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, pipe } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpParams, HttpResponse  } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { LoaderService } from 'src/app/services/loader/loader.service';
@@ -28,10 +28,10 @@ export class JwtInterceptor implements HttpInterceptor{
             // params: (req.method == 'GET' ? req.params.set('isCompressionRequired', 'true' ) : req.params)
         })).pipe(tap((event: HttpEvent<any>) => { 
           if (event instanceof HttpResponse) {
-            setTimeout(() => {this.loader.hide();}, 0)
+            setTimeout(() => {this.loader.hide();}, 800)
           }
         },(err: any) => {
-          setTimeout(() => {this.loader.hide();}, 0)
+          setTimeout(() => {this.loader.hide();}, 800)
       }));
     }else{
       return next.handle(req.clone({
@@ -77,9 +77,9 @@ export class JwtInterceptor implements HttpInterceptor{
 
     if (hmac != 'KEY MUST BE IN BYTE INCREMENTS') {
          var offset = this.hex2dec(hmac.substring(hmac.length - 1));
-         var part1 = hmac.substr(0, offset * 2);
-         var part2 = hmac.substr(offset * 2, 8);
-         var part3 = hmac.substr(offset * 2 + 8, hmac.length - offset);
+        //  var part1 = hmac.substr(0, offset * 2);
+        //  var part2 = hmac.substr(offset * 2, 8);
+        //  var part3 = hmac.substr(offset * 2 + 8, hmac.length - offset);
      }
 
      var otp = (this.hex2dec(hmac.substr(offset * 2, 8)) & this.hex2dec('7fffffff')) + '';

@@ -115,8 +115,8 @@
                      </small>
                 </td>
                 <td class="text-center h5">
-                    <span class="mr-3 blueText" type="button" [tooltip]="(formArray.controls.length - 1) == i ? 'Add Document'  : 'pora'" placement="top"
-                     (click)="addDocument()">
+                    <span class="mr-3 blueText" type="button" [tooltip]="'Add Document'" placement="top"
+                     (click)="addDocument()" *ngIf="(formArray.controls.length - 1) == i">
                         <i class="fa fa-plus-circle"></i>
                     </span>
                     <span class="required" type="button" (click)="deleteDocument(i)"
