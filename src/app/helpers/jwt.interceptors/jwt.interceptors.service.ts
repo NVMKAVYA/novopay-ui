@@ -30,7 +30,7 @@ export class JwtInterceptor implements HttpInterceptor{
           if (event instanceof HttpResponse) {
             setTimeout(() => {this.loader.hide();}, 800)
           }
-        },(err: any) => {
+        },() => {
           setTimeout(() => {this.loader.hide();}, 800)
       }));
     }else{
@@ -44,7 +44,7 @@ export class JwtInterceptor implements HttpInterceptor{
           if (event instanceof HttpResponse) {
             setTimeout(() => {this.loader.hide();}, 0)
           }
-        },(err: any) => {
+        },() => {
           setTimeout(() => {this.loader.hide();}, 0)
       }));
     }

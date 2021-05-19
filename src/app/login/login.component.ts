@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 
 import { LoginCredentials } from 'src/app/models/LoginCredentials';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { Router } from '@angular/router';
+// import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
     office :any = {};
     
   
-    constructor(private auth : AuthService, @Inject("windowObject") window: Window) {}
+    constructor(private auth : AuthService) {}
   
     ngOnInit(): void {
       this.loginCredentials = new LoginCredentials('', '');   
@@ -57,11 +57,7 @@ export class LoginComponent implements OnInit {
     }
 
     logout(){
-      this.auth.logout().subscribe(data =>{
-        // this.isUserLoggedIn = this.auth.isUserLoggedIn;
-      },error =>{
-
-      })
+      this.auth.logout().subscribe();
     }
 
 }
