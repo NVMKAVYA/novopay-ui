@@ -17,7 +17,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 this.auth.logout();
             }
             this.toastr.error( err.error.errors[0].developerMessage , 'Error',{ 
-              timeOut: 1000
+              timeOut: 5000
             })
             return throwError(err);
         }))

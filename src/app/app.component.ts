@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   constructor(private loader : LoaderService, private router: Router) { }
 
   ngOnInit(): void {
-    // this.router.navigate(['']);
+    this.router.navigate(['']);
     this.loaderSubscription = this.loader.loaderState.subscribe((state: LoaderState) => {
           this.loading = state.show;
     });

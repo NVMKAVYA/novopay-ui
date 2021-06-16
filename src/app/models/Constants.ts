@@ -11,6 +11,10 @@ export class Constants{
         postalcode : {
             regex: '^[0-9]{6}$',
             error: 'Must be 6 digit numeric'
+        },
+        alphanumeric :{
+            regex: '^[A-Za-z0-9\' ]+$',
+            error: 'Must be alphanumeric'
         }
     };
 

@@ -1,0 +1,26 @@
+<div [formGroup]="parentform" class="row col-sm-12 nomargin nopadding" *ngIf="showfield">
+    <label class="col-form-label col-sm-4" for="{{name}}" >{{labelname}}
+      <span class="required" *ngIf="required">*</span>
+    </label>
+    <div class="col-sm-6">
+        <input type="text" (cut) ="false" (copy)="false" 
+        (paste)="false" class="form-control" 
+        name="{{name}}" formControlName="{{name}}" placeholder="{{placeholder}}" >
+        <small class="text-danger"
+           *ngIf="parentform.get(name).hasError('required') && ( parentform.get(name).touched || submitted)">
+            Required Field
+        </small>
+        <small class="text-danger"
+            *ngIf="parentform.get(name).hasError('minlength')">
+            The minimum length for this field is {{parentform.get(name).errors.minlength.requiredLength}} characters
+        </small>
+        <small class="text-danger"
+            *ngIf="parentform.get(name).hasError('maxlength')">
+            The maximum length for this field is {{parentform.get(name).errors.maxlength.requiredLength}} characters
+        </small>
+        <small class="text-danger"
+            *ngIf="parentform.get(name).hasError('pattern')">
+            {{patternerror}}
+        </small>
+    </div>
+</div>

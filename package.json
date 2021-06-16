@@ -9,9 +9,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "compodoc": "compodoc",
-    "generate-docs": "compodoc -p tsconfig.json",
-    "serve-docs": "compodoc -s -r 9001 tsconfig.json",
-    "bundle:report": "source-map-explorer dist/novoloan-web-gui/**/*.js"
+    "generate-docs": "compodoc -p tsconfig.json  --disableDependencies --minimal",
+    "serve-docs": "compodoc -s -r 9001 tsconfig.json"
   },
   "private": true,
   "dependencies": {

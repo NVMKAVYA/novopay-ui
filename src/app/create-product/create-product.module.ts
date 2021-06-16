@@ -1,0 +1,28 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { CreateProductRoutingModule } from './create-product-routing.module';
+import { CreateProductComponent } from './create-product.component';
+
+import { NgWizardModule } from 'ng-wizard';
+import { ReactiveFormsModule } from '@angular/forms';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { InputFieldModule } from '../shared/input-field/input-field.module';
+import { DropdownModule } from '../shared/dropdown/dropdown.module';
+
+
+@NgModule({
+  declarations: [
+    CreateProductComponent
+  ],
+  imports: [
+    CommonModule,
+    CreateProductRoutingModule,
+    NgWizardModule,
+    ReactiveFormsModule,
+    PerfectScrollbarModule,
+    InputFieldModule,
+    DropdownModule
+  ]
+})
+export class CreateProductModule { }

@@ -57,7 +57,7 @@ export class CreateClientComponent implements OnInit {
     })
 
     this.http.codeValuesResource('ChannelTypes').subscribe( data =>{
-      for(var i=0;i<data.length;i++){
+      for(let i = 0; i < data.length; i++){
         if (data[i].name == 'Web') {
            this.webChannelId = data[i].id;
            break;
@@ -75,17 +75,13 @@ export class CreateClientComponent implements OnInit {
       personalDetails : this.fb.group({}),
       fatherDetails : this.fb.group({}),
       addressDetails : this.fb.group({
-        addressLine :  [null ,[ Validators.required, Validators.maxLength(100),Validators.minLength(5)]],
-        landMark : [null ,[ Validators.required, Validators.maxLength(100)]],
-        postalCode :  [null ,[ Validators.required, Validators.maxLength(6),Validators.minLength(6),
-          Validators.pattern(this.numberPattern.regex)]]
+        addressLine :  [null ,[ Validators.required, Validators.maxLength(100),Validators.minLength(5)]]
       }),
       staffDetails : this.fb.group({
         activationdate :  [this.maxActivationDate,[ Validators.required]]
       }),
       communicationAddressDetails : this.fb.group({
-        addressLine :  [null ,[ Validators.required, Validators.maxLength(100),Validators.minLength(5)]],
-        landMark : [null ,[ Validators.required, Validators.maxLength(100)]]
+        addressLine :  [null ,[ Validators.required, Validators.maxLength(100),Validators.minLength(5)]]
       }),
       documentDetails : this.fb.group({})
     })
