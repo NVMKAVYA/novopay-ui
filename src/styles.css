@@ -94,6 +94,7 @@
   } 
   .required{
     color: var(--red);
+    margin-left: 3px;
   }
   .col-form-label{
     padding-left: 0px !important;
@@ -115,6 +116,7 @@
     height: calc(1.5em + .75rem + 2px) !important;
     font-size: 14px!important;
     padding: .375rem .75rem;
+    width : 221px !important; 
 }
 .ng-wizard-theme-arrows>ul.step-anchor{
   flex-wrap: nowrap !important;
@@ -131,6 +133,9 @@
 }
 input:disabled {
   background-color: #e9ecef;
+}
+.form-control:focus {
+  box-shadow: none !important;
 }
 /* tooltip */
 .tooltip-example {
@@ -196,3 +201,14 @@ input:disabled {
   opacity: 1;
 }
 /* tooltip */
+.error{
+  margin-bottom: 0px !important;
+  font-size: 12px !important;
+}
+.vertical-center{
+  vertical-align: middle !important;
+}
+.f-ver-center{
+  display: flex;
+  align-items: center;
+}

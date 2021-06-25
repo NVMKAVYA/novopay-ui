@@ -114,4 +114,9 @@ export class HttpService {
   public loanProductResource(loanProductId?,resourceType?):any {
     return this._http.get( `${this.baseUrl}/loanproducts${loanProductId ? `/${loanProductId}` : ''}${resourceType ? `/${resourceType}` : ''}`);
   }
+
+  public insuranceProductListResource():any {
+    return this._http.get( `${this.baseUrl}/insuranceproducts`);
+  }
+  
 }

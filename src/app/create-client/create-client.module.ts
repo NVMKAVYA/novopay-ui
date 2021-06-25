@@ -7,7 +7,6 @@ import { CreateClientComponent } from './create-client.component';
 import { NgWizardModule, NgWizardConfig } from 'ng-wizard';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { DpDatePickerModule } from 'ng2-date-picker';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { TooltipDirective } from 'src/app/directives/tootip.directive';
 import { InputFieldModule } from '../shared/input-field/input-field.module';
@@ -30,7 +29,6 @@ const ngWizardConfig: NgWizardConfig = {};
     CreateClientRoutingModule,
     ReactiveFormsModule,
     NgWizardModule.forRoot(ngWizardConfig),
-    DpDatePickerModule ,
     PerfectScrollbarModule,
     InputFieldModule,
     DropdownModule

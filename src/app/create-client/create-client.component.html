@@ -12,7 +12,7 @@
         <app-dropdown [parentform]="qdeForm.controls.personalDetails"
           [name]="'customerTitleId'" [options]="dropdownOptions.customerTitlesOptions" [optionvalue] = "'id'"
           [labelname]="'Title'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding"
-          (valuechange)="getGenders($event,value)" [emitEvent]="true">
+          (valuechange)="getGenders($event)" [emitEvent]="true">
         </app-dropdown>
       </div>
       <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" 
@@ -39,7 +39,7 @@
         [type]="'dropdown'" [name]="'gender'" [placeholder]="'Select gender'"
         [labelname]="'Gender'" [required]="true"
         [submitted]="submitted" [options]="dropdownOptions.genderOptions" 
-        (valuechange)="getCustomerTitles($event,value)" [emitEvent]="true">
+        (valuechange)="getCustomerTitles($event)" [emitEvent]="true">
       </dual-entry>
       <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" 
         [type]="'dropdown'" [name]="'category'" [placeholder]="'Select category'"
@@ -55,7 +55,7 @@
         [type]="'dropdown'" [name]="'maritalstatus'" [placeholder]="'Select marital status'"
         [labelname]="'Marital Status'" [required]="true"
         [submitted]="submitted" [options]="dropdownOptions.maritalStatusOptions"
-        (valuechange)="addSpouseForm($event,value)" [emitEvent]="true">
+        (valuechange)="addSpouseForm($event)" [emitEvent]="true">
       </dual-entry>
       <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" 
         [type]="'text'" [name]="'phonenumber'" [labelname]="'Mobile Number'" 
@@ -118,7 +118,8 @@
   <ng-wizard-step [title]="'Permanent Address'"  
     [canExit]="validateCanExit.bind(this,'addressDetails')"
     [canEnter]="actionOnEnter.bind(this,'addressDetails')">
-    <div formGroupName="addressDetails" class="form-group row col-sm-12"> 
+    <div formGroupName="addressDetails" class="form-group row col-sm-12" 
+      [ngClass]="{'f-ver-center': qdeForm.controls.addressDetails.get('addressLine').valid}"> 
       <label class="col-form-label col-sm-2" for="addressLine">Address Line
           <span class="required">*</span>
       </label>
@@ -142,11 +143,11 @@
     <div class="form-group row col-sm-12">
       <app-input-field [parentform]="qdeForm.controls.addressDetails"
       [name]="'landMark'" [labelname]="'Landmark'" [required]="true" [maxlength]="100"
-      [submitted]="submitted" [showfield]="true" class="col-sm-6 nopadding">
+      [submitted]="submitted" class="col-sm-6 nopadding">
       </app-input-field>
       <app-input-field [parentform]="qdeForm.controls.addressDetails"
       [name]="'postalCode'" [labelname]="'Postal Code'" [required]="true" [maxlength]="6" [minlength]="6"
-      [submitted]="submitted" [showfield]="true" class="col-sm-6 nopadding" [pattern]="numberPattern.regex"
+      [submitted]="submitted" class="col-sm-6 nopadding" [pattern]="numberPattern.regex"
       [patternerror]="numberPattern.error">
       </app-input-field>
     </div> 
@@ -154,13 +155,13 @@
        <app-dropdown [parentform]="qdeForm.controls.addressDetails" 
         [name]="'countryId'" [options]="countryOptions" [optionvalue] = "'id'"
         [labelname]="'Country'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding"
-        [showfield]="true" (valuechange)="getStates($event,value)" [emitEvent]="true">
-      </app-dropdown>
+        (valuechange)="getStates($event)" [emitEvent]="true">
+       </app-dropdown>
       <app-dropdown [parentform]="qdeForm.controls.addressDetails"
         [name]="'stateId'" [options]="stateOptions" [optionvalue] = "'id'"
         [labelname]="'State'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding"
         [showfield]="qdeForm.controls.addressDetails.get('countryId').value"
-        (valuechange)="getDistricts($event,value)" [emitEvent]="true">
+        (valuechange)="getDistricts($event)" [emitEvent]="true">
       </app-dropdown>
     </div>
     <div class="form-group row col-sm-12">
@@ -168,7 +169,7 @@
         [name]="'districtId'" [options]="districtOptions" [optionvalue] = "'id'"
         [labelname]="'District'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding"
         [showfield]="qdeForm.controls.addressDetails.get('stateId').value" 
-        (valuechange)="getVTCs($event,value)" [emitEvent]="true">
+        (valuechange)="getVTCs($event)" [emitEvent]="true">
       </app-dropdown>
       <app-dropdown [parentform]="qdeForm.controls.addressDetails"
         [name]="'vtcId'" [options]="vtcOptions" [optionvalue] = "'id'"
@@ -185,28 +186,21 @@
     <app-dropdown [parentform]="qdeForm.controls.staffDetails"
       [name]="'staffId'" [options]="dropdownOptions.staffOptions" [optionvalue] = "'id'"
       [labelname]="'Staff'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding"
-      [showfield]="true" [displayfield]="'displayName'" 
-      (valuechange)="getLinkedVillages($event,value)" [emitEvent]="true">
+      [displayfield]="'displayName'" 
+      (valuechange)="getLinkedVillages($event)" [emitEvent]="true">
     </app-dropdown>
-    <label class="col-form-label col-sm-2" for="activationdate">Activation Date
-        <span class="required">*</span>
-    </label>
-    <div class="col-sm-3">
-      <dp-date-picker [config]="datePickerConfig" 
-        name="activationdate" theme="dp-material" formControlName="activationdate">
-      </dp-date-picker>  
-      <small class="text-danger"
-          *ngIf="qdeForm.controls.staffDetails.get('activationdate').hasError('required') && qdeForm.controls.staffDetails.get('activationdate').touched">
-          Required Field
-      </small>
-    </div>
+    <app-input-field [parentform]="qdeForm.controls.staffDetails" [date]="true" [maxdate]="maxActivationDate"
+    [name]="'activationdate'" [labelname]="'Activation Date'" [required]="true" [value]="maxActivationDate"
+    [submitted]="submitted" class="col-sm-6 nopadding">
+    </app-input-field>
   </div>
   </ng-wizard-step>
   
   <ng-wizard-step [title]="'Communication Address'" 
   [canExit]="validateCanExit.bind(this,'staffDetails')"
   [canEnter]="actionOnEnter.bind(this)">
-    <div formGroupName="communicationAddressDetails" class="form-group row col-sm-12"> 
+    <div formGroupName="communicationAddressDetails" class="form-group row col-sm-12"
+    [ngClass]="{'f-ver-center': qdeForm.controls.communicationAddressDetails.get('addressLine').valid}"> 
       <label class="col-form-label col-sm-2" for="addressLine1">Address Line
           <span class="required">*</span>
       </label>
@@ -231,7 +225,7 @@
     <div class="form-group row col-sm-12">
       <app-input-field [parentform]="qdeForm.controls.communicationAddressDetails"
       [name]="'landMark1'" [labelname]="'Landmark'" [required]="true" [maxlength]="100"
-      [submitted]="submitted" [showfield]="true" class="col-sm-6 nopadding" >
+      [submitted]="submitted" class="col-sm-6 nopadding" >
       </app-input-field>
       <app-dropdown [parentform]="qdeForm.controls.communicationAddressDetails"
       [name]="'vtc'" [options]="dropdownOptions.linkedVillages" [optionvalue] = "'id'"
@@ -249,8 +243,9 @@
   <ng-wizard-step [title]="'Document Details'" [canExit]="validateCanExit.bind(this,'documentDetails')"
   [canEnter]="actionOnEnter.bind(this,'documentDetails')">
     <app-document-upload [parentform]="qdeForm.controls.documentDetails"
-       [submitted]="submitted" class="col-sm-6 nopadding"
-       *ngIf="activateDocumentTab"></app-document-upload>
+    [submitted]="submitted" class="col-sm-6 nopadding"
+    *ngIf="activateDocumentTab">
+    </app-document-upload>
   </ng-wizard-step>
 </ng-wizard>
 </form>

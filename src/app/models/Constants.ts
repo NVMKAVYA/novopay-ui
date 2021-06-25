@@ -15,6 +15,10 @@ export class Constants{
         alphanumeric :{
             regex: '^[A-Za-z0-9\' ]+$',
             error: 'Must be alphanumeric'
+        },
+        numbers : {
+            regex: '^[0-9]*$',
+            error: 'Must be numeric'
         }
     };
 

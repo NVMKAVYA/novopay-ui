@@ -26,10 +26,6 @@ export class CreateClientComponent implements OnInit {
   districtOptions : any;
   vtcOptions : any;
   maxActivationDate : string;
-  datePickerConfig = {
-    format: Constants.datePickerFormat,
-    max : ''
-  }
   enableSpouseDetailsTab : any = STEP_STATE.hidden;
   isSpouseMandatory : boolean = false;
   addressForm : any;
@@ -70,16 +66,14 @@ export class CreateClientComponent implements OnInit {
     })
 
     this.maxActivationDate = this.datePipe.transform( new Date(), this.dateOfBirthFormat);
-    this.datePickerConfig.max = this.maxActivationDate;
+
     this.qdeForm = this.fb.group({
       personalDetails : this.fb.group({}),
       fatherDetails : this.fb.group({}),
       addressDetails : this.fb.group({
         addressLine :  [null ,[ Validators.required, Validators.maxLength(100),Validators.minLength(5)]]
       }),
-      staffDetails : this.fb.group({
-        activationdate :  [this.maxActivationDate,[ Validators.required]]
-      }),
+      staffDetails : this.fb.group({}),
       communicationAddressDetails : this.fb.group({
         addressLine :  [null ,[ Validators.required, Validators.maxLength(100),Validators.minLength(5)]]
       }),
@@ -202,7 +196,7 @@ export class CreateClientComponent implements OnInit {
     }
   }
 
-  validateCanExit(form, args: StepValidationArgs) {
+  validateCanExit(form) {
     let canExit = this.qdeForm.controls[form].valid ? true : false;
     this.submitted = canExit ? false : true;
     // return canExit;

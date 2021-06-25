@@ -19,6 +19,7 @@ export class DropdownComponent implements OnInit {
   @Input() showfield : any;
   @Input() displayfield : any;
   @Input() elementClass :any;
+  @Input() value : any;
   @Output() valuechange = new EventEmitter();
   @Input() emitEvent : boolean;
 
@@ -29,7 +30,7 @@ export class DropdownComponent implements OnInit {
     this.showfield = this.showfield !== undefined  ? this.showfield : true;
     this.elementClass = this.elementClass ? parseInt(this.elementClass) : 4;
 
-    this.parentform.addControl(this.name ,this.fb.control(null, [ 
+    this.parentform.addControl(this.name ,this.fb.control(this.value, [ 
       this.form.conditionalValidator(this.required, Validators.required)]));
 
     if(this.emitEvent){

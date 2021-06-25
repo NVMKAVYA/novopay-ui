@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 
 import { InputFieldComponent } from './input-field.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DpDatePickerModule } from 'ng2-date-picker';
 
 
 
 @NgModule({
-  imports:      [ CommonModule, ReactiveFormsModule ],
+  imports:      [ CommonModule, ReactiveFormsModule, DpDatePickerModule ],
   declarations: [ InputFieldComponent ],
   exports:      [ InputFieldComponent, CommonModule, ReactiveFormsModule ]
 })

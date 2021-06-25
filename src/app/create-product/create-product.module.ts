@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { InputFieldModule } from '../shared/input-field/input-field.module';
 import { DropdownModule } from '../shared/dropdown/dropdown.module';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { DropdownModule } from '../shared/dropdown/dropdown.module';
     PerfectScrollbarModule,
     InputFieldModule,
     DropdownModule
-  ]
+  ],
+  providers: [DatePipe]
 })
 export class CreateProductModule { }

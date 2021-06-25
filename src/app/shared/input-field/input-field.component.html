@@ -1,26 +1,32 @@
-<div [formGroup]="parentform" class="row col-sm-12 nomargin nopadding" *ngIf="showfield">
-    <label class="col-form-label col-sm-4" for="{{name}}" >{{labelname}}
-      <span class="required" *ngIf="required">*</span>
+<div [formGroup]="parentform" class="row col-sm-12 nomargin nopadding f-ver-center" *ngIf="showfield"
+    >
+    <label class="col-form-label col-sm-4" for="{{name}}" >{{labelname}}<span class="required" *ngIf="required">*</span>
     </label>
-    <div class="col-sm-6">
+    <div [ngClass]="type == 'text' ? 'col-sm-6' : 'col-sm-1'">
         <input type="text" (cut) ="false" (copy)="false" 
         (paste)="false" class="form-control" 
-        name="{{name}}" formControlName="{{name}}" placeholder="{{placeholder}}" >
-        <small class="text-danger"
+        name="{{name}}" formControlName="{{name}}" placeholder="{{placeholder}}"
+        *ngIf="!date && type == 'text'">
+        <input type="checkbox" class="form-control" 
+        formControlName="{{name}}" *ngIf="!date && type == 'checkbox'">
+        <dp-date-picker [config]="datePickerConfig" 
+        name="{{name}}" theme="dp-material" formControlName="{{name}}" *ngIf="date">
+        </dp-date-picker>  
+        <p class="text-danger error"
            *ngIf="parentform.get(name).hasError('required') && ( parentform.get(name).touched || submitted)">
             Required Field
-        </small>
-        <small class="text-danger"
+        </p>
+        <p class="text-danger error"
             *ngIf="parentform.get(name).hasError('minlength')">
             The minimum length for this field is {{parentform.get(name).errors.minlength.requiredLength}} characters
-        </small>
-        <small class="text-danger"
+        </p>
+        <p class="text-danger error"
             *ngIf="parentform.get(name).hasError('maxlength')">
             The maximum length for this field is {{parentform.get(name).errors.maxlength.requiredLength}} characters
-        </small>
-        <small class="text-danger"
+        </p>
+        <p class="text-danger error"
             *ngIf="parentform.get(name).hasError('pattern')">
             {{patternerror}}
-        </small>
+        </p>
     </div>
 </div>
