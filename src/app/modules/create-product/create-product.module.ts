@@ -7,8 +7,8 @@ import { CreateProductComponent } from './create-product.component';
 import { NgWizardModule } from 'ng-wizard';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { InputFieldModule } from '../shared/input-field/input-field.module';
-import { DropdownModule } from '../shared/dropdown/dropdown.module';
+import { InputFieldModule } from '../../shared/input-field/input-field.module';
+import { DropdownModule } from '../../shared/dropdown/dropdown.module';
 import { DatePipe } from '@angular/common';
 
 

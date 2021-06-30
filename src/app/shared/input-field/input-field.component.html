@@ -1,15 +1,15 @@
 <div [formGroup]="parentform" class="row col-sm-12 nomargin nopadding f-ver-center" *ngIf="showfield"
     >
-    <label class="col-form-label col-sm-4" for="{{name}}" >{{labelname}}<span class="required" *ngIf="required">*</span>
+    <label class="col-form-label {{labelclass}}" for="{{name}}" >{{labelname}}<span class="required" *ngIf="required">*</span>
     </label>
-    <div [ngClass]="type == 'text' ? 'col-sm-6' : 'col-sm-1'">
+    <div [ngClass]="type == 'text' ? inputclass : 'col-sm-1'">
         <input type="text" (cut) ="false" (copy)="false" 
         (paste)="false" class="form-control" 
         name="{{name}}" formControlName="{{name}}" placeholder="{{placeholder}}"
-        *ngIf="!date && type == 'text'">
-        <input type="checkbox" class="form-control" 
+        *ngIf="!date && type == 'text'" (change)="change()">
+        <input type="checkbox" class="form-control" (change)="change()"
         formControlName="{{name}}" *ngIf="!date && type == 'checkbox'">
-        <dp-date-picker [config]="datePickerConfig" 
+        <dp-date-picker [config]="datePickerConfig"  (change)="change()"
         name="{{name}}" theme="dp-material" formControlName="{{name}}" *ngIf="date">
         </dp-date-picker>  
         <p class="text-danger error"

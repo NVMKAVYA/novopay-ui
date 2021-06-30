@@ -8,12 +8,12 @@ import { NgWizardModule, NgWizardConfig } from 'ng-wizard';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { TooltipDirective } from 'src/app/directives/tootip.directive';
-import { InputFieldModule } from '../shared/input-field/input-field.module';
-import { DropdownModule } from '../shared/dropdown/dropdown.module';
+import { TooltipModule } from '../../shared/tooltip/tooltip.module';
+import { InputFieldModule } from '../../shared/input-field/input-field.module';
+import { DropdownModule } from '../../shared/dropdown/dropdown.module';
 
-import { DualEntryComponent } from '../shared/dual-entry/dual-entry.component';
-import { DocumentUploadComponent } from '../shared/document-upload/document-upload.component';
+import { DualEntryComponent } from '../../shared/dual-entry/dual-entry.component';
+import { DocumentUploadComponent } from '../../shared/document-upload/document-upload.component';
 
 const ngWizardConfig: NgWizardConfig = {};
 
@@ -21,8 +21,7 @@ const ngWizardConfig: NgWizardConfig = {};
   declarations: [
     CreateClientComponent,
     DualEntryComponent,
-    DocumentUploadComponent,
-    TooltipDirective
+    DocumentUploadComponent
   ],
   imports: [
     CommonModule,
@@ -31,7 +30,8 @@ const ngWizardConfig: NgWizardConfig = {};
     NgWizardModule.forRoot(ngWizardConfig),
     PerfectScrollbarModule,
     InputFieldModule,
-    DropdownModule
+    DropdownModule,
+    TooltipModule
   ],
   providers: [DatePipe]
 })

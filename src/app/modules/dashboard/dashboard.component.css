@@ -1,26 +1,33 @@
 a[aria-expanded=true] .fa-chevron-circle-down {
-display: none;
+    display: none;
 }
+
 a[aria-expanded=false] .fa-chevron-circle-up {
-display: none;
+    display: none;
 }
-.card-header{
+
+.card-header {
     background-color: inherit;
     border: none !important;
     align-items: center;
-  }
-  .table th {
+}
+
+.table th {
     border-top: 1px solid transparent;
-  }
-  .alert-info{
+}
+
+.alert-info {
     margin: 15px;
-  }
-  .bulkassign{
+}
+
+.bulkassign {
     text-align: left;
-  }
-  h5{
+}
+
+h5 {
     font-size: 1.3rem !important;
-  }
-  .svg-inline--fa {
+}
+
+.svg-inline--fa {
     color: rgb(85, 85, 85) !important;
-  }
+}

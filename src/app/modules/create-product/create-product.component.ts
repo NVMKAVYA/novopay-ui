@@ -5,6 +5,7 @@ import { Constants } from 'src/app/models/Constants';
 import { HttpService } from 'src/app/services/http/http.service';
 import { DatePipe } from '@angular/common';
 import { LoaderService } from 'src/app/services/loader/loader.service';
+import { FormService } from 'src/app/services/form/form.service';
 
 
 @Component({
@@ -18,12 +19,29 @@ export class CreateProductComponent implements OnInit {
   submitted : boolean;
   alphaNumericPattern : any = Constants.pattern.alphanumeric;
   productTemplate : any = {};
-  workflows : any = [];
+  loanCycleTypes : any = [];
+  workflows : any = [
+    {"name":"MEL Unsecured","key":"MELUnsecured"},
+    {"name":"JLGRegular","key":"jlgRegular"},
+    {"name":"JLGBC","key":"jlgBC"},
+    {"name":"Subsidiary JLG","key":"subsidiaryJLG"},
+    {"name" : "Suvidha Shakti", "key" : "SuvidhaShakti"},
+    {"name" : "JLGSeasonal", "key" : "jlgSeasonal"}
+  ];;
   minDate : string;
   numberPattern : any = Constants.pattern.numbers;
+  numberDecimalPattern : any = Constants.pattern.numberWithDecimal;
   showLoanDocumentList : boolean = false;
   insuranceProducts : any = [];
   termForm : any;
+  interestRateFrequencyType : string;
+  packInsurance: boolean = true;
+  showLoanCycle: boolean = false;
+  fieldsForuseBorrowerCycle : any = [
+    'minPrincipal','principal','maxPrincipal',
+    'minNumberOfRepayments','numberOfRepayments','maxNumberOfRepayments',
+    'minInterestRatePerPeriod','interestRatePerPeriod','maxInterestRatePerPeriod'
+  ]
   config: NgWizardConfig = {
     theme: THEME.arrows,
     toolbarSettings: {
@@ -34,22 +52,16 @@ export class CreateProductComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder, private http: HttpService, private datePipe: DatePipe,
-    private loader : LoaderService) { }
+    private loader : LoaderService, private form : FormService) { }
 
   ngOnInit(): void {
     
     this.minDate = this.datePipe.transform( new Date(), Constants.dateFormat2);
-    this.workflows = [
-      {"name":"MEL Unsecured","key":"MELUnsecured"},
-      {"name":"JLGRegular","key":"jlgRegular"},
-      {"name":"JLGBC","key":"jlgBC"},
-      {"name":"Subsidiary JLG","key":"subsidiaryJLG"},
-      {"name" : "Suvidha Shakti", "key" : "SuvidhaShakti"},
-      {"name" : "JLGSeasonal", "key" : "jlgSeasonal"}
-    ];
-
+  
     this.http.loanProductResource(null,'template').subscribe( data =>{
       this.productTemplate = data;
+      this.interestRateFrequencyType = this.productTemplate.interestRateFrequencyType.name;
+      this.termForm.addControl('interestRateFrequencyType' ,this.fb.control( this.productTemplate.interestRateFrequencyType.id ));
     })
 
     this.http.insuranceProductListResource().subscribe( data =>{
@@ -72,111 +84,68 @@ export class CreateProductComponent implements OnInit {
       demographicAuthRoleDetails : this.fb.group({})
     });
     this.termForm = this.createProductForm.controls.termsDetails;
+    this.termForm.addControl('packs' ,this.fb.array([this.initPack()]));
+  }
 
+  showInsuranceProduct(){
+    this.packInsurance = this.createProductForm.controls.productDetails.get('processDefKey').value === "subsidiaryJLG" ? false : true;
+    this.showLoanCycle = (this.createProductForm.controls.productDetails.get('processDefKey').value === "subsidiaryJLG" 
+         && this.createProductForm.controls.productDetails.get('loanClassificationType').value === 1) ? true : false;
+    if(this.showLoanCycle && !this.loanCycleTypes.length){
+      this.http.codeValuesResource('Loan Cycle').subscribe( data =>{
+        this.loanCycleTypes = data;
+      })
+    }
   }
 
   updateFields(value){
     if(value){
-          if(value.name == 'Individual'){
-            this.showLoanDocumentList = true;
-          }else{
-            this.showLoanDocumentList =  false;
-          }
+      this.showLoanDocumentList = value.name == 'Individual' ? true : false;
     }; 
   }
 
   toggleUsePacksFlag(value){
     if (value) {
       this.termForm.patchValue({usePacks : !value});
+      this.termForm.removeControl('packs');
      }else{
       this.termForm.removeControl('principalVariationsForBorrowerCycle');
       this.termForm.removeControl('numberOfRepaymentVariationsForBorrowerCycle');
       this.termForm.removeControl('interestRateVariationsForBorrowerCycle');
+      this.termForm.addControl('packs' ,this.fb.array([this.initPack()]));
      }
   }
 
   toggleUseBorrowerCycleFlag(value){
     if (value) {
       this.termForm.patchValue({useBorrowerCycle : !value});
-      this.termForm.removeControl('minPrincipal');
-      this.termForm.removeControl('principal');
-      this.termForm.removeControl('maxPrincipal');
+      this.fieldsForuseBorrowerCycle.forEach(field => {
+        this.termForm.removeControl(field);
+      });
       this.termForm.removeControl('principalVariationsForBorrowerCycle');
-      this.termForm.removeControl('minNumberOfRepayments');
-      this.termForm.removeControl('numberOfRepayments');
-      this.termForm.removeControl('maxNumberOfRepayments');
       this.termForm.removeControl('numberOfRepaymentVariationsForBorrowerCycle');
-      this.termForm.removeControl('minInterestRatePerPeriod');
-      this.termForm.removeControl('interestRatePerPeriod');
-      this.termForm.removeControl('maxInterestRatePerPeriod');
-      this.termForm.removeControl('interestRateFrequencyType');
       this.termForm.removeControl('interestRateVariationsForBorrowerCycle');
+      this.termForm.addControl('packs' ,this.fb.array([this.initPack()]));
     }else{ 
-      this.termForm.addControl( 'minPrincipal' ,this.fb.control( null, [ 
-        Validators.pattern(this.numberPattern.regex)
-      ]));
-      this.termForm.addControl( 'principal' ,this.fb.control( null, [ 
-        Validators.pattern(this.numberPattern.regex)
-      ]));
-      this.termForm.addControl( 'maxPrincipal' ,this.fb.control( null, [ 
-        Validators.pattern(this.numberPattern.regex)
-      ]));
-      this.termForm.addControl( 'minNumberOfRepayments' ,this.fb.control( null, [ 
-        Validators.pattern(this.numberPattern.regex)
-      ]));
-      this.termForm.addControl( 'numberOfRepayments' ,this.fb.control( null, [ 
-        Validators.pattern(this.numberPattern.regex)
-      ]));
-      this.termForm.addControl( 'maxNumberOfRepayments' ,this.fb.control( null, [ 
-        Validators.pattern(this.numberPattern.regex)
-      ]));
-      this.termForm.addControl( 'minInterestRatePerPeriod' ,this.fb.control( null, [ 
-        Validators.pattern(this.numberPattern.regex)
-      ]));
-      this.termForm.addControl( 'interestRatePerPeriod' ,this.fb.control( null, [ 
-        Validators.pattern(this.numberPattern.regex)
-      ]));
-      this.termForm.addControl( 'maxInterestRatePerPeriod' ,this.fb.control( null, [ 
-        Validators.pattern(this.numberPattern.regex)
-      ]));
-      this.termForm.addControl( 'interestRateFrequencyType' ,this.fb.control( this.productTemplate.interestRateFrequencyType.id ));
+      this.fieldsForuseBorrowerCycle.forEach(field => {
+        this.termForm.addControl( field ,this.fb.control( null, [ 
+          Validators.pattern(this.numberPattern.regex)
+        ]));
+      });
+      this.termForm.removeControl('packs');
     }
   }
 
-  addPrincipalVariation(){
-    if(this.termForm.get('principalVariationsForBorrowerCycle')){
+  addVariation(type:string){
+    if(this.termForm.get(type)){
       this.termForm.controls.numberOfRepaymentVariationsForBorrowerCycle.push(this.initRow())
     }else{
-      this.termForm.addControl('principalVariationsForBorrowerCycle' ,this.fb.array([this.initRow()]));
+      this.termForm.addControl(type ,this.fb.array([this.initRow()]));
     }
   }
 
-  addNumberOfRepaymentVariation(){
-    if(this.termForm.get('numberOfRepaymentVariationsForBorrowerCycle')){
-      this.termForm.controls.numberOfRepaymentVariationsForBorrowerCycle.push(this.initRow())
-    }else{
-      this.termForm.addControl('numberOfRepaymentVariationsForBorrowerCycle' ,this.fb.array([this.initRow()]));
-    }
-  }
-
-  addInterestRateVariation(){
-    if(this.termForm.get('interestRateVariationsForBorrowerCycle')){
-      this.termForm.controls.numberOfRepaymentVariationsForBorrowerCycle.push(this.initRow())
-    }else{
-      this.termForm.addControl('interestRateVariationsForBorrowerCycle' ,this.fb.array([this.initRow()]));
-    }
-  }
-
-  deletePrincipalVariation(i : number){
-    this.termForm.get('principalVariationsForBorrowerCycle').removeAt(i);
-  }
-
-  deleterepaymentVariation(i : number){
-    this.termForm.get('numberOfRepaymentVariationsForBorrowerCycle').removeAt(i);
-  }
-
-  deleteInterestRateVariation(i : number){
-    this.termForm.get('interestRateVariationsForBorrowerCycle').removeAt(i);
+  deleteVariation(i : number, type: string){
+    this.termForm.get(type).removeAt(i);
   }
 
   initRow(){
@@ -187,6 +156,29 @@ export class CreateProductComponent implements OnInit {
     row.addControl('defaultValue',this.fb.control(null))
     row.addControl('maxValue',this.fb.control(null))
     return row;
+  }
+
+  addPack(){
+    this.termForm.controls.pack.push(this.initPack())
+  }
+
+  initPack(){
+    let row = this.fb.group({});
+    row.addControl('packShortName',this.fb.control(null))
+    row.addControl('principal',this.fb.control(null,[Validators.pattern(this.numberPattern.regex)]))
+    row.addControl('interestRate',this.fb.control(null,[Validators.pattern(this.numberDecimalPattern.regex)]))
+    row.addControl('numberOfRepayments',this.fb.control(null, [Validators.pattern(this.numberPattern.regex)]))
+    row.addControl('insuranceAmount',this.fb.control(row.get('principal').value))
+    row.addControl('packInsuranceProductid',this.fb.control(null,
+       [this.form.conditionalValidator(this.packInsurance, Validators.required)]))
+    row.addControl('isEligibilityNoRTR',this.fb.control(true))
+    row.addControl('pkLoanCycleId',this.fb.control(null,
+      [this.form.conditionalValidator(this.showLoanCycle, Validators.required)]))
+    return row;
+  }
+  
+  deletePack(i:number){
+    this.termForm.get('packs').removeAt(i);
   }
 
   validateCanExit(form) {

@@ -1,0 +1,307 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root {
+    --blue: #0096c5 !important;
+    font-size: 14px !important;
+    --yellow: rgba(241, 210, 0, 1) !important;
+    --black: #424242 !important;
+    --darkGrey: #5b6268 !important;
+    --red: #e93b3e !important;
+}
+
+html {
+    overflow-y: hidden;
+    height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    color: rgb(85, 85, 85);
+}
+
+.form-control {
+    background-clip: border-box !important;
+}
+
+.loader-container {
+    position: fixed;
+    background-color: var(--blue);
+    height: 100%;
+    width: 100%;
+    color: white;
+    top: 0;
+    bottom: 0;
+}
+
+.m-r-5 {
+    margin-right: 5px;
+}
+
+.pwd {
+    -webkit-text-security: disc;
+}
+
+.img-responsive {
+    display: block;
+    max-width: 100%;
+}
+
+.navbar-inverse {
+    background-color: var(--blue);
+    color: #fff;
+    padding: 0 !important;
+    justify-content: inherit !important;
+}
+
+#leftmenu-trigger,
+#rightmenu-trigger {
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    background-position: 0 0;
+    float: left;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RjI5OTJEN0UxMDdFMTFFMzk1QjZBODRFMTJGRERFNzMiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RjI5OTJEN0QxMDdFMTFFMzk1QjZBODRFMTJGRERFNzMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmRpZDo4QzE3NEM1ODdCMTBFMzExQTBDOEVEREIyRENFMUU0QSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4QzE3NEM1ODdCMTBFMzExQTBDOEVEREIyRENFMUU0QSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmxMBE8AAADNSURBVHja7NpBCoAwDARAIz7cn9cvaGhqW2bPCnEwSxGjtXZIPicCgAABAhSAAAECFIAAAQIUgADXyZW45+583aiUzB0+qFphgDpw7P1TzacDrTBAHTjxmbB8Vh1ohQECBCgAAQIEKAABAgQoAAECBCgAAQIEKAABAgQoAAECBCgAAU6YzP+Bb/+Hi8metWTuDGAs+rKEFdaBOvBLl/xVAUPn27EDwwrrQB3Yu2P+WvvyWXc/B4YV1oEABSBAgAAFIECAAAUgQIA75RFgAGBMGKmai6EfAAAAAElFTkSuQmCC);
+}
+
+.card {
+    box-shadow: 0px 0px 25px 0px rgba(10, 10, 10, 0.119608);
+    border: none !important;
+    margin-bottom: 2rem;
+}
+
+.blueText {
+    color: var(--blue);
+}
+
+.ngx-pagination li {
+    border: 1px solid #dee6ed;
+    margin-right: 0px !important;
+}
+
+.ngx-pagination .pagination-previous a::before,
+.ngx-pagination .pagination-previous.disabled::before {
+    content: '' !important;
+}
+
+.ngx-pagination .pagination-next a::after,
+.ngx-pagination .pagination-next.disabled::after {
+    content: '' !important;
+}
+
+.paging {
+    /* margin-right: 5px; */
+    text-align: right;
+}
+
+.btn-primary {
+    background-color: var(--blue) !important;
+    border-color: var(--blue) !important;
+    border-radius: 0px !important;
+}
+
+.btn {
+    border-radius: 0px !important;
+}
+
+.btn:hover,
+.btn:not(:disabled):not(.disabled).active:focus,
+.btn:not(:disabled):not(.disabled):active:focus {
+    /* box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5); */
+    box-shadow: 0px 0px 15px 0px rgba(4, 5, 5, 0.129608) !important;
+}
+
+.ng-wizard-theme-arrows {
+    border-radius: 0px !important;
+    border: none !important;
+}
+
+.ng-wizard-theme-arrows>.ng-wizard-container {
+    padding: 20px 0px;
+}
+
+.required {
+    color: var(--red);
+    margin-left: 3px;
+}
+
+.col-form-label {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    text-align: right;
+}
+
+.form-control[aria-disabled=true] {
+    background-color: blue;
+}
+
+.nopadding {
+    padding: 0px !important;
+}
+
+.nomargin {
+    margin: 0px !important;
+}
+
+dp-date-picker.dp-material .dp-picker-input {
+    border: 1px solid rgb(206, 212, 218) !important;
+    border-radius: .25rem !important;
+    height: calc(1.5em + .75rem + 2px) !important;
+    font-size: 14px!important;
+    padding: .375rem .75rem;
+    width: 221px !important;
+}
+
+.ng-wizard-theme-arrows>ul.step-anchor {
+    flex-wrap: nowrap !important;
+}
+
+.ng-wizard-theme-arrows>ul.step-anchor>li.active {
+    background: #5cb85c!important;
+}
+
+.ng-wizard-theme-arrows>ul.step-anchor>li {
+    display: flex;
+}
+
+.ng-wizard-theme-arrows>ul.step-anchor>li>a {
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+}
+
+input:disabled {
+    background-color: #e9ecef;
+}
+
+.form-control:focus {
+    box-shadow: none !important;
+}
+
+
+/* tooltip */
+
+.tooltip-example {
+    text-align: center;
+    padding: 0 50px;
+}
+
+.tooltip-example [tooltip] {
+    display: inline-block;
+    margin: 50px 20px;
+    width: 180px;
+    height: 50px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    line-height: 50px;
+    text-align: center;
+}
+
+.ng-tooltip {
+    position: absolute;
+    max-width: 150px;
+    font-size: 14px;
+    text-align: center;
+    color: #f8f8f2;
+    padding: 3px 8px;
+    background: black;
+    border-radius: 4px;
+    z-index: 1000;
+    opacity: 0;
+}
+
+.ng-tooltip:after {
+    content: "";
+    position: absolute;
+    border-style: solid;
+}
+
+.ng-tooltip-top:after {
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-color: black transparent transparent transparent;
+}
+
+.ng-tooltip-bottom:after {
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-color: transparent transparent black transparent;
+}
+
+.ng-tooltip-left:after {
+    top: 50%;
+    left: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-color: transparent transparent transparent black;
+}
+
+.ng-tooltip-right:after {
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-color: transparent black transparent transparent;
+}
+
+.ng-tooltip-show {
+    opacity: 1;
+}
+
+
+/* tooltip */
+
+.error {
+    margin-bottom: 0px !important;
+    font-size: 12px !important;
+}
+
+.vertical-center {
+    vertical-align: middle !important;
+}
+
+.f-ver-center {
+    display: flex;
+    align-items: center;
+}
+
+.table td,
+.table th {
+    text-align: center !important;
+}
+
+input:-internal-autofill-selected {
+    background-color: white !important;
+}
+
+.img-circle {
+    border-radius: 50%;
+}
+
+.text-white {
+    color: white;
+}
+
+.bg-white {
+    background-color: white;
+}
+
+.fd-flex {
+    flex-direction: column;
+}
+
+ul li {
+    list-style-type: none;
+}

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpService } from 'src/app/services/http/http.service';
-import { STEP_STATE, StepValidationArgs, NgWizardConfig, THEME } from 'ng-wizard';
+import { STEP_STATE, NgWizardConfig, THEME } from 'ng-wizard';
 import { Constants } from 'src/app/models/Constants';
 import { DatePipe } from '@angular/common';
 import { LoaderService } from 'src/app/services/loader/loader.service';

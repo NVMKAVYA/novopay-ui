@@ -20,12 +20,13 @@ export class InputFieldComponent implements OnInit {
   @Input() submitted: boolean;
   @Input() pattern: string;
   @Input() patternerror : string;
-  // @Input() showfield : boolean;
   @Input() type : string;
   @Input() date : boolean;
   @Input() value : boolean;
   @Input() maxdate : any;
-  @Input() elementClass : any;
+  @Input() labelclass : any;
+  @Input() inputclass : any;
+  @Input() placeholder : string;
   @Output() valuechange = new EventEmitter();
   @Input() emitEvent : boolean;
   datePickerConfig = {
@@ -50,7 +51,8 @@ export class InputFieldComponent implements OnInit {
 
   ngOnInit(): void {
     this._showfield = this._showfield  !== undefined ? this._showfield : true;
-    this.elementClass = this.elementClass ? parseInt(this.elementClass) : 4;
+    this.labelclass = this.labelclass || 'col-sm-4';
+    this.inputclass = this.inputclass || 'col-sm-6';
     this.type = this.type || 'text';
 
     if(this.type == 'date'){
@@ -60,12 +62,6 @@ export class InputFieldComponent implements OnInit {
     if(this._showfield){
       this.addField()
     }
-  
-    if(this.emitEvent){
-      this.parentform.controls[this.name].valueChanges.subscribe(() => { 
-        this.valuechange.emit(this.parentform.controls[this.name].value);
-      })
-    }
   }
 
   addField() {
@@ -74,6 +70,12 @@ export class InputFieldComponent implements OnInit {
       this.form.conditionalValidator(this.minlength, Validators.minLength(this.minlength)),
       this.form.conditionalValidator(this.maxlength, Validators.maxLength(this.maxlength)),
       this.form.conditionalValidator(this.pattern, Validators.pattern(this.pattern)) ]));
+  }
+
+  change(){
+    if(this.emitEvent){
+     this.valuechange.emit(this.parentform.controls[this.name].value);
+    }
   }
 
 }

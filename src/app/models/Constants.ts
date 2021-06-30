@@ -19,6 +19,10 @@ export class Constants{
         numbers : {
             regex: '^[0-9]*$',
             error: 'Must be numeric'
+        },
+        numberWithDecimal : {
+            regex: '^\d*(\.\d{1,2})?$',
+            error: 'Must be Numeric or Decimal With Max Two Decimals'
         }
     };
 

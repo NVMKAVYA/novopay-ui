@@ -11,34 +11,34 @@
             <option *ngFor="let option of options" [ngValue]="optionvalue ? option[optionvalue] : option">{{option.name}}</option>
         </select>
 
-        <small class="text-danger"
+        <p class="text-danger error"
             *ngIf="parentform.get(name).hasError('required') && ( parentform.get(name).touched || submitted)">
             Required Field
-        </small>
-        <small class="text-danger"
+        </p>
+        <p class="text-danger error"
             *ngIf="parentform.get(name).hasError('minlength')">
             The minimum length for this field is {{parentform.get(name).errors.minlength.requiredLength}} characters
-        </small>
-        <small class="text-danger"
+        </p>
+        <p class="text-danger error"
             *ngIf="parentform.get(name).hasError('maxlength')">
             The maximum length for this field is {{parentform.get(name).errors.maxlength.requiredLength}} characters
-        </small>
-        <small class="text-danger"
+        </p>
+        <p class="text-danger error"
             *ngIf="parentform.get(name).hasError('pattern')">
             {{patternerror}}
-        </small>
-        <small class="text-danger"
+        </p>
+        <p class="text-danger error"
             *ngIf="parentform.get(name).hasError('invalidDate')">
            Invalid Date Format
-        </small>
-        <small class="text-danger"
+        </p>
+        <p class="text-danger error"
             *ngIf="parentform.get(name).hasError('ageLimit')">
            Age should be between {{mininput}} and {{maxinput}}
-        </small>
-        <small class="text-danger"
+        </p>
+        <p class="text-danger error"
             *ngIf="parentform.get(name).hasError('invalidPhonenumber')">
            Invalid Mobile Number
-        </small>
+        </p>
     </div>
     <label class="col-form-label col-sm-{{elementclass + 1}}" for="{{dualname}}">Re-enter {{labelname}}<span class="required" *ngIf="required">*</span>
     </label>
@@ -50,12 +50,12 @@
             <option [ngValue]="null" disabled>{{placeholder}}</option>
             <option *ngFor="let option of options" [ngValue]="optionvalue ? option[optionvalue] : option">{{option.name}}</option>
         </select>
-        <small class="text-danger"
+        <p class="text-danger error"
             *ngIf="parentform.get(dualname).hasError('required') && ( parentform.get(dualname).touched || submitted)">
             Required Field
-        </small>
-        <small class="text-danger"
+        </p>
+        <p class="text-danger error"
           *ngIf="parentform.get(dualname).hasError('mustMatch')">{{labelname}}s must match
-        </small>
+        </p>
     </div> 
 </div> 

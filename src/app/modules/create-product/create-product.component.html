@@ -63,7 +63,7 @@
           </app-input-field>
           <app-dropdown [parentform]="createProductForm.controls.productDetails" [name]="'processDefKey'"
             [options]="workflows" [optionvalue]="'key'" [labelname]="'Work Flows'" [required]="false"
-            [submitted]="submitted" class="col-sm-6 nopadding" (valuechange)="null" [emitEvent]="false">
+            [submitted]="submitted" class="col-sm-6 nopadding" (valuechange)="showInsuranceProduct()" [emitEvent]="true">
           </app-dropdown>
           <!-- event change -->
         </div>
@@ -71,7 +71,7 @@
           <app-dropdown [parentform]="createProductForm.controls.productDetails" [name]="'loanClassificationType'"
             [options]="productTemplate.loanClassificationTypeOptions" [optionvalue]="'id'" [displayfield]="'value'"
             [labelname]="'Loan Classification Type'" [required]="false" [submitted]="submitted"
-            class="col-sm-6 nopadding" (valuechange)="null" [emitEvent]="false">
+            class="col-sm-6 nopadding" (valuechange)="showInsuranceProduct()" [emitEvent]="true">
           </app-dropdown>
           <!-- event change -->
           <app-input-field [parentform]="createProductForm.controls.productDetails" [name]="'ftp'" [labelname]="'F T P'"
@@ -197,7 +197,7 @@
           <label class="col-form-label col-sm-2">Principal Variations for Borrower Cycle
           </label>
           <div class="col-sm-2">
-            <button class="btn btn-primary" (click)="addPrincipalVariation()">Add</button>
+            <button class="btn btn-primary" (click)="addVariation('principalVariationsForBorrowerCycle')">Add</button>
           </div>
           <div class="col-md-9 offset-md-2" *ngIf="termForm.get('principalVariationsForBorrowerCycle')
         && termForm.get('principalVariationsForBorrowerCycle').controls.length">
@@ -234,7 +234,8 @@
                     <input type="text" class="form-control" formControlName="maxValue">
                   </td>
                   <td class="text-center h5 vertical-center">
-                    <a class="mr-3 required" type="button" (click)="deletePrincipalVariation(i)">
+                    <a class="mr-3 required" type="button" 
+                    (click)="deleteVariation(i, 'principalVariationsForBorrowerCycle')">
                       <i class="fa fa-times-circle-o"></i>
                     </a>
                   </td>
@@ -276,7 +277,8 @@
           <label class="col-form-label col-sm-2">No of Repayments for Borrower Cycle
           </label>
           <div class="col-sm-2">
-            <button class="btn btn-primary" (click)="addNumberOfRepaymentVariation()">Add</button>
+            <button class="btn btn-primary" 
+            (click)="addVariation('numberOfRepaymentVariationsForBorrowerCycle')">Add</button>
           </div>
           <div class="col-md-9 offset-md-2" *ngIf="termForm.get('numberOfRepaymentVariationsForBorrowerCycle')
         && termForm.get('numberOfRepaymentVariationsForBorrowerCycle').controls.length">
@@ -314,7 +316,8 @@
                     <input type="text" class="form-control" formControlName="maxValue">
                   </td>
                   <td class="text-center h5 vertical-center">
-                    <a class="mr-3 required" type="button" (click)="deleterepaymentVariation(i)">
+                    <a class="mr-3 required" type="button" 
+                    (click)="deleteVariation(i,'numberOfRepaymentVariationsForBorrowerCycle')">
                       <i class="fa fa-times-circle-o"></i>
                     </a>
                   </td>
@@ -362,7 +365,8 @@
           <label class="col-form-label col-sm-2">Interest Rate for Borrower Cycle
           </label>
           <div class="col-sm-2">
-            <button class="btn btn-primary" (click)="addInterestRateVariation()">Add</button>
+            <button class="btn btn-primary" 
+            (click)="addVariation('interestRateVariationsForBorrowerCycle')">Add</button>
           </div>
           <div class="col-md-9 offset-md-2" *ngIf="termForm.get('interestRateVariationsForBorrowerCycle')
       && termForm.get('interestRateVariationsForBorrowerCycle').controls.length">
@@ -399,7 +403,8 @@
                     <input type="text" class="form-control" formControlName="maxValue">
                   </td>
                   <td class="text-center h5 vertical-center">
-                    <a class="mr-3 required" type="button" (click)="deleteInterestRateVariation(i)">
+                    <a class="mr-3 required" type="button" 
+                    (click)="deleteVariation(i,'interestRateVariationsForBorrowerCycle')">
                       <i class="fa fa-times-circle-o"></i>
                     </a>
                   </td>
@@ -420,6 +425,104 @@
             [displayfield]="'value'" [value]="productTemplate.repaymentFrequencyType.id"
             *ngIf="productTemplate.repaymentFrequencyType">
           </app-dropdown>
+        </div>
+        <div class="form-group row col-sm-12">
+          <app-input-field [parentform]="termForm" [name]="'loanToValue'"
+            [labelname]="'Loan To Value (LTV)'" [required]="false" [submitted]="submitted"
+            class="col-sm-6 nopadding" [showfield]="showLoanDocumentList" [pattern]="numberPattern.regex"
+            [patternerror]="numberPattern.error" [maxlength]="3">
+          </app-input-field>
+        </div>
+        <perfect-scrollbar>
+        <div style="width: 1350px;" *ngIf="termForm.get('usePacks').value" formGroupName="termsDetails">
+            <table class="table table-bordered">
+              <thead class="thead-light">
+                <tr>
+                  <th>Pack Number</th>
+                  <th>Pack Short Name</th>
+                  <th>Principal</th>
+                  <th>Interest Rate {{interestRateFrequencyType}}</th>
+                  <th>Number of Repayments</th>
+                  <th *ngIf="packInsurance">Insured Amount</th>
+                  <th>Insurance Product
+                    <span class="required" *ngIf="packInsurance">*</span></th>
+                  <th *ngIf="showLoanCycle">Loan Cycle</th>
+                  <th>Eligibility (No RTR)</th>
+                  <th><button class="btn btn-primary" (click)="addPack()">
+                   Add</button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody formArrayName="packs">
+                <tr *ngFor="let pack of termForm.controls.packs.controls; let i=index" [formGroupName]="i">
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    <input type="text" class="form-control" formControlName="packShortName">
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" formControlName="principal">
+                    <small class="text-danger" *ngIf="pack.get('principal').hasError('pattern')">
+                    {{numberPattern.error}}
+                    </small>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" formControlName="interestRate">
+                    <small class="text-danger" *ngIf="pack.get('interestRate').hasError('pattern')">
+                      {{numberDecimalPattern.error}}
+                    </small>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" formControlName="numberOfRepayments">
+                    <small class="text-danger" *ngIf="pack.get('numberOfRepayments').hasError('pattern')">
+                      {{numberPattern.error}}
+                    </small>
+                  </td>
+                  <td *ngIf="packInsurance">
+                    <input type="text" class="form-control" formControlName="insuranceAmount" readonly>
+                  </td>
+                  <td>
+                     <select class="form-control" formControlName="packInsuranceProductid">
+                      <option [ngValue]="null">Select Insurance Products</option>
+                      <option *ngFor="let option of insuranceProducts" [ngValue]="option.id">
+                        {{option.name}}</option>
+                    </select>
+                    <small class="text-danger" *ngIf="pack.get('packInsuranceProductid').hasError('required') && ( pack.get('packInsuranceProductid').touched || submitted)">
+                      Required Field
+                    </small>
+                  </td>
+                  <td *ngIf="showLoanCycle">
+                    <select class="form-control" formControlName="pkLoanCycleId">
+                      <option [ngValue]="null">Select Loan Cycle</option>
+                      <option *ngFor="let option of loanCycleTypes" [ngValue]="option.id">
+                       {{option.label}}</option>
+                   </select>
+                 </td>
+                 <td><input type="checkbox" formControlName="isEligibilityNoRTR"></td>
+                  <td class="text-center h5 vertical-center">
+                    <a class="mr-3 required" type="button" (click)="deletePack(i)">
+                      <i class="fa fa-times-circle-o"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        </perfect-scrollbar>
+      </ng-wizard-step>
+      <ng-wizard-step [title]="'Tenor Grace Period Details'" [canExit]="validateCanExit.bind(this,'tenorGracePeriodDetails')"
+        [canEnter]="actionOnEnter.bind(this)">
+        <div class="form-group row col-sm-12">
+          <app-input-field [parentform]="createProductForm.controls.tenorGracePeriodDetails" 
+          [type]="'checkbox'" [name]="'isGracePeriodApplicable'" [labelname]="'Grace Period Applicable'"
+          [required]="false" [submitted]="submitted" class="col-sm-6 nopadding"
+          (valuechange)="null" [emitEvent]="false">
+          </app-input-field>
+        </div>
+        <div class="form-group row col-sm-12">
+          <!-- <app-input-field [parentform]="createProductForm.controls.currencyDetails" [name]="'inMultiplesOf'"
+            [labelname]="'Installment in Multiples of'" [required]="true" [pattern]="numberPattern.regex"
+            [patternerror]="numberPattern.error" [submitted]="submitted" class="col-sm-6 nopadding">
+          </app-input-field> -->
         </div>
       </ng-wizard-step>
     </ng-wizard>
