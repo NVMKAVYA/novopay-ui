@@ -1,13 +1,36 @@
 <div class="row">
     <div class="col-12 col-xxl">
-        <div class="card">
+        <div class="card" *ngIf="client">
             <div class="card-header-banner">
-                <div class="d-flex ml-3" *ngIf="client">
-                    <img *ngIf="!client.imagePresent" class="img-responsive img-circle {{client.status.code | StatusLookup}}" src="../assets/client-image-placeholder.png" alt="Avatar" height="150">
-                    <img *ngIf="client.imagePresent" class="img-responsive img-circle {{client.status.code | StatusLookup}}" [src]="clientImage" alt="Avatar" height="140" [tooltip]="'Show Larger'" placement="top">
+                <div class="d-flex ml-3">
+                    <div class="imagecontainer {{client.status.code | StatusLookup}}">
+                        <img *ngIf="!client.imagePresent || !clientImage" class="img-responsive img-circle" src="../assets/client-image-placeholder.png" alt="Avatar" height="133" width="130">
+                        <img *ngIf="client.imagePresent && clientImage" class="img-responsive img-circle" [src]="clientImage" alt="Avatar" height="130" width="130" [tooltip]="'Show Larger'" placement="top">
+                    </div>
                     <!-- click picture -->
                     <div class="d-flex fd-flex card-content">
-                        <h1 class="mr-2 ml-2 mt-2 mb-2 text-white">{{client.customerTitles.name}} {{client.displayName}}</h1>
+                        <div class="d-flex">
+                            <h1 class="mr-2 ml-2 mt-2 mb-2 text-white mr-auto">{{client.customerTitles.name}} {{client.displayName}}</h1>
+                            <div style="position: relative;">
+                                <i class="fa fa-cog mr-5 mt-3 text-white" style="font-size: 25px;" data-toggle="dropdown" type="button"></i>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <div *ngFor="let btn of buttonsArray.singlebuttons">
+                                        <a class="dropdown-item" type="button" *hasPermission="btn.taskPermissionName" href="">
+                                            <!-- Add route paths -->
+                                            <i class="{{btn.icon}} mr-2"></i>{{btn.name}}
+                                        </a>
+                                    </div>
+                                    <div *ngIf="client.status.value=='Pending'">
+                                        <a class="dropdown-item" *hasPermission="'DELETE_CLIENT'" type="button"><i class="fa fa-trash mr-2"></i>Delete</a>
+                                    </div>
+                                    <!-- line 286 -->
+                                    <!-- <a class="dropdown-item" type="button">Products</a>
+                                    <a class="dropdown-item" type="button">Users</a>
+                                    <a class="dropdown-item" type="button">Business Correspondent</a>
+                                    <a class="dropdown-item" type="button">Manage NOC</a> -->
+                                </div>
+                            </div>
+                        </div>
                         <div class="d-flex ml-2 text-white card-sub-header">
                             <div class="mr-4 mb-2">
                                 <span>Customer ID:</span>

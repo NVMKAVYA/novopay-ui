@@ -5,6 +5,7 @@ import { ViewClientRoutingModule } from './view-client-routing.module';
 import { ViewClientComponent } from './view-client.component';
 import { TooltipModule } from '../../shared/tooltip/tooltip.module';
 import { StatusColourModule } from '../../shared/status-colour/status-colour.module';
+import { HasPermissionModule } from 'src/app/shared/has-permission/has-permission.module';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { StatusColourModule } from '../../shared/status-colour/status-colour.mod
     CommonModule,
     ViewClientRoutingModule,
     TooltipModule,
-    StatusColourModule
+    StatusColourModule,
+    HasPermissionModule
   ]
 })
 export class ViewClientModule { }

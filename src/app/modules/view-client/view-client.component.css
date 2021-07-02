@@ -1,3 +1,4 @@
+@import "../../css/status-colours";
 .card-header-banner {
     background-color: var(--darkGrey);
     border: none !important;
@@ -53,4 +54,11 @@ a:hover {
 
 .card-content {
     width: 100%;
+}
+
+.imagecontainer {
+    border-radius: 50%;
+    height: 140px;
+    width: 160px;
+    background-color: white;
 }

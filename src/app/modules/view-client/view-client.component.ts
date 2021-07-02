@@ -3,6 +3,8 @@ import { HttpService } from 'src/app/services/http/http.service';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Constants } from 'src/app/models/Constants';
+import { ClientStatus } from 'src/app/models/clientStatus';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-view-client',
@@ -15,8 +17,15 @@ export class ViewClientComponent implements OnInit {
   clientImage: SafeResourceUrl;
   client: any;
   dateFormat: any = Constants.dateFormat1;
+  clientStatus: ClientStatus = new ClientStatus();
+  buttonsArray = {
+    options: [{
+      name: "button.clientscreenreports"
+    }],
+    singlebuttons: null
+  };
 
-  constructor(private http: HttpService, private route: ActivatedRoute, private sanitizer: DomSanitizer) { }
+  constructor(private http: HttpService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private auth: AuthService) { }
 
   ngOnInit(): void {
     this.clientId = parseInt(this.route.snapshot.paramMap.get('id'));
@@ -27,8 +36,22 @@ export class ViewClientComponent implements OnInit {
           this.clientImage = this.sanitizer.bypassSecurityTrustResourceUrl(data);
         })
       }
-    })
+      let buttons;
+      if (this.clientStatus.statusKnown(data.status.value)) {
+        buttons = this.clientStatus.getStatus(data.status.value);
+      }
 
+      if (data.status.value == "Pending" || data.status.value == "Active") {
+        if (!data.staffId) {
+          buttons.push(this.clientStatus.getStatus("Assign Staff"));
+        }
+      }
+
+      if (this.auth.getConfiguration('enable-new-loan-button-for-client').enabled) {
+        buttons.push(this.clientStatus.getStatus("New Loan"));
+      }
+      this.buttonsArray.singlebuttons = buttons;
+    })
   }
 
 }

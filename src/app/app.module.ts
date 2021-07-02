@@ -5,8 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 //dependencies
-import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
-import { NgxWebstorageModule } from 'ngx-webstorage';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UserIdleModule } from 'angular-user-idle';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
@@ -22,23 +21,25 @@ import { ErrorInterceptor } from './helpers/error.interceptors/error.interceptor
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NgxWebstorageModule.forRoot(),
-    UserIdleModule.forRoot({idle: 15 * 60 , timeout: 10, ping: 15 * 60}),
+    UserIdleModule.forRoot({ idle: 15 * 60, timeout: 10, ping: 15 * 60 }),
     BrowserAnimationsModule,
-    ToastrModule.forRoot({timeOut: 10000,positionClass: 'toast-top-right',
-    preventDuplicates: true,closeButton : true})
+    ToastrModule.forRoot({
+      timeOut: 10000, positionClass: 'toast-top-right',
+      preventDuplicates: true, closeButton: true
+    })
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: JwtInterceptor,
     multi: true
   },
-  { 
-    provide: HTTP_INTERCEPTORS, 
+  {
+    provide: HTTP_INTERCEPTORS,
     useClass: ErrorInterceptor,
-    multi: true 
+    multi: true
   },
-  { provide: "windowObject", 
+  {
+    provide: "windowObject",
     useValue: window
   }
   ],

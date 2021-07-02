@@ -8,6 +8,7 @@ import { HasPermissionDirective } from './has-permission.directive';
   declarations: [HasPermissionDirective],
   imports: [
     CommonModule
-  ]
+  ],
+  exports: [HasPermissionDirective]
 })
 export class HasPermissionModule { }
