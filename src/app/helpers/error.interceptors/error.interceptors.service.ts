@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(private auth : AuthService, private toastr: ToastrService) { }
+    constructor(private auth: AuthService, private toastr: ToastrService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
@@ -16,9 +16,13 @@ export class ErrorInterceptor implements HttpInterceptor {
                 // auto logout if 401 response returned from api
                 this.auth.logout();
             }
-            this.toastr.error( err.error.errors[0].developerMessage , 'Error',{ 
-              timeOut: 5000
-            })
+            if (err.url.includes("/authentication")) {
+                this.toastr.error(err.error.errors[0].developerMessage, 'Error', {
+                    timeOut: 5000
+                })
+            } else {
+                this.toastr.error(err.error.errors[0].developerMessage, 'Error')
+            }
             return throwError(err);
         }))
     }

@@ -5,7 +5,6 @@ import { CreateClientRoutingModule } from './create-client-routing.module';
 import { CreateClientComponent } from './create-client.component';
 
 import { NgWizardModule, NgWizardConfig } from 'ng-wizard';
-import { ReactiveFormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { TooltipModule } from '../../shared/tooltip/tooltip.module';
@@ -26,7 +25,6 @@ const ngWizardConfig: NgWizardConfig = {};
   imports: [
     CommonModule,
     CreateClientRoutingModule,
-    ReactiveFormsModule,
     NgWizardModule.forRoot(ngWizardConfig),
     PerfectScrollbarModule,
     InputFieldModule,

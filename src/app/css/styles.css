@@ -305,3 +305,11 @@ input:-internal-autofill-selected {
 ul li {
     list-style-type: none;
 }
+
+.pointer {
+    cursor: pointer;
+}
+
+.modal-footer {
+    border-top: none !important;
+}

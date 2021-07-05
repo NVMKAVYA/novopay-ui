@@ -1,11 +1,3 @@
-a[aria-expanded=true] .fa-chevron-circle-down {
-    display: none;
-}
-
-a[aria-expanded=false] .fa-chevron-circle-up {
-    display: none;
-}
-
 .card-header {
     background-color: inherit;
     border: none !important;

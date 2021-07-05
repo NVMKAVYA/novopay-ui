@@ -125,9 +125,18 @@ export class HttpService {
     return this._http.get(`${this.baseUrl}/clients${clientId ? `/${clientId}` : ''}${resource ? `/${resource}` : ''}${resourceId ? `/${resourceId}` : ''}`, { params: params });
   }
 
-  public getClientImage(clientId): any {
-    return this._http.get(`${this.baseUrl}/clients/${clientId}/images?maxHeight=300`,{responseType: 'text'});
+  public getClientImage(clientId, size?): any {
+    return this._http.get(`${this.baseUrl}/clients/${clientId}/images?${size}`, { responseType: 'text' });
   }
 
+  public runReportsResource(reportSource, genericResultSet?, R_clientId?): any {
+    let params = new HttpParams();
+    params = genericResultSet ? params.append('genericResultSet', genericResultSet) : params;
+    params = R_clientId ? params.append('R_clientId', R_clientId) : params;
+    return this._http.get(`${this.baseUrl}/runreports/${reportSource}`, { params: params });
+  }
 
+  public clientAccountResource(clientId): any {
+    return this._http.get(`${this.baseUrl}/clients/${clientId}/accounts`);
+  }
 }

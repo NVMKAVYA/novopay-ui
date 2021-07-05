@@ -72,7 +72,7 @@ export class DocumentUploadComponent implements OnInit {
       [Validators.required, this.form.mustMatch('documentKey', row)]))
     row.addControl('identifierTypeId', this.fb.control(null, [Validators.required]))
     row.addControl('documentExpiryDate', this.fb.control(null))
-    row.addControl('file', this.fb.control(null, [this.form.conditionalValidator(this.auth.getConfiguration('is_kyc_upload_required')[0].enabled,
+    row.addControl('file', this.fb.control(null, [this.form.conditionalValidator(this.auth.getConfiguration('is_kyc_upload_required').enabled,
       Validators.required)]))
     return row;
   }

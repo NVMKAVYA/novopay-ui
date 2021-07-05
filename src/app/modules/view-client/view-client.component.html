@@ -1,231 +1,288 @@
-<div class="row">
-    <div class="col-12 col-xxl">
-        <div class="card" *ngIf="client">
-            <div class="card-header-banner">
-                <div class="d-flex ml-3">
-                    <div class="imagecontainer {{client.status.code | StatusLookup}}">
-                        <img *ngIf="!client.imagePresent || !clientImage" class="img-responsive img-circle" src="../assets/client-image-placeholder.png" alt="Avatar" height="133" width="130">
-                        <img *ngIf="client.imagePresent && clientImage" class="img-responsive img-circle" [src]="clientImage" alt="Avatar" height="130" width="130" [tooltip]="'Show Larger'" placement="top">
-                    </div>
-                    <!-- click picture -->
-                    <div class="d-flex fd-flex card-content">
-                        <div class="d-flex">
-                            <h1 class="mr-2 ml-2 mt-2 mb-2 text-white mr-auto">{{client.customerTitles.name}} {{client.displayName}}</h1>
-                            <div style="position: relative;">
-                                <i class="fa fa-cog mr-5 mt-3 text-white" style="font-size: 25px;" data-toggle="dropdown" type="button"></i>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <div *ngFor="let btn of buttonsArray.singlebuttons">
-                                        <a class="dropdown-item" type="button" *hasPermission="btn.taskPermissionName" href="">
-                                            <!-- Add route paths -->
-                                            <i class="{{btn.icon}} mr-2"></i>{{btn.name}}
-                                        </a>
-                                    </div>
-                                    <div *ngIf="client.status.value=='Pending'">
-                                        <a class="dropdown-item" *hasPermission="'DELETE_CLIENT'" type="button"><i class="fa fa-trash mr-2"></i>Delete</a>
-                                    </div>
-                                    <!-- line 286 -->
-                                    <!-- <a class="dropdown-item" type="button">Products</a>
+<div class="col-12 col-xxl">
+    <div class="card mb-3" *ngIf="client">
+        <div class="card-header-banner">
+            <div class="d-flex ml-3">
+                <div class="imagecontainer {{client.status.code | StatusLookup}}">
+                    <img *ngIf="!client.imagePresent || !clientImage" class="img-responsive img-circle" src="../assets/client-image-placeholder.png" alt="Avatar" height="133" width="130">
+                    <img *ngIf="client.imagePresent && clientImage" class="img-responsive img-circle pointer" [src]="clientImage" alt="Avatar" height="130" width="130" [tooltip]="'Show Larger'" placement="right" (click)=showLargerImage()>
+                </div>
+                <!-- click picture -->
+                <div class="d-flex fd-flex card-content">
+                    <div class="d-flex">
+                        <h1 class="mr-2 ml-2 mt-2 mb-2 text-white mr-auto">{{client.customerTitles.name}} {{client.displayName}}</h1>
+                        <div style="position: relative;">
+                            <i class="fa fa-cog mr-5 mt-3 text-white" style="font-size: 25px;" data-toggle="dropdown" type="button"></i>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <div *ngFor="let btn of buttonsArray.singlebuttons">
+                                    <a class="dropdown-item" type="button" *hasPermission="btn.taskPermissionName" href="">
+                                        <!-- Add route paths -->
+                                        <i class="{{btn.icon}} mr-2"></i>{{btn.name}}
+                                    </a>
+                                </div>
+                                <div *ngIf="client.status.value=='Pending'">
+                                    <a class="dropdown-item" *hasPermission="'DELETE_CLIENT'" type="button"><i class="fa fa-trash mr-2"></i>Delete</a>
+                                </div>
+                                <!-- line 286 -->
+                                <!-- <a class="dropdown-item" type="button">Products</a>
                                     <a class="dropdown-item" type="button">Users</a>
                                     <a class="dropdown-item" type="button">Business Correspondent</a>
                                     <a class="dropdown-item" type="button">Manage NOC</a> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex ml-2 text-white card-sub-header">
-                            <div class="mr-4 mb-2">
-                                <span>Customer ID:</span>
-                                <span class="ml-1">{{client.accountNo}}</span>
-                            </div>
-                            <div class="mr-4 mb-2">
-                                <span>Activation Date:</span><span class="ml-1">{{client.timeline.activatedOnDate | date: dateFormat}}</span>
-                            </div>
-                            <div class="mr-4 mb-2" *ngIf="!client.timeline.activatedOnDate">
-                                <span>Not activated</span>
-                            </div>
-                            <div class="mr-4 mb-2">
-                                <span>Staff:</span><span class="ml-1">{{client.staffName}}</span>
-                            </div>
-                            <div class="mr-4 mb-2" *ngIf="client.dateOfDeath">
-                                <span>Deceased Date:</span><span class="ml-1">{{client.dateOfDeath | date: dateFormat}}</span>
-                            </div>
-                            <div class="mr-4 mb-2">
-                                <span>Branch Name:</span><span class="ml-1">{{client.officeName}}</span>
                             </div>
                         </div>
                     </div>
+                    <div class="d-flex ml-2 text-white card-sub-header">
+                        <div class="mr-4 mb-2">
+                            <span>Customer ID:</span>
+                            <span class="ml-1">{{client.accountNo}}</span>
+                        </div>
+                        <div class="mr-4 mb-2">
+                            <span>Activation Date:</span><span class="ml-1">{{client.timeline.activatedOnDate | date: dateFormat}}</span>
+                        </div>
+                        <div class="mr-4 mb-2" *ngIf="!client.timeline.activatedOnDate">
+                            <span>Not activated</span>
+                        </div>
+                        <div class="mr-4 mb-2">
+                            <span>Staff:</span><span class="ml-1">{{client.staffName}}</span>
+                        </div>
+                        <div class="mr-4 mb-2" *ngIf="client.dateOfDeath">
+                            <span>Deceased Date:</span><span class="ml-1">{{client.dateOfDeath | date: dateFormat}}</span>
+                        </div>
+                        <div class="mr-4 mb-2">
+                            <span>Branch Name:</span><span class="ml-1">{{client.officeName}}</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="container-fluid mt-3">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="text-center">
-                                <div class="card-icon">
-                                    <span class="fa fa-file-text-o"></span>
-                                </div>
-                                <div class="text-white">
-                                    <h5 class="text-white mt-2">ACCOUNT INFO</h5>
-                                    <ul class="pl-0">
-                                        <li>
-                                            <span class="detail-key">CRN :</span>
-                                            <span>{{ client.externalId }}</span>
-                                        </li>
-                                        <li>
-                                            <span class="detail-key">Staff :</span>
-                                            <span>{{ client.staffName }}</span>
-                                        </li>
-                                        <li>
-                                            <span class="detail-key">Group :</span>
-                                            <span>
+            </div>
+            <div class="container-fluid mt-3">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="text-center">
+                            <div class="card-icon">
+                                <span class="fa fa-file-text-o"></span>
+                            </div>
+                            <div class="text-white">
+                                <h5 class="text-white mt-2">ACCOUNT INFO</h5>
+                                <ul class="pl-0">
+                                    <li>
+                                        <span class="detail-key">CRN :</span>
+                                        <span>{{ client.externalId }}</span>
+                                    </li>
+                                    <li>
+                                        <span class="detail-key">Staff :</span>
+                                        <span>{{ client.staffName }}</span>
+                                    </li>
+                                    <li>
+                                        <span class="detail-key">Group :</span>
+                                        <span>
                                                 <span *ngFor="let group of client.groups; let last = last" >
                                                     <!-- link groups -->
                                                     <a href="">{{group.name}}</a>
                                                     <span *ngIf="!client.groups">Unassigned</span>
-                                            <span *ngIf="!last">|</span>
-                                            </span>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span class="detail-key">Center :</span>
-                                            <span>
+                                        <span *ngIf="!last">|</span>
+                                        </span>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="detail-key">Center :</span>
+                                        <span>
                                                 <span *ngFor="let group of client.groups; let last = last" >
                                                     <a href="">{{group.centerName}}</a>
                                                     <span *ngIf="!client.groups">Unassigned</span>
-                                            <span *ngIf="!last">|</span>
-                                            </span>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
+                                        <span *ngIf="!last">|</span>
+                                        </span>
+                                        </span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="text-center">
-                                <div class="card-icon">
-                                    <span class="fa fa-user"></span>
-                                </div>
-                                <div class="text-white">
-                                    <h5 class="text-white mt-2">PERSONAL INFO</h5>
-                                    <ul class="pl-0">
-                                        <li>
-                                            <span class="detail-key">Gender :</span>
-                                            <span>{{ client.gender.name }}</span>
-                                        </li>
-                                        <li>
-                                            <span class="detail-key">Mobile :</span>
-                                            <span>{{ client.mobileNo }}</span>
-                                        </li>
-                                        <li>
-                                            <span class="detail-key">Date of Birth :</span>
-                                            <span>{{ client.dateOfBirth | date : dateFormat }}</span>
-                                        </li>
-                                        <li>
-                                            <span class="detail-key">Signature :</span>
-                                            <span>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="text-center">
+                            <div class="card-icon">
+                                <span class="fa fa-user"></span>
+                            </div>
+                            <div class="text-white">
+                                <h5 class="text-white mt-2">PERSONAL INFO</h5>
+                                <ul class="pl-0">
+                                    <li>
+                                        <span class="detail-key">Gender :</span>
+                                        <span>{{ client.gender.name }}</span>
+                                    </li>
+                                    <li>
+                                        <span class="detail-key">Mobile :</span>
+                                        <span>{{ client.mobileNo }}</span>
+                                    </li>
+                                    <li>
+                                        <span class="detail-key">Date of Birth :</span>
+                                        <span>{{ client.dateOfBirth | date : dateFormat }}</span>
+                                    </li>
+                                    <li>
+                                        <span class="detail-key">Signature :</span>
+                                        <span>
                                                 <!-- <a href="">
                                                     <span class="" ng-show="signature_url && signatureDocumentExists" data-ng-click="showSignature()">
                                                       View
                                                     </span>
-                                            <span class="" ng-show="signature_url && !signatureDocumentExists" dmsdocumentopen dmsupload='{{signatureDocument.dmsUpload}}' folderindex="{{signatureDocument.folderIndex}}" document-files="signatureDocument" actiontype="view">
+                                        <span class="" ng-show="signature_url && !signatureDocumentExists" dmsdocumentopen dmsupload='{{signatureDocument.dmsUpload}}' folderindex="{{signatureDocument.folderIndex}}" document-files="signatureDocument" actiontype="view">
                                                       View
                                                     </span>
-                                            <span ng-hide="signature_url" class="" data-ng-click="showWithoutSignature()">
+                                        <span ng-hide="signature_url" class="" data-ng-click="showWithoutSignature()">
                                                    View
                                                 </span>
-                                            </a> -->
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
+                                        </a> -->
+                                        </span>
+                                    </li>
+                                </ul>
                             </div>
-
                         </div>
-                        <div class="col-sm-4">
-                            <div class="text-center">
-                                <div class="card-icon">
-                                    <span class="fa fa-credit-card-alt" style="font-size: 44px;"></span>
-                                </div>
-                                <div class="text-white">
-                                    <h5 class="text-white mt-2">PERFORMANCE INFO</h5>
-                                    <!-- <ul class="pl-0">
-                                        <li>
-                                            <span class="detail-key">{{ 'label.heading.numofloancycle' | translate }} :</span>
-                                            <span class="detail-value number-font">{{borrowerCycleCount}}</span>
-                                        </li>
-                                        <li>
-                                            <span class="detail-key">{{ 'label.lastloanamount' | translate }} :</span>
-                                            <span class="fa fa-inr"> {{client.ClientSummary.lastLoanAmount | number}}</span>
-                                        </li>
-                                        <li>
-                                            <span class="detail-key">{{ 'label.totalsavings' | translate }} :</span>
-                                            <span class="fa fa-inr"> {{client.ClientSummary.totalSavings | number}}</span>
-                                        </li>
-                                        <li class="hidden">
-                                            <span class="detail-key">{{ 'label.numofactiveloans' | translate }} :</span>
-                                            <span class="detail-value number-font">{{client.ClientSummary.activeLoans}}</span>
-                                        </li>
-                                        <li class="hidden">
-                                            <span class="detail-key">{{ 'label.numofactivesavings' | translate }} :</span>
-                                            <span class="fa fa-inr"> {{client.ClientSummary.activeSavings}}</span>
-                                        </li>
-                                        <li>
-                                            <span class="detail-key">{{ 'label.debitFreezeFlag' | translate }} :</span>
-                                            <span class="detail-value"> {{client.debitFreezeFlag }}</span>
-                                        </li>
-                                    </ul> -->
-                                </div>
+
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="text-center">
+                            <div class="card-icon">
+                                <span class="fa fa-credit-card-alt" style="font-size: 44px;"></span>
+                            </div>
+                            <div class="text-white">
+                                <h5 class="text-white mt-2">PERFORMANCE INFO</h5>
+                                <ul class="pl-0">
+                                    <li>
+                                        <span class="detail-key">No. of Loan Cycle :</span>
+                                        <span>{{client.borrowerCycleCount}}</span>
+                                    </li>
+                                    <li>
+                                        <span class="detail-key">Last Loan Amount :</span>
+                                        <span class="fa fa-inr"> {{clientSummary.lastLoanAmount}}</span>
+                                    </li>
+                                    <li>
+                                        <span class="detail-key">Total Savings :</span>
+                                        <span class="fa fa-inr"> {{clientSummary.totalSavings}}</span>
+                                    </li>
+                                    <li>
+                                        <span class="detail-key">Debit Freeze Flag :</span>
+                                        <span> {{client.debitFreezeFlag }}</span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
-                <ul class="nav nav-tabs bg-white">
-                    <li class="nav-item"><a href="" class="nav-link active" data-toggle="tab">General</a></li>
-                    <li class="nav-item"><a href="" class="nav-link" data-toggle="tab">Personal Details</a></li>
-                    <li class="nav-item"><a href="" class="nav-link" data-toggle="tab">Client GST Details</a></li>
-                    <li class="nav-item"><a href="" class="nav-link" data-toggle="tab">Addresses</a></li>
-                    <li class="nav-item"><a href="" class="nav-link" data-toggle="tab">Identities</a></li>
-                    <li class="nav-item"><a href="" class="nav-link" data-toggle="tab">Documents</a></li>
-                    <li class="nav-item"><a href="" class="nav-link" data-toggle="tab">Notes</a></li>
-                    <li class="nav-item"><a href="" class="nav-link" data-toggle="tab">Demographics History</a></li>
-                    <li class="nav-item"><a href="" class="nav-link" data-toggle="tab">Client Screen Reports</a></li>
-                    <li class="nav-item"><a href="" class="nav-link" data-toggle="tab">Client Transfer History</a></li>
-                </ul>
             </div>
+            <ul class="nav nav-tabs bg-white">
+                <li class="nav-item"><a href="" class="nav-link active" data-toggle="tab" (click)=setTab(1)>General</a></li>
+                <li class="nav-item"><a href="" class="nav-link" data-toggle="tab" (click)=setTab(2)>Personal Details</a></li>
+                <li class="nav-item"><a href="" class="nav-link" data-toggle="tab" (click)=setTab(3)>Client GST Details</a></li>
+                <li class="nav-item"><a href="" class="nav-link" data-toggle="tab" (click)=setTab(4)>Addresses</a></li>
+                <li class="nav-item"><a href="" class="nav-link" data-toggle="tab" (click)=setTab(5)>Identities</a></li>
+                <li class="nav-item"><a href="" class="nav-link" data-toggle="tab" (click)=setTab(6)>Documents</a></li>
+                <li class="nav-item"><a href="" class="nav-link" data-toggle="tab" (click)=setTab(7)>Notes</a></li>
+                <li class="nav-item"><a href="" class="nav-link" data-toggle="tab" (click)=setTab(8)>Demographics History</a></li>
+                <li class="nav-item"><a href="" class="nav-link" data-toggle="tab" (click)=setTab(9)>Client Screen Reports</a></li>
+                <li class="nav-item"><a href="" class="nav-link" data-toggle="tab" (click)=setTab(10)>Client Transfer History</a></li>
+            </ul>
         </div>
-        <div class="card mt-6">
-            <div class="card-header d-flex">
-                <i class="fa fa-list mr-2"></i>
-                <h5 class="mb-0 mr-auto" style="line-height: 1;">My Tasks
-                </h5>
-                <button class="ml-auto">
-                    View Closed Loans
+    </div>
+    <div class="card p-4">
+        <div *ngIf="tab === 1">
+            <div class="card">
+                <div class="card-header d-flex">
+                    <i class="fa fa-list mr-2"></i>
+                    <h5 class="mb-0 mr-auto" style="line-height: 1;">Loan Account Overview
+                    </h5>
+                    <button class="ml-auto btn btn-primary" (click)="showActiveLoans = !showActiveLoans">
+                    View {{showActiveLoans ? 'Closed' : 'Active'}} Loans
                 </button>
-            </div>
-            <div class="card-content">
-                <!-- <table class="table card-table" *ngIf="taskDataOfStaff.length">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" [(ngModel)]="selectAllStaffTasks" (change)="bulkSelection(false)"></th>
-                            <th>ETA</th>
-                            <th>Task Type</th>
-                            <th>Task Sub-Type</th>
-                            <th *ngIf="showColumn">Vertical</th>
-                            <th *ngIf="showColumn">Office</th>
-                            <th>Task Description</th>
-                            <th>Unassign</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let task of taskDataOfStaff | search: filterMytasks | paginate: { itemsPerPage: 5, currentPage: p ,id: 'mytasksFilter'}">
-                            <td><input type="checkbox" (click)="toggleSelection( task.id,false)" [checked]="unAssignTasksForStaff.indexOf(task.id) > -1"></td>
-                            <td>{{task.eta | date: dateFormat }}</td>
-                            <td>{{task.taskType}}</td>
-                            <td>{{task.taskSubType}}</td>
-                            <td *ngIf="showColumn">{{task.vertical}}</td>
-                            <td *ngIf="showColumn">{{task.officeName}}</td>
-                            <td>{{task.taskDescription}}</td>
-                            <td class="text-center"><a (click)="unAssign(task.id)" tooltip="Unassign Task" placement="top" type="button"><span class="fa fa-times-circle"></span></a></td>
-                        </tr>
-                    </tbody>
-                </table> -->
+                </div>
+                <div class="card-content">
+                    <div *ngIf="showActiveLoans">
+                        <table class="table card-table" *ngIf="activeLoanAccounts.length">
+                            <thead>
+                                <tr>
+                                    <th>Account #</th>
+                                    <th>Loan Account</th>
+                                    <th>Original Loan</th>
+                                    <th>Loan Balance</th>
+                                    <th>Amount Paid</th>
+                                    <th>Type</th>
+                                    <th>Repayment</th>
+                                    <th>Top-up Loan </th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let account of activeLoanAccounts |orderBy: 'id': true">
+                                    <td>
+                                        <i *ngIf="!account.inArrears" [tooltip]="account.status.value" placement="right" class="fa fa-stop {{account.status.code | StatusLookup}}"></i>
+                                        <i *ngIf="account.inArrears" [tooltip]="account.status.value" placement="right" class="fa fa-stop {{account.status.code | StatusLookup}}overdue"></i> {{account.accountNo}}
+                                    </td>
+                                    <td>{{account.productName}}</td>
+                                    <td>{{account.originalLoan}}</td>
+                                    <td>{{account.loanBalance}}</td>
+                                    <td>{{account.amountPaid}}</td>
+                                    <td>
+                                        <i [tooltip]="account.loanType.value" placement="top" [ngClass]="(account.loanType.value == 'Individual') ? 'fa fa-user' : 'fa fa-users'"></i>
+                                    </td>
+                                    <td class="text-center">
+                                        <button [tooltip]="'Make Repayment'" placement="top" class="btn btn-primary pt-0 pb-0 pr-2 pl-2" *ngIf="account.status.active" style="border-radius: 50% !important;">
+                                    <i class="fa fa-dollar"></i>
+                                    <!-- link repayment screen -->
+                                </button>
+                                    </td>
+                                    <td class="text-center">
+                                        <span [tooltip]="'Disburse'" placement="top" *ngIf="!account.status.pendingApproval && !account.status.active && account.status !=='loanStatusType.overpaid'" class="pointer">
+                                    <i class="fa fa-flag blueText top-up"></i>
+                                    <!-- link disburse screen -->
+                                </span>
+                                        <span [tooltip]="'Add a Top-up loan'" placement="top" *ngIf="account.status.active && isPrimaryLoan(account.productId) && !account.isSubsidiary" class="pointer">
+                                    <i class="fa fa-plus-circle blueText top-up"></i>
+                                    <!-- link topup screen -->
+                                </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span [tooltip]="'Edit Loan Level details'" placement="top" *ngIf="account.status.active && !(account.processDefKey =='MELUnsecured' && !enableMelEditDemographics)" class="pointer">
+                                    <i class="fa fa-edit blueText edit"></i>
+                                    <!-- link edit loan details screen -->
+                                </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="alert alert-warning m-4 text-center" role="alert" *ngIf="!activeLoanAccounts.length">
+                            No active Loans
+                        </div>
+                    </div>
+                    <div *ngIf="!showActiveLoans">
+                        <table class="table card-table" *ngIf="closedLoanAccounts.length">
+                            <thead>
+                                <tr>
+                                    <th>Account #</th>
+                                    <th>Loan Account</th>
+                                    <th>Type</th>
+                                    <th>Closed Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="account of closedLoanAccounts | orderBy:'id':true | filter:isClosed">
+                                    <td>
+                                        <i placement="right" [tooltip]="account.status.value" class="fa fa-stop {{account.status.code | StatusLookup}}"></i> {{account.accountNo}}
+                                    </td>
+                                    <td>{{account.productName}}</td>
+                                    <td>
+                                        <i [tooltip]="account.loanType.value" placement="top" [ngClass]="(account.loanType.value == 'Individual') ? 'fa fa-user' : 'fa fa-users'"></i>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="account.timeline.closedOnDate">{{loanaccount.timeline.closedOnDate | date : dateFormat}}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="alert alert-warning m-4 text-center" role="alert" *ngIf="!closedLoanAccounts.length">
+                            No closed Loans
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal-container"></div>

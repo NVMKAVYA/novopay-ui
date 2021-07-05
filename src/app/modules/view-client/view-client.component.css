@@ -62,3 +62,32 @@ a:hover {
     width: 160px;
     background-color: white;
 }
+
+.card-header {
+    background-color: inherit;
+    border: none !important;
+    align-items: center;
+}
+
+.table th {
+    border: 1px solid transparent !important;
+}
+
+.nav-tabs {
+    border-bottom: none;
+}
+
+.table td,
+.table th {
+    border: none;
+}
+
+.top-up {
+    font-size: 25px;
+    margin-top: 1px;
+}
+
+.edit {
+    font-size: 22px;
+    margin-top: 3px;
+}

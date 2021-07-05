@@ -2,8 +2,16 @@
     border: 5px solid #8e44ad
 }
 
+.loanstatusoverpaid {
+    border: 5px solid #8e44ad
+}
+
 .statusactiveoverdue {
     border: 5px solid #c0392b
+}
+
+.loanstatusactiveoverdue {
+    color: #c0392b
 }
 
 .statustransferprogress {
@@ -18,6 +26,10 @@
     border: 5px solid #64a246
 }
 
+.loanstatusactive {
+    color: #64a246
+}
+
 .statusmatured {
     border: 5px solid #e74c3c
 }
@@ -30,12 +42,24 @@
     border: 5px solid #f39c12
 }
 
+.loanstatuspending {
+    color: #f39c12
+}
+
 .statusApproved {
     border: 5px solid #2980b9
 }
 
+.loanstatusApproved {
+    color: #2980b9
+}
+
 .statusfreezedAccount {
     border: 5px solid #960
+}
+
+.loanstatusfreezedAccount {
+    color: #960
 }
 
 .statusbad {
@@ -66,22 +90,46 @@
     border: 5px solid #03fcfc
 }
 
+.loanstatuscloseasdeath {
+    color: #03fcfc
+}
+
 .statusdeathfreezedAccount {
     border: 5px solid rgb(145, 141, 146)
+}
+
+.loanstatusdeathfreezedAccount {
+    color: rgb(145, 141, 146)
 }
 
 .statusdeathforeclosedAccount {
     border: 5px solid #ff0
 }
 
+.loanstatusdeathforeclosedAccount {
+    color: #ff0
+}
+
 .statusdeathOfCoApplicant {
     border: 5px solid #ffa64d
+}
+
+.loanstatusdeathOfCoApplicant {
+    color: #ffa64d
 }
 
 .statusdeathcoApplicantforeclosureFreeze {
     border: 5px solid #c3f
 }
 
+.loanstatusdeathcoApplicantforeclosureFreeze {
+    color: #c3f
+}
+
 .statusdeathcoApplicantforeclosure {
     border: 5px solid #ff0
+}
+
+.loanstatusdeathcoApplicantforeclosure {
+    color: #ff0
 }

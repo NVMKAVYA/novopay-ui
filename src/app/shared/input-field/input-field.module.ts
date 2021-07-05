@@ -8,8 +8,8 @@ import { DpDatePickerModule } from 'ng2-date-picker';
 
 
 @NgModule({
-  imports:      [ CommonModule, ReactiveFormsModule, DpDatePickerModule ],
-  declarations: [ InputFieldComponent ],
-  exports:      [ InputFieldComponent, CommonModule, ReactiveFormsModule ]
+  imports: [CommonModule, ReactiveFormsModule, DpDatePickerModule],
+  declarations: [InputFieldComponent],
+  exports: [InputFieldComponent, ReactiveFormsModule]
 })
 export class InputFieldModule { }
