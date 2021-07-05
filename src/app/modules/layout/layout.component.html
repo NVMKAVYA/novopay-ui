@@ -21,8 +21,8 @@
                         </div>
                     </div>
                     <div class="search">
-                        <input id="search" type="text" class="form-control" maxlength="48" />
-                        <span class="fa fa-search"></span>
+                        <input id="search" type="text"  #searchText (keydown.enter)="search(searchText.value)" class="form-control" maxlength="48" />
+                        <span class="fa fa-search" href="#" (click)="search()"  [routerLink]="['/home/client/view/21893']" [routerLinkActive]="['active']"></span>
                     </div>
                 </div>
             </li>

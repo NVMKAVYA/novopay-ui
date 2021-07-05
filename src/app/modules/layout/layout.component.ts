@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-
+import { HttpService } from 'src/app/services/http/http.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { LoaderService } from 'src/app/services/loader/loader.service';
@@ -25,7 +25,7 @@ export class LayoutComponent implements OnInit {
       }
     };
 
-  constructor(private auth : AuthService, private loader : LoaderService) { }
+  constructor(private auth : AuthService,private http: HttpService, private loader : LoaderService) { }
 
   ngOnInit(): void {
     this.searchTypes = [ 'Clients', 'KYC', 'Groups' , 'Loans'];
@@ -34,8 +34,16 @@ export class LayoutComponent implements OnInit {
     this.office = this.auth.office;
   }
 
+  search(value){
+    // console.log(value);
+    this.http.globalSearch(value).subscribe( data =>{
+    })
+
+  }
+
   logout(){
     this.auth.logout();
   }
+  
 
 }
