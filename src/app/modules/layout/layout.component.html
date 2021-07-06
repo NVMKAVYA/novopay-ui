@@ -1,13 +1,11 @@
 <!-- Header -->
 <nav class="navbar navbar-expand-lg navbar-light navbar-inverse">
-    <span id="leftmenu-trigger" data-toggle="tooltip" data-placement="right" title="Toggle Sidebar"
-        (click)="clicked = !clicked"></span>
+    <span id="leftmenu-trigger" data-toggle="tooltip" data-placement="right" title="Toggle Sidebar" (click)="clicked = !clicked"></span>
     <a class="navbar-brand">
         <img src="../assets/novopay_logo_small.png" class="img-responsive" />
     </a>
     <small class="mr-auto"> {{ version }}</small>
-    <a class="navbar-toggler m-r-5" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
-        aria-expanded="false">
+    <a class="navbar-toggler m-r-5" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-expanded="false">
         <i class="fa fa-chevron-circle-down"></i>
         <i class="fa fa-chevron-circle-up"></i>
     </a>
@@ -16,16 +14,14 @@
             <li class="nav-item">
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <button class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" style="width:80px">
                             {{currentSearchType}}</button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" *ngFor="let search of searchTypes"
-                                (click)="currentSearchType = search">{{search}}</a>
+                            <a class="dropdown-item" *ngFor="let search of searchTypes" (click)="currentSearchType = search">{{search}}</a>
                         </div>
                     </div>
                     <div class="search">
-                        <input id="search" type="text" #searchText (keydown.enter)="search(searchText.value)"
-                            class="form-control" maxlength="48" style="width: 250px;">
+                        <input id="search" type="text" #searchText (keydown.enter)="search(searchText.value)" class="form-control pr-4" maxlength="48" style="width: 250px;">
                         <span class="fa fa-search" (click)="search(searchText.value)"></span>
                     </div>
                 </div>
@@ -96,14 +92,10 @@
         </div>
         <perfect-scrollbar style="height:61vh">
             <div class="list-group list-group-flush">
-                <a class="list-group-item list-group-item-action" [routerLink]="['/home']"
-                    [routerLinkActive]="['active']"><i class="fa fa-address-card mr-2"></i>Dashboard</a>
-                <a href="#" class="list-group-item list-group-item-action" [routerLink]="['/home/client/create']"
-                    [routerLinkActive]="['active']"><i class="fa fa-user mr-2"></i>Create Client</a>
-                <a href="#" class="list-group-item list-group-item-action" [routerLink]="['/home/product/create']"
-                    [routerLinkActive]="['active']"><i class="fa fa-file mr-2"></i>Create Product</a>
-                <a href="#" class="list-group-item list-group-item-action"
-                    [routerLink]="['/home/client/view/21893']">View Client</a>
+                <a class="list-group-item list-group-item-action" [routerLink]="['/home']" [routerLinkActive]="['active']"><i class="fa fa-address-card mr-2"></i>Dashboard</a>
+                <a href="#" class="list-group-item list-group-item-action" [routerLink]="['/home/client/create']" [routerLinkActive]="['active']"><i class="fa fa-user mr-2"></i>Create Client</a>
+                <a href="#" class="list-group-item list-group-item-action" [routerLink]="['/home/product/create']" [routerLinkActive]="['active']"><i class="fa fa-file mr-2"></i>Create Product</a>
+                <a href="#" class="list-group-item list-group-item-action" [routerLink]="['/home/client/view/21893']">View Client</a>
                 <a href="#" class="list-group-item list-group-item-action">Document Vault</a>
                 <a href="#" class="list-group-item list-group-item-action">MEL Unsecured</a>
                 <a href="#" class="list-group-item list-group-item-action">Subsidiary JLG</a>
