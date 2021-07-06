@@ -12,15 +12,15 @@ import { LoaderService } from 'src/app/services/loader/loader.service';
 
 export class AppComponent implements OnInit {
 
-  loading : boolean = false;
-  private loaderSubscription : Subscription;
+  loading: boolean = false;
+  private loaderSubscription: Subscription;
 
-  constructor(private loader : LoaderService, private router: Router) { }
+  constructor(private loader: LoaderService, private router: Router) { }
 
   ngOnInit(): void {
     this.router.navigate(['']);
     this.loaderSubscription = this.loader.loaderState.subscribe((state: LoaderState) => {
-          this.loading = state.show;
+      this.loading = state.show;
     });
   }
 

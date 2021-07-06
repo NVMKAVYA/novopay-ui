@@ -38,13 +38,6 @@ export class LoginComponent implements OnInit {
       this.isLoginButtonDisabled = true;
       this.formInvalid = false;
       this.auth.login(this.loginCredentials).subscribe(data => {
-        this.loginCredentials = new LoginCredentials('', '');
-        this.isLoginButtonDisabled = false;
-        //  this.checkRoleForDashboard(this.global.getConfiguration('bc-dashboard-task-roles')[0].value);
-        //  this.isUserLoggedIn =  this.auth.isUserLoggedIn;
-        //  this.currentUser = data[1];
-        //  this.office = data[2];
-        console.log("Logged In");
       }, error => {
         this.isLoginButtonDisabled = false;
         this.loginCredentials = new LoginCredentials('', '');

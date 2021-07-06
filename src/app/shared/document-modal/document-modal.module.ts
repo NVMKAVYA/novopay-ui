@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DocumentModalComponent } from './document-modal.component';
-import { SimpleModalModule } from 'ngx-simple-modal';
+import { SimpleModalModule, defaultSimpleModalOptions } from 'ngx-simple-modal';
 
 
 
@@ -9,7 +9,13 @@ import { SimpleModalModule } from 'ngx-simple-modal';
   declarations: [DocumentModalComponent],
   imports: [
     CommonModule,
-    SimpleModalModule.forRoot({ container: 'modal-container' })
+    SimpleModalModule.forRoot({ container: 'modal-container' }, {
+      ...defaultSimpleModalOptions, ...{
+        closeOnEscape: true,
+        closeOnClickOutside: true,
+        autoFocus: true
+      }
+    })
   ],
   entryComponents: [
     DocumentModalComponent
