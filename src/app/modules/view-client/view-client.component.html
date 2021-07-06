@@ -1,4 +1,4 @@
-<div class="col-12 col-xxl">
+<div class="col-12 col-xxl row">
     <div class="card mb-3" *ngIf="client">
         <div class="card-header-banner">
             <div class="d-flex ml-3">
@@ -181,7 +181,7 @@
             </ul>
         </div>
     </div>
-    <div class="card p-4">
+    <div class="card p-4" style="width:inherit;">
         <div *ngIf="tab === 1">
             <div class="card">
                 <div class="card-header d-flex">
@@ -193,96 +193,98 @@
                 </button>
                 </div>
                 <div class="card-content">
-                    <div *ngIf="showActiveLoans">
-                        <table class="table card-table" *ngIf="activeLoanAccounts.length">
-                            <thead>
-                                <tr>
-                                    <th>Account #</th>
-                                    <th>Loan Account</th>
-                                    <th>Original Loan</th>
-                                    <th>Loan Balance</th>
-                                    <th>Amount Paid</th>
-                                    <th>Type</th>
-                                    <th>Repayment</th>
-                                    <th>Top-up Loan </th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let account of activeLoanAccounts |orderBy: 'id': true">
-                                    <td>
-                                        <i *ngIf="!account.inArrears" [tooltip]="account.status.value" placement="right" class="fa fa-stop {{account.status.code | StatusLookup}}"></i>
-                                        <i *ngIf="account.inArrears" [tooltip]="account.status.value" placement="right" class="fa fa-stop {{account.status.code | StatusLookup}}overdue"></i> {{account.accountNo}}
-                                    </td>
-                                    <td>{{account.productName}}</td>
-                                    <td>{{account.originalLoan}}</td>
-                                    <td>{{account.loanBalance}}</td>
-                                    <td>{{account.amountPaid}}</td>
-                                    <td>
-                                        <i [tooltip]="account.loanType.value" placement="top" [ngClass]="(account.loanType.value == 'Individual') ? 'fa fa-user' : 'fa fa-users'"></i>
-                                    </td>
-                                    <td class="text-center">
-                                        <button [tooltip]="'Make Repayment'" placement="top" class="btn btn-primary pt-0 pb-0 pr-2 pl-2" *ngIf="account.status.active" style="border-radius: 50% !important;">
+                    <perfect-scrollbar>
+                        <div *ngIf="showActiveLoans">
+                            <table class="table card-table" *ngIf="activeLoanAccounts.length">
+                                <thead>
+                                    <tr>
+                                        <th>Account #</th>
+                                        <th>Loan Account</th>
+                                        <th>Original Loan</th>
+                                        <th>Loan Balance</th>
+                                        <th>Amount Paid</th>
+                                        <th>Type</th>
+                                        <th>Repayment</th>
+                                        <th>Top-up Loan </th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let account of activeLoanAccounts |orderBy: 'id': true">
+                                        <td>
+                                            <i *ngIf="!account.inArrears" [tooltip]="account.status.value" placement="right" class="fa fa-stop {{account.status.code | StatusLookup}}"></i>
+                                            <i *ngIf="account.inArrears" [tooltip]="account.status.value" placement="right" class="fa fa-stop {{account.status.code | StatusLookup}}overdue"></i> {{account.accountNo}}
+                                        </td>
+                                        <td>{{account.productName}}</td>
+                                        <td>{{account.originalLoan}}</td>
+                                        <td>{{account.loanBalance}}</td>
+                                        <td>{{account.amountPaid}}</td>
+                                        <td>
+                                            <i [tooltip]="account.loanType.value" placement="top" [ngClass]="(account.loanType.value == 'Individual') ? 'fa fa-user' : 'fa fa-users'"></i>
+                                        </td>
+                                        <td class="text-center">
+                                            <button [tooltip]="'Make Repayment'" placement="top" class="btn btn-primary pt-0 pb-0 pr-2 pl-2" *ngIf="account.status.active" style="border-radius: 50% !important;">
                                     <i class="fa fa-dollar"></i>
                                     <!-- link repayment screen -->
                                 </button>
-                                    </td>
-                                    <td class="text-center">
-                                        <span [tooltip]="'Disburse'" placement="top" *ngIf="!account.status.pendingApproval && !account.status.active && account.status !=='loanStatusType.overpaid'" class="pointer">
+                                        </td>
+                                        <td class="text-center">
+                                            <span [tooltip]="'Disburse'" placement="top" *ngIf="!account.status.pendingApproval && !account.status.active && account.status !=='loanStatusType.overpaid'" class="pointer">
                                     <i class="fa fa-flag blueText top-up"></i>
                                     <!-- link disburse screen -->
                                 </span>
-                                        <span [tooltip]="'Add a Top-up loan'" placement="top" *ngIf="account.status.active && isPrimaryLoan(account.productId) && !account.isSubsidiary" class="pointer">
+                                            <span [tooltip]="'Add a Top-up loan'" placement="top" *ngIf="account.status.active && isPrimaryLoan(account.productId) && !account.isSubsidiary" class="pointer">
                                     <i class="fa fa-plus-circle blueText top-up"></i>
                                     <!-- link topup screen -->
                                 </span>
-                                    </td>
-                                    <td class="text-center">
-                                        <span [tooltip]="'Edit Loan Level details'" placement="top" *ngIf="account.status.active && !(account.processDefKey =='MELUnsecured' && !enableMelEditDemographics)" class="pointer">
+                                        </td>
+                                        <td class="text-center">
+                                            <span [tooltip]="'Edit Loan Level details'" placement="top" *ngIf="account.status.active && !(account.processDefKey =='MELUnsecured' && !enableMelEditDemographics)" class="pointer">
                                     <i class="fa fa-edit blueText edit"></i>
                                     <!-- link edit loan details screen -->
                                 </span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="alert alert-warning m-4 text-center" role="alert" *ngIf="!activeLoanAccounts.length">
-                            No active Loans
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="alert alert-warning m-4 text-center" role="alert" *ngIf="!activeLoanAccounts.length">
+                                No active Loans
+                            </div>
                         </div>
-                    </div>
-                    <div *ngIf="!showActiveLoans">
-                        <table class="table card-table" *ngIf="closedLoanAccounts.length">
-                            <thead>
-                                <tr>
-                                    <th>Account #</th>
-                                    <th>Loan Account</th>
-                                    <th>Type</th>
-                                    <th>Closed Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="account of closedLoanAccounts | orderBy:'id':true | filter:isClosed">
-                                    <td>
-                                        <i placement="right" [tooltip]="account.status.value" class="fa fa-stop {{account.status.code | StatusLookup}}"></i> {{account.accountNo}}
-                                    </td>
-                                    <td>{{account.productName}}</td>
-                                    <td>
-                                        <i [tooltip]="account.loanType.value" placement="top" [ngClass]="(account.loanType.value == 'Individual') ? 'fa fa-user' : 'fa fa-users'"></i>
-                                    </td>
-                                    <td>
-                                        <span *ngIf="account.timeline.closedOnDate">{{loanaccount.timeline.closedOnDate | date : dateFormat}}</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="alert alert-warning m-4 text-center" role="alert" *ngIf="!closedLoanAccounts.length">
-                            No closed Loans
+                        <div *ngIf="!showActiveLoans">
+                            <table class="table card-table" *ngIf="closedLoanAccounts.length">
+                                <thead>
+                                    <tr>
+                                        <th>Account #</th>
+                                        <th>Loan Account</th>
+                                        <th>Type</th>
+                                        <th>Closed Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="account of closedLoanAccounts | orderBy:'id':true | filter:isClosed">
+                                        <td>
+                                            <i placement="right" [tooltip]="account.status.value" class="fa fa-stop {{account.status.code | StatusLookup}}"></i> {{account.accountNo}}
+                                        </td>
+                                        <td>{{account.productName}}</td>
+                                        <td>
+                                            <i [tooltip]="account.loanType.value" placement="top" [ngClass]="(account.loanType.value == 'Individual') ? 'fa fa-user' : 'fa fa-users'"></i>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="account.timeline.closedOnDate">{{loanaccount.timeline.closedOnDate | date : dateFormat}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="alert alert-warning m-4 text-center" role="alert" *ngIf="!closedLoanAccounts.length">
+                                No closed Loans
+                            </div>
                         </div>
-                    </div>
+                    </perfect-scrollbar>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal-container"></div>
+<!-- <div class="modal-container"></div> -->
