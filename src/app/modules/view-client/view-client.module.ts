@@ -8,7 +8,6 @@ import { StatusColourModule } from '../../shared/status-colour/status-colour.mod
 import { HasPermissionModule } from 'src/app/shared/has-permission/has-permission.module';
 import { DocumentModalModule } from 'src/app/shared/document-modal/document-modal.module';
 import { OrderModule } from 'ngx-order-pipe';
-import { SimpleModalModule } from 'ngx-simple-modal';
 
 
 @NgModule({
@@ -20,8 +19,7 @@ import { SimpleModalModule } from 'ngx-simple-modal';
     StatusColourModule,
     HasPermissionModule,
     DocumentModalModule,
-    OrderModule,
-    SimpleModalModule
+    OrderModule
   ]
 })
 export class ViewClientModule { }

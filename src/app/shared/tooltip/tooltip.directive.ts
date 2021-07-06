@@ -7,7 +7,7 @@ export class TooltipDirective {
   @Input('tooltip') tooltipTitle: string;
   @Input() placement: string;
   @Input() delay: number;
-  
+
   tooltip: HTMLElement;
   offset = 10;
 
@@ -22,10 +22,10 @@ export class TooltipDirective {
   }
 
   @HostListener('click') onClick() {
-     this.hide(); 
+    this.hide();
   }
 
-  
+
   show() {
     this.create();
     this.setPosition();
@@ -35,8 +35,10 @@ export class TooltipDirective {
   hide() {
     this.renderer.removeClass(this.tooltip, 'ng-tooltip-show');
     window.setTimeout(() => {
-      this.renderer.removeChild(document.body, this.tooltip);
-      this.tooltip = null;
+      if (this.tooltip) {
+        this.renderer.removeChild(document.body, this.tooltip);
+        this.tooltip = null;
+      }
     }, this.delay);
   }
 
@@ -62,10 +64,10 @@ export class TooltipDirective {
   }
 
   setPosition() {
-   
+
     const hostPos = this.el.nativeElement.getBoundingClientRect();
 
-    
+
     const tooltipPos = this.tooltip.getBoundingClientRect();
     const scrollPos = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
 
@@ -91,7 +93,7 @@ export class TooltipDirective {
       left = hostPos.right + this.offset;
     }
 
-    
+
     this.renderer.setStyle(this.tooltip, 'top', `${top + scrollPos}px`);
     this.renderer.setStyle(this.tooltip, 'left', `${left}px`);
   }

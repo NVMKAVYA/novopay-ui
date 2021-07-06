@@ -9,11 +9,11 @@ import { SimpleModalModule } from 'ngx-simple-modal';
   declarations: [DocumentModalComponent],
   imports: [
     CommonModule,
-    SimpleModalModule
+    SimpleModalModule.forRoot({ container: 'modal-container' })
   ],
   entryComponents: [
     DocumentModalComponent
   ],
-  exports: [DocumentModalComponent]
+  exports: [DocumentModalComponent, SimpleModalModule]
 })
 export class DocumentModalModule { }

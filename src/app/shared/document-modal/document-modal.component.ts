@@ -31,7 +31,6 @@ export class DocumentModalComponent extends SimpleModalComponent<ConfirmModel, b
   }
 
   confirm() {
-    this.result = true;
     this.close();
   }
 }
