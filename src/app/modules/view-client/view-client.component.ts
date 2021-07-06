@@ -37,8 +37,10 @@ export class ViewClientComponent implements OnInit {
   constructor(private http: HttpService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private auth: AuthService, private modal: SimpleModalService) { }
 
   ngOnInit(): void {
+
     this.clientId = parseInt(this.route.snapshot.paramMap.get('id'));
     this.enableMelEditDemographics = this.auth.getConfiguration("enable-edit-demographic-for-mel").enabled;
+
     this.http.getclientResource(this.clientId, null, null, true).subscribe(data => {
       this.client = data;
       if (this.client.imagePresent) {
@@ -88,6 +90,7 @@ export class ViewClientComponent implements OnInit {
         });
       }
     })
+
   }
 
   showLargerImage() {

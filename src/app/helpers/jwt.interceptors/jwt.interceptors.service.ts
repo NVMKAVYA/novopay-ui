@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpParams, HttpResponse } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { LoaderService } from 'src/app/services/loader/loader.service';
-import { tap } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 declare var jsSHA: any;
 
@@ -13,9 +13,12 @@ declare var jsSHA: any;
 })
 export class JwtInterceptor implements HttpInterceptor {
 
+  private totalRequests = 0;
+
   constructor(private auth: AuthService, private loader: LoaderService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    this.totalRequests++;
     setTimeout(() => { this.loader.show(); }, 0)
     if (this.auth.userData && this.auth.userData.sessionKey) {
       return next.handle(req.clone({
@@ -25,12 +28,8 @@ export class JwtInterceptor implements HttpInterceptor {
           'OTP': this.getOtp(),
           'Originator': this.auth.userData.userId.toString()
         },
-      })).pipe(tap((event: HttpEvent<any>) => {
-        if (event instanceof HttpResponse) {
-          setTimeout(() => { this.loader.hide(); }, 0)
-        }
-      }, () => {
-        setTimeout(() => { this.loader.hide(); }, 0)
+      })).pipe(finalize(() => {
+        this.hideLoader();
       }));
     } else {
       return next.handle(req.clone({
@@ -38,13 +37,16 @@ export class JwtInterceptor implements HttpInterceptor {
           'Content-Type': 'application/json; charset=utf-8',
           'Novobank-TenantId': 'default'
         },
-      })).pipe(tap((event: HttpEvent<any>) => {
-        if (event instanceof HttpResponse) {
-          setTimeout(() => { this.loader.hide(); }, 0)
-        }
-      }, () => {
-        setTimeout(() => { this.loader.hide(); }, 0)
+      })).pipe(finalize(() => {
+        this.hideLoader();
       }));
+    }
+  }
+
+  hideLoader() {
+    this.totalRequests--;
+    if (this.totalRequests === 0) {
+      setTimeout(() => { this.loader.hide(); }, 0)
     }
   }
 

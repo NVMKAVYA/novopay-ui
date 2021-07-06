@@ -282,8 +282,11 @@ input:disabled {
     text-align: center !important;
 }
 
-input:-internal-autofill-selected {
-    background-color: white !important;
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    box-shadow: 0 0 0 30px white inset !important;
 }
 
 .img-circle {
@@ -312,4 +315,10 @@ ul li {
 
 .modal-footer {
     border-top: none !important;
+}
+
+.btn.focus,
+.btn:focus {
+    outline: 0;
+    box-shadow: none !important;
 }

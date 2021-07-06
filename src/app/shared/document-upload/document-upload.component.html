@@ -1,44 +1,41 @@
 <perfect-scrollbar>
     <div style="width: 1440px;">
-    <p class="required">{{identityErrorMessage}}</p>
-    <table class="table table-bordered"  [formGroup]="parentform">
-        <thead class="thead-light">
-            <tr>
-                <th class="" style="width: 220px;">Document Type<span class="required">*</span></th>
-                <th class="" style="width: 220px;">Sub Document Type<span class="required">*</span></th>
-                <th class="" style="width: 220px;">Unique ID<span class="required">*</span></th>
-                <th class="" style="width: 220px;">Identifier Type<span class="required">*</span></th>
-                <th class="" style="width: 220px;">Valid Till<span class="required">*</span></th>
-                <th class="" style="width: 220px;">Identifier File<span class="required">*</span></th>
-                <th style="width: 75px;">Actions</th>
-            </tr>
-        </thead>
-        <tbody formArrayName="documents">
-            <tr *ngFor="let document of formArray.controls; let i=index"  [formGroupName]="i">
-                <td>
-                    <select  class="form-control" formControlName="documentType" (change)="fetchDetails(i)">
+        <p class="required">{{identityErrorMessage}}</p>
+        <table class="table table-bordered" [formGroup]="parentform">
+            <thead class="thead-light">
+                <tr>
+                    <th class="" style="width: 220px;">Document Type<span class="required">*</span></th>
+                    <th class="" style="width: 220px;">Sub Document Type<span class="required">*</span></th>
+                    <th class="" style="width: 220px;">Unique ID<span class="required">*</span></th>
+                    <th class="" style="width: 220px;">Identifier Type<span class="required">*</span></th>
+                    <th class="" style="width: 220px;">Valid Till<span class="required">*</span></th>
+                    <th class="" style="width: 220px;">Identifier File<span class="required">*</span></th>
+                    <th style="width: 75px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody formArrayName="documents">
+                <tr *ngFor="let document of formArray.controls; let i=index" [formGroupName]="i">
+                    <td>
+                        <select class="form-control" formControlName="documentType" (change)="fetchDetails(i)">
                         <option [ngValue]="null" disabled>Select Document Type</option>
                         <option *ngFor="let type of documenttypes" [ngValue]="type">{{type.name}}</option>
                     </select>
-                    <small class="text-danger"
-                        *ngIf="document.get('documentType').hasError('required') && ( document.get('documentType').touched || submitted)">
+                        <small class="text-danger" *ngIf="document.get('documentType').hasError('required') && ( document.get('documentType').touched || submitted)">
                         Required Field
                     </small>
-                    <br/>
-                    <select formControlName="confirmdocumentType" class="form-control">
+                        <br/>
+                        <select formControlName="confirmdocumentType" class="form-control">
                         <option [ngValue]="null" disabled>Confirm Document Type</option>
                         <option *ngFor="let type of documenttypes" [ngValue]="type">{{type.name}}</option>
                     </select>
-                    <small class="text-danger"
-                        *ngIf="document.get('confirmdocumentType').hasError('required') && ( document.get('confirmdocumentType').touched || submitted)">
+                        <small class="text-danger" *ngIf="document.get('confirmdocumentType').hasError('required') && ( document.get('confirmdocumentType').touched || submitted)">
                         Required Field
                     </small>
-                    <small class="text-danger"
-                    *ngIf="document.get('confirmdocumentType').hasError('mustMatch')">Document types must match
+                        <small class="text-danger" *ngIf="document.get('confirmdocumentType').hasError('mustMatch')">Document types must match
                     </small>
-                </td>
-                <td>
-                    <span *ngIf=" formArray.controls[i].get('documentType').value &&
+                    </td>
+                    <td>
+                        <span *ngIf=" formArray.controls[i].get('documentType').value &&
                     formArray.controls[i].get('documentType').value.isOtherDocsRequired">
                         <select  class="form-control" formControlName="otherdocumentType">
                             <option [ngValue]="null" disabled>Select Other Document Type</option>
@@ -61,43 +58,36 @@
                         *ngIf="document.get('confirmotherdocumentType').hasError('mustMatch')">Document types must match
                         </small>
                     </span>
-                </td> 
-                <td>
-                    <input type="text" formControlName="documentKey"
-                    (cut) ="false" (copy)="false" (paste)="false" class="form-control pwd">
-                    <small class="text-danger"
-                        *ngIf="document.get('documentKey').hasError('required') && ( document.get('documentKey').touched || submitted)">
+                    </td>
+                    <td>
+                        <input type="text" formControlName="documentKey" (cut)="false" (copy)="false" (paste)="false" class="form-control pwd">
+                        <small class="text-danger" *ngIf="document.get('documentKey').hasError('required') && ( document.get('documentKey').touched || submitted)">
                         Required Field
                     </small>
-                    <small class="text-danger"
-                        *ngIf="(document.get('documentKey').hasError('pattern') ||
+                        <small class="text-danger" *ngIf="(document.get('documentKey').hasError('pattern') ||
                         document.get('documentKey').hasError('invalidAadhaar'))">
                         Invalid {{formArray.controls[i].get('documentType').value.name}} Number
                     </small>
-                    <br/>
-                    <input type="text" formControlName="confirmdocumentKey"
-                    (cut) ="false" (copy)="false" (paste)="false" class="form-control pwd">
-                    <small class="text-danger"
-                        *ngIf="document.get('confirmdocumentKey').hasError('required') && ( document.get('confirmdocumentKey').touched || submitted)">
+                        <br/>
+                        <input type="text" formControlName="confirmdocumentKey" (cut)="false" (copy)="false" (paste)="false" class="form-control pwd">
+                        <small class="text-danger" *ngIf="document.get('confirmdocumentKey').hasError('required') && ( document.get('confirmdocumentKey').touched || submitted)">
                         Required Field
                     </small>
-                    <small class="text-danger"
-                    *ngIf="document.get('confirmdocumentKey').hasError('mustMatch')">Unique IDs must match
+                        <small class="text-danger" *ngIf="document.get('confirmdocumentKey').hasError('mustMatch')">Unique IDs must match
                     </small>
-                </td>
-                <td>
-                    <select formControlName="identifierTypeId" class="form-control" (change)="addIdentifier(i, 
+                    </td>
+                    <td>
+                        <select formControlName="identifierTypeId" class="form-control" (change)="addIdentifier(i, 
                     document.get('identifierTypeId').value)">
                         <option [ngValue]="null" disabled>Select Identifier Type</option>
                         <option *ngFor="let type of identifiertypesOptions[i]" [ngValue]="type.id">{{type.label}}</option>
                     </select>
-                    <small class="text-danger"
-                        *ngIf="document.get('identifierTypeId').hasError('required') && ( document.get('identifierTypeId').touched || submitted)">
+                        <small class="text-danger" *ngIf="document.get('identifierTypeId').hasError('required') && ( document.get('identifierTypeId').touched || submitted)">
                         Required Field
                     </small>
-                </td> 
-                <td>
-                    <span *ngIf=" formArray.controls[i].get('documentType').value &&
+                    </td>
+                    <td>
+                        <span *ngIf=" formArray.controls[i].get('documentType').value &&
                     formArray.controls[i].get('documentType').value.isValidTillRequired">
                         <dp-date-picker [config]="datePickerConfig" theme="dp-material" formControlName="documentExpiryDate">
                         </dp-date-picker>  
@@ -106,26 +96,23 @@
                             Required Field
                         </small>
                     </span>
-                </td>
-                <td>
-                    <input type="file" (change)="onFileChange($event.target.files, i)" formControlName="file">
-                    <small class="text-danger"
-                    *ngIf="document.get('file').hasError('required') && ( document.get('file').touched || submitted)">
+                    </td>
+                    <td>
+                        <input type="file" (change)="onFileChange($event.target.files, i)" formControlName="file">
+                        <small class="text-danger" *ngIf="document.get('file').hasError('required') && ( document.get('file').touched || submitted)">
                     Required Field
                      </small>
-                </td>
-                <td class="text-center h5">
-                    <span class="mr-3 blueText" type="button" [tooltip]="'Add Document'" placement="top"
-                     (click)="addDocument()" *ngIf="(formArray.controls.length - 1) == i">
+                    </td>
+                    <td class="text-center h5">
+                        <span class="mr-3 blueText" type="button" [tooltip]="'Add Document'" placement="top" (click)="addDocument()" *ngIf="(formArray.controls.length - 1) == i">
                         <i class="fa fa-plus-circle"></i>
                     </span>
-                    <span class="required" type="button" (click)="deleteDocument(i)"
-                    tooltip="Delete Document" placement="top">
+                        <span class="required" type="button" (click)="deleteDocument(i)" tooltip="Delete Document" placement="top">
                         <i class="fa fa-trash"></i>
                     </span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </perfect-scrollbar>
