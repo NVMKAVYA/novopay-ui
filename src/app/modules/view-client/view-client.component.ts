@@ -6,7 +6,6 @@ import { Constants } from 'src/app/models/Constants';
 import { ClientStatus } from 'src/app/models/clientStatus';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SimpleModalService } from 'ngx-simple-modal';
-import { DocumentModalComponent } from 'src/app/shared/document-modal/document-modal.component';
 
 @Component({
   selector: 'app-view-client',
@@ -33,6 +32,7 @@ export class ViewClientComponent implements OnInit {
     }],
     singlebuttons: null
   };
+  addresses: any = [];
 
   constructor(private http: HttpService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private auth: AuthService, private modal: SimpleModalService) { }
 
@@ -93,15 +93,6 @@ export class ViewClientComponent implements OnInit {
 
   }
 
-  showLargerImage() {
-    this.modal.addModal(DocumentModalComponent, {
-      entityType: 'clients',
-      entityId: this.clientId
-    }).subscribe(() => {
-      // Get modal result
-    });
-  }
-
   setTab(tab: number) {
     this.tab = tab;
   }
@@ -126,6 +117,12 @@ export class ViewClientComponent implements OnInit {
     if (this.primaryLoanProducts.indexOf(id) > -1) {
       return true;
     }
+  };
+
+  getAddresses = function () {
+    this.http.addressResource('clients', this.clientId).subscribe(data => {
+      this.addresses = data;
+    })
   };
 
 }

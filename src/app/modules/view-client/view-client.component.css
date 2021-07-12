@@ -31,6 +31,7 @@ ul li {
     padding: 5px 0;
 }
 
+a,
 a:hover {
     color: #599eca;
     text-decoration: none;
@@ -70,7 +71,7 @@ a:hover {
 }
 
 .table th {
-    border: 1px solid transparent !important;
+    border: none !important;
 }
 
 .nav-tabs {
@@ -83,11 +84,10 @@ a:hover {
 }
 
 .top-up {
-    font-size: 25px;
-    margin-top: 1px;
+    font-size: 1.9rem;
 }
 
 .edit {
-    font-size: 22px;
+    font-size: 1.64rem;
     margin-top: 3px;
 }

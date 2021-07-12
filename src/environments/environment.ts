@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  endpoint: 'https://localhost:8443'
+  endpoint: 'https://localhost:8443',
+  tenantIdentifier: 'default'
 };
 
 /*

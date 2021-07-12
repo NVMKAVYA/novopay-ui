@@ -9,6 +9,8 @@ import { concatMap, map } from 'rxjs/operators';
 import { LoginCredentials } from 'src/app/models/LoginCredentials';
 import { Router } from '@angular/router';
 
+declare var jsSHA: any;
+
 @Injectable({ providedIn: 'root' })
 
 export class AuthService {
@@ -20,6 +22,7 @@ export class AuthService {
     private officeDetails: any = {};
     private configurations: any = {};
     private permissionsList: any = [];
+    private dmsUrl: string;
 
     constructor(private http: HttpService, private userIdle: UserIdleService, private router: Router) { }
     //getters
@@ -41,6 +44,14 @@ export class AuthService {
 
     public get office(): any {
         return this.officeDetails;
+    }
+
+    public set setDmsUrl(url: string) {
+        this.dmsUrl = url;
+    }
+
+    public get getDmsUrl() {
+        return this.dmsUrl;
     }
 
     public login(credentials: LoginCredentials) {
@@ -136,6 +147,40 @@ export class AuthService {
         } else {
             return false;
         }
+    }
+
+    public getOtp() {
+        var key = this.userData.key;
+        var epoch = Math.round(new Date().getTime() / 1000.0);
+        var time = this.leftpad(this.dec2hex(Math.floor(epoch / 30)), 16, '0');
+
+        var shaObj = new jsSHA("SHA-256", "HEX");
+        shaObj.setHMACKey(key, "HEX");
+        shaObj.update(time);
+        var hmac = shaObj.getHMAC("HEX");
+
+        if (hmac != 'KEY MUST BE IN BYTE INCREMENTS') {
+            var offset = this.hex2dec(hmac.substring(hmac.length - 1));
+        }
+
+        var otp = (this.hex2dec(hmac.substr(offset * 2, 8)) & this.hex2dec('7fffffff')) + '';
+        otp = (otp).substr(otp.length - 6, 6);
+        return otp;
+    }
+
+    private leftpad(str, len, pad) {
+        if (len + 1 >= str.length) {
+            str = Array(len + 1 - str.length).join(pad) + str;
+        }
+        return str;
+    }
+
+    private dec2hex(s) {
+        return (s < 15.5 ? '0' : '') + Math.round(s).toString(16);
+    }
+
+    private hex2dec(s) {
+        return parseInt(s, 16);
     }
 
     // private traverse(o) {

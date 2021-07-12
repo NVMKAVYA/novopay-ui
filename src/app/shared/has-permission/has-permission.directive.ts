@@ -13,13 +13,6 @@ export class HasPermissionDirective {
   ) { }
 
   @Input("hasPermission") set checkPermission(permission: any) {
-    // this.auth.getConfiguration(permission).subscribe(e => {
-    //   if (e) {
-    //     this.viewContainer.createEmbeddedView(this.templateRef);
-    //   } else {
-    //     this.viewContainer.clear();
-    //   }
-    // });
     if (this.auth.hasPermission(permission)) {
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {

@@ -125,8 +125,20 @@ export class HttpService {
     return this._http.get(`${this.baseUrl}/clients${clientId ? `/${clientId}` : ''}${resource ? `/${resource}` : ''}${resourceId ? `/${resourceId}` : ''}`, { params: params });
   }
 
-  public getClientImage(clientId, size?): any {
+  public getClientImage(clientId, size): any {
     return this._http.get(`${this.baseUrl}/clients/${clientId}/images?${size}`, { responseType: 'text' });
+  }
+
+  public getClientDocuments(clientId): any {
+    return this._http.get(`${this.baseUrl}/clients/${clientId}/documents`);
+  }
+
+  public getImageUrl(entityType, entityId, documentId, otp, userId): any {
+    return `${this.baseUrl}/${entityType}/${entityId}/documents/${documentId}/attachment?tenantIdentifier=${environment.tenantIdentifier}&authKey=${encodeURIComponent(otp)}&userId=${userId}`;
+  }
+
+  public getPdf(entityType, entityId, documentId, otp, userId): any {
+    return this._http.get(`${this.baseUrl}/${entityType}/${entityId}/documents/${documentId}/attachment?raw=true&base64=true&tenantIdentifier=${environment.tenantIdentifier}&authKey=${encodeURIComponent(otp)}&userId=${userId}`);
   }
 
   public runReportsResource(reportSource, genericResultSet?, R_clientId?): any {
@@ -135,15 +147,19 @@ export class HttpService {
     params = R_clientId ? params.append('R_clientId', R_clientId) : params;
     return this._http.get(`${this.baseUrl}/runreports/${reportSource}`, { params: params });
   }
-  public globalSearch(query,resource,exactMatch):any {
+  public globalSearch(query, resource, exactMatch): any {
     let params = new HttpParams();
-    params =params.append('query', query) ;
-    params =params.append('resource', resource) ;
-    params =params.append('exactMatch', exactMatch) ;
-    return this._http.get(`${this.baseUrl}/search`,{ params: params });
-  }  
+    params = params.append('query', query);
+    params = params.append('resource', resource);
+    params = params.append('exactMatch', exactMatch);
+    return this._http.get(`${this.baseUrl}/search`, { params: params });
+  }
 
   public clientAccountResource(clientId): any {
     return this._http.get(`${this.baseUrl}/clients/${clientId}/accounts`);
+  }
+
+  public addressResource(entityType, entityId, addressId?): any {
+    return this._http.get(`${this.baseUrl}/${entityType}/${entityId}/address${addressId ? `/${addressId}` : ''}`)
   }
 }

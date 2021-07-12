@@ -216,6 +216,7 @@ input:disabled {
     border-radius: 4px;
     z-index: 1000;
     opacity: 0;
+    pointer-events: none;
 }
 
 .ng-tooltip:after {
@@ -321,4 +322,8 @@ ul li {
 .btn:focus {
     outline: 0;
     box-shadow: none !important;
+}
+
+.breadcrumb {
+    background-color: white !important;
 }

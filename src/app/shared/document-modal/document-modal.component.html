@@ -1,8 +1,7 @@
 <div class="modal-content">
-    <div class="modal-body">
-        <img style="width:546px" [src]="clientImage" alt="Avatar" *ngIf="clientImage">
+    <div class="pointer pr-1" (click)="confirm()" style="text-align: right;"> <i class="fa fa-close" [tooltip]="'Close'" placement="right"></i>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="confirm()">OK</button>
+    <div class="modal-body pt-0">
+        <img style="width:546px" [src]="documentUrl" alt="Avatar" *ngIf="documentUrl && documentType !== 'application/pdf'">
     </div>
 </div>

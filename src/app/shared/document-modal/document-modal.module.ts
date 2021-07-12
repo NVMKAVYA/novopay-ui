@@ -2,13 +2,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DocumentModalComponent } from './document-modal.component';
 import { SimpleModalModule, defaultSimpleModalOptions } from 'ngx-simple-modal';
-
+import { DocumentModalDirective } from './document-modal.directive';
+import { TooltipModule } from '../tooltip/tooltip.module';
 
 
 @NgModule({
-  declarations: [DocumentModalComponent],
+  declarations: [DocumentModalComponent, DocumentModalDirective],
   imports: [
     CommonModule,
+    TooltipModule,
     SimpleModalModule.forRoot({ container: 'modal-container' }, {
       ...defaultSimpleModalOptions, ...{
         closeOnEscape: true,
@@ -20,6 +22,6 @@ import { SimpleModalModule, defaultSimpleModalOptions } from 'ngx-simple-modal';
   entryComponents: [
     DocumentModalComponent
   ],
-  exports: [DocumentModalComponent, SimpleModalModule]
+  exports: [DocumentModalDirective]
 })
 export class DocumentModalModule { }

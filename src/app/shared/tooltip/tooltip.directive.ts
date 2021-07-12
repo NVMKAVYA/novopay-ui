@@ -27,9 +27,11 @@ export class TooltipDirective {
 
 
   show() {
-    this.create();
-    this.setPosition();
-    this.renderer.addClass(this.tooltip, 'ng-tooltip-show');
+    if (!this.tooltip) {
+      this.create();
+      this.setPosition();
+      this.renderer.addClass(this.tooltip, 'ng-tooltip-show');
+    }
   }
 
   hide() {
