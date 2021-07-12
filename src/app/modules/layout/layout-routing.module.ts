@@ -13,7 +13,7 @@ const routes: Routes = [{
 		},
 		{
 			path: 'client/create',
-			loadChildren: () => import('../create-client/create-client.module').then(m => m.CreateClientModule)
+			loadChildren: () => import('../client-create/client-create.module').then(m => m.CreateClientModule)
 		},
 		{
 			path: 'product/create',
@@ -21,7 +21,7 @@ const routes: Routes = [{
 		},
 		{
 			path: 'client/view/:id',
-			loadChildren: () => import('../view-client/view-client.module').then(m => m.ViewClientModule)
+			loadChildren: () => import('../client-view/client-view.module').then(m => m.ViewClientModule)
 		}
 
 

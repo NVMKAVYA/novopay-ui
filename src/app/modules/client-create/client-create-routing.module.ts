@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { CreateClientComponent } from './create-client.component';
+import { CreateClientComponent } from './client-create.component';
 
 const routes: Routes = [{ path: '', component: CreateClientComponent }];
 

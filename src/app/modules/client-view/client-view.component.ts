@@ -9,8 +9,8 @@ import { SimpleModalService } from 'ngx-simple-modal';
 
 @Component({
   selector: 'app-view-client',
-  templateUrl: './view-client.component.html',
-  styleUrls: ['./view-client.component.css']
+  templateUrl: './client-view.component.html',
+  styleUrls: ['./client-view.component.css']
 })
 export class ViewClientComponent implements OnInit {
 

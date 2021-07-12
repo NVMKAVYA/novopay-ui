@@ -3,7 +3,7 @@ import { HttpService } from 'src/app/services/http/http.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { LoaderService } from 'src/app/services/loader/loader.service';
-import { Router } from '@angular/router';
+import { Router, RouterEvent, RouteConfigLoadStart } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 
@@ -32,7 +32,15 @@ export class LayoutComponent implements OnInit {
     }
   };
 
-  constructor(private auth: AuthService, private http: HttpService, private loader: LoaderService, private router: Router, private toastr: ToastrService) { }
+  constructor(private auth: AuthService, private http: HttpService, private loader: LoaderService, private router: Router, private toastr: ToastrService) {
+    this.router.events.subscribe(
+      (event: RouterEvent): void => {
+        if (event instanceof RouteConfigLoadStart) {
+          this.loader.show()
+        }
+      }
+    );
+  }
 
   ngOnInit(): void {
     this.searchTypes = ['Clients', 'KYC', 'Groups', 'Loans'];
@@ -56,9 +64,7 @@ export class LayoutComponent implements OnInit {
             if (data[0].entityType == "CLIENT") {
               this.router.navigate(['home/client/view', data[0].entityId]);
             }
-
           };
-
         })
     }
   }

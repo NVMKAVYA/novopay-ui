@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { CreateClientRoutingModule } from './create-client-routing.module';
-import { CreateClientComponent } from './create-client.component';
+import { CreateClientRoutingModule } from './client-create-routing.module';
+import { CreateClientComponent } from './client-create.component';
 
 import { NgWizardModule, NgWizardConfig } from 'ng-wizard';
 import { DatePipe } from '@angular/common';
