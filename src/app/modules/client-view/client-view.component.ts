@@ -5,7 +5,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Constants } from 'src/app/models/Constants';
 import { ClientStatus } from 'src/app/models/clientStatus';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { SimpleModalService } from 'ngx-simple-modal';
+import { FormService } from 'src/app/services/form/form.service';
 
 @Component({
   selector: 'app-view-client',
@@ -23,11 +23,18 @@ export class ViewClientComponent implements OnInit {
   showActiveLoans: boolean = true;
   updateDefaultSavings: boolean = false;
   enableEditDemographic: boolean = true;
+  deathRequestPending: boolean = false;
   primaryLoanProducts: any = [];
   dateFormat: any = Constants.dateFormat1;
   clientStatus: ClientStatus = new ClientStatus();
   tab: number = 1;
   enableMelEditDemographics: boolean = false;
+  showClientDemographicForMel: boolean = true;
+  showDemoAuthButton: boolean = true;
+  isBC: boolean = false;
+  allowEditingOfDeathDate: boolean = false;
+  editDemoPermission: string;
+  clientAccounts: any;
   buttonsArray = {
     options: [{
       name: "button.clientscreenreports"
@@ -36,15 +43,17 @@ export class ViewClientComponent implements OnInit {
   };
   addresses: any = [];
 
-  constructor(private http: HttpService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private auth: AuthService, private modal: SimpleModalService) { }
+  constructor(private http: HttpService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private auth: AuthService, private form: FormService) { }
 
   ngOnInit(): void {
 
     this.clientId = parseInt(this.route.snapshot.paramMap.get('id'));
+    this.isBC = this.auth.isBC;
     this.enableMelEditDemographics = this.auth.getConfiguration("enable-edit-demographic-for-mel").enabled;
 
     this.http.getclientResource(this.clientId, null, null, true).subscribe(data => {
       this.client = data;
+      this.client.age = this.form.calculateAge(this.client.dateOfBirth)
       this.enableEditDemographic = !(this.client.status.value == 'Closed' || this.client.status.value == 'Closed As Death');
 
       if (this.client.imagePresent) {
@@ -75,6 +84,7 @@ export class ViewClientComponent implements OnInit {
     })
 
     this.http.clientAccountResource(this.clientId).subscribe(data => {
+      this.clientAccounts = data;
       if (data.savingsAccounts && data.savingsAccounts.length) {
         this.updateDefaultSavings = data.savingsAccounts.some(e => {
           return e.status.value === "Active"
@@ -104,6 +114,7 @@ export class ViewClientComponent implements OnInit {
 
     let configForDemographics = this.auth.getConfiguration("restricted_stage_edit_demographic");
     let editDemographicRestrictedStage = configForDemographics.value.split(",");
+
     if (configForDemographics.enabled) {
       this.http.loanAppRefStatusResource(this.clientId).subscribe(data => {
         this.enableEditDemographic = data.some(e => {
@@ -113,6 +124,7 @@ export class ViewClientComponent implements OnInit {
     }
 
     let enableMelEditDemographics = this.auth.getConfiguration("enable-edit-demographic-for-mel").enabled;
+
     this.http.getProcessResource(null, null, this.clientId).subscribe(data => {
       if (data && data.length) {
         data.forEach(function (e) {
@@ -129,8 +141,49 @@ export class ViewClientComponent implements OnInit {
       })
     });
 
+    this.http.getloanDisbursementPhaseResource(this.clientId).subscribe(data => {
+      this.editDemoPermission = data.isPrePhase ? 'CREATECLIENT_EDITDEMOGRAPHIC_PRE_SANCTION' : 'CREATECLIENT_EDITDEMOGRAPHIC_POST_DISBURSEMENT';
+    });
 
+    this.http.demoAuthConfigDetailResource(this.auth.userData.officeId).subscribe(data => {
+      this.showDemoAuthButton = data.isDemoAuthEnabledState && data.isDemoAuthGlobleConfigEnable ? true : false;
+    })
 
+    this.http.checkerInboxResource(null, 'CLOSEDASDEATH', 'CLIENT', this.clientId).subscribe(data => {
+      this.deathRequestPending = data.length > 0 ? true : false;
+    })
+
+    if (this.isBC) {
+      let daysConfiguration = parseInt(this.auth.getConfiguration('bc-death-tagging-edit-days').value);
+      let daysConfigurationEnabled = this.auth.getConfiguration('bc-death-tagging-edit-days').enabled;
+
+      this.http.clientApiResource(this.clientId).subscribe(data => {
+
+        let today = new Date();
+        today = new Date(today.setHours(0, 0, 0, 0));
+        let deathTaggedOnDateApplicant = new Date(data.deathTaggedOnDateApplicant);
+        let deathTaggedOnDateCoApplicant = new Date(data.deathTaggedOnDateCoApplicant);
+
+        let endDateForEditingDeathTaggingofApplicant = new Date(deathTaggedOnDateApplicant.setDate(deathTaggedOnDateApplicant.getDate() + daysConfiguration));
+
+        let endDateForEditingDeathTaggingofCoApplicant = new Date(deathTaggedOnDateCoApplicant.setDate(deathTaggedOnDateCoApplicant.getDate() + daysConfiguration));
+
+        data.context.forEach(e => {
+
+          let bcDeathTaggingData = JSON.parse(e);
+          let applicantdetails = bcDeathTaggingData.formData.applicant;
+          let coapplicantdetails = bcDeathTaggingData.formData.coapplicant;
+
+          if (applicantdetails && applicantdetails.deathCertificateVerified == "no" && ((endDateForEditingDeathTaggingofApplicant >= today && daysConfigurationEnabled) || !daysConfigurationEnabled)) {
+            this.allowEditingOfDeathDate = data.isEditPerformedApplicant ? this.allowEditingOfDeathDate : true;
+          }
+
+          if (coapplicantdetails && coapplicantdetails.deathCertificateVerified == "no" && ((endDateForEditingDeathTaggingofCoApplicant >= today && daysConfigurationEnabled) || !daysConfigurationEnabled)) {
+            this.allowEditingOfDeathDate = data.isEditPerformedCoApplicant ? this.allowEditingOfDeathDate : true;
+          }
+        })
+      });
+    }
 
   }
 

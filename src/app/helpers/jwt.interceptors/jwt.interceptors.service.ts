@@ -44,7 +44,7 @@ export class JwtInterceptor implements HttpInterceptor {
   private hideLoader() {
     this.totalRequests--;
     if (this.totalRequests === 0) {
-      setTimeout(() => { this.loader.hide(); }, 1000)
+      setTimeout(() => { this.loader.hide(); }, 0)
     }
   }
 

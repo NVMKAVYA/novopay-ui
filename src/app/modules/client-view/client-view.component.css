@@ -31,8 +31,8 @@ ul li {
     padding: 5px 0;
 }
 
-a,
-a:hover {
+span>a,
+span>a:hover {
     color: #599eca;
     text-decoration: none;
 }
@@ -90,4 +90,12 @@ a:hover {
 .edit {
     font-size: 1.64rem;
     margin-top: 3px;
+}
+
+.card-btn {
+    margin-left: 0.5rem;
+}
+
+.dropdown-item {
+    color: #212529 !important;
 }

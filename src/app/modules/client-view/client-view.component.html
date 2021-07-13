@@ -105,7 +105,7 @@
                                     <li>
                                         <span class="detail-key">Signature :</span>
                                         <span [document]="'view'" entityType="clientSignature" [entityId]="clientId" class="pointer blueText">
-                                        View
+                                            <a>View</a>
                                         </span>
                                     </li>
                                 </ul>
@@ -162,17 +162,125 @@
             </ul>
         </div>
     </div>
-    <div class=" card p-4 " style="width:inherit; " *ngIf="client">
+    <div class="card pr-4 pl-4" style="width:inherit; " *ngIf="client">
+        <div class="ml-auto pt-2 pb-2">
+            <button class="btn btn-primary card-btn"><i class="fa fa-history mr-2"></i>Demographic History
+            </button>
+            <button class="btn btn-primary card-btn"><i class="fa fa-history mr-2"></i>Client Transfer History
+            </button>
+            <button class="btn btn-primary dropdown-toggle card-btn" data-toggle="dropdown"> More <span class="caret"></span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <div *ngFor="let btn of buttonsArray.singlebuttons">
+                    <a class="dropdown-item" type="button" *hasPermission="btn.taskPermissionName" href="">
+                        <!-- Add route paths -->
+                        <i class="{{btn.icon}} mr-2"></i>{{btn.name}}
+                    </a>
+                </div>
+                <!-- Add route path-->
+                <div *ngIf="client.status.value ==='Pending'">
+                    <a class="dropdown-item" *hasPermission="'DELETE_CLIENT'" type="button"><i class="fa fa-trash mr-2"></i>Delete</a>
+                </div>
+                <!-- Add route path -->
+                <div *ngIf="updateDefaultSavings">
+                    <a class="dropdown-item" type="button" *hasPermission="'UPDATESAVINGSACCOUNT_CLIENT'"><i
+                    class="fa fa-edit mr-2"></i>Update Default Savings
+                    </a>
+                </div>
+                <!-- Add route path -->
+                <div *ngIf="enableEditDemographic && showClientDemographicForMel && editDemoPermission">
+                    <a class="dropdown-item" type="button" *hasPermission="editDemoPermission">
+                        <i class="fa fa-edit mr-2"></i>Edit Demographics
+                    </a>
+                </div>
+                <!-- Add route path -->
+                <div *ngIf="client.staffId">
+                    <a class="dropdown-item" type="button" *hasPermission="'UNASSIGNSTAFF_CLIENT'">
+                        <i class="fa fa-user mr-2"></i>Unassign Staff
+                    </a>
+                </div>
+                <!-- Add route path -->
+                <div *ngIf="client.demoAuthStatus != 1 && showDemoAuthButton">
+                    <a class="dropdown-item" type="button" *hasPermission="'DEMOGRAPHIC_AADHAAR_AUTH_CLIENT'">
+                        <i class="fa fa-user mr-2"></i>Demographic Aadhaar Auth Check
+                    </a>
+                </div>
+                <!-- Add route path -->
+                <div>
+                    <a class="dropdown-item" type="button">
+                        <i class="fa fa-user mr-2"></i>Client screen reports
+                    </a>
+                </div>
+                <div>
+                    <a class="dropdown-item" type="button" *hasPermission="'CREATE_CLIENTIMAGE'">
+                        <i class="fa fa-cloud-upload mr-2"></i>Upload Client Image
+                    </a>
+                </div>
+                <div>
+                    <a class="dropdown-item" type="button" *hasPermission="'CREATE_CLIENTIMAGE'">
+                        <i class="fa fa-cloud-upload mr-2"></i>Upload Client Signature
+                    </a>
+                </div>
+                <!-- Add route path -->
+                <div *ngIf="clientAccounts.savingsAccounts">
+                    <a class="dropdown-item" type="button" *hasPermission="'READ_STANDINGINSTRUCTION'">
+                        <i class="fa fa-folder-open mr-2"></i>View standing instructions
+                    </a>
+                </div>
+                <!-- Add route path -->
+                <div *ngIf="clientAccounts.savingsAccounts">
+                    <a class="dropdown-item" type="button" *hasPermission="'CREATE_STANDINGINSTRUCTION'">
+                        <i class="fa fa-plus-circle mr-2"></i>Create standing instructions
+                    </a>
+                </div>
+                <!-- Add route path -->
+                <div *ngIf="client.status.value=='Active' && !deathRequestPending && isBC">
+                    <a class="dropdown-item" type="button" *hasPermission="'CLOSEDASDEATH_CLIENT'">
+                        <i class="fa fa-plus-circle mr-2"></i>Close(Applicant Death)
+                    </a>
+                </div>
+                <!-- Add route path -->
+                <div *ngIf="allowEditingOfDeathDate && isBC">
+                    <a class="dropdown-item" type="button" *hasPermission="'EDIT_DEATH_TAGGING'">
+                        <i class="fa fa-edit mr-2"></i>Edit BC Death Tagging
+                    </a>
+                </div>
+                <!-- Add route path -->
+                <div *ngIf="isBC">
+                    <a class="dropdown-item" type="button" *hasPermission="'VIEW_DEATH_TAGGING'">
+                        <i class="fa fa-folder-open mr-2"></i>View BC Death Tagging
+                    </a>
+                </div>
+                <!-- Add route path -->
+                <div *ngIf="client.status.value=='Active' && !isBc">
+                    <a class="dropdown-item" type="button" *hasPermission="'CLIENT_INITIATE_INSURANCE'">
+                        <i class="fa fa-plus-circle mr-2"></i>Initiate Insurance Claim
+                    </a>
+                </div>
+                <!-- Add route path -->
+                <div>
+                    <a class="dropdown-item" type="button" *hasPermission="'CREATE_BIOMETRIC'">
+                        <i class="fa fa-plus-circle mr-2"></i>Capture FingerPrints
+                    </a>
+                </div>
+                <!-- Add route path -->
+                <div>
+                    <a class="dropdown-item" type="button" *hasPermission="'UPDATE_GST_NUMBER'">
+                        <i class="fa fa-plus-circle mr-2"></i>Capture Client GST Details
+                    </a>
+                </div>
+            </div>
+        </div>
         <div [ngSwitch]="tab ">
             <div *ngSwitchCase="1">
                 <div class="card ">
                     <div class="card-header d-flex ">
-                        <i class="fa fa-list mr-2 "></i>
-                        <h5 class="mb-0 mr-auto " style="line-height: 1; ">Loan Account Overview
+                        <i class="fa fa-list mr-2 mt-1"></i>
+                        <h5 class="mb-0 mr-auto">Loan Account Overview
                         </h5>
-                        <button class="ml-auto btn btn-primary " (click)="showActiveLoans=! showActiveLoans ">
+                        <a class="ml-auto pointer" (click)="showActiveLoans=! showActiveLoans ">
                         View {{showActiveLoans ? 'Closed' : 'Active'}} Loans
-                       </button>
+                        </a>
                     </div>
                     <div class="card-content ">
                         <perfect-scrollbar>
@@ -192,7 +300,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let account of activeLoanAccounts |orderBy: 'id': true ">
+                                        <tr *ngFor="let account of activeLoanAccounts |orderBy: 'id': true " class="pointer">
                                             <td>
                                                 <i *ngIf="!account.inArrears " [tooltip]="account.status.value " placement="right" class="fa fa-stop {{account.status.code | StatusLookup}}"></i>
                                                 <i *ngIf="account.inArrears " [tooltip]="account.status.value " placement="right" class="fa fa-stop {{account.status.code | StatusLookup}}overdue"></i> {{account.accountNo}}
@@ -211,13 +319,13 @@
                                                 </button>
                                             </td>
                                             <td class="text-center ">
-                                                <i [tooltip]="'Disburse'" placement="top" *ngIf="!account.status.pendingApproval && !account.status.active && account.status !=='loanStatusType.overpaid' " class="pointer fa fa-flag blueText top-up"></i>
+                                                <i [tooltip]="'Disburse'" placement="top" *ngIf="!account.status.pendingApproval && !account.status.active && account.status !=='loanStatusType.overpaid' " class="fa fa-flag blueText top-up"></i>
                                                 <!-- link disburse screen -->
-                                                <i [tooltip]="'Add a Top-up loan'" placement="top" *ngIf="account.status.active && isPrimaryLoan(account.productId) && !account.isSubsidiary " class="pointer fa fa-plus-circle blueText top-up"></i>
+                                                <i [tooltip]="'Add a Top-up loan'" placement="top" *ngIf="account.status.active && isPrimaryLoan(account.productId) && !account.isSubsidiary " class="fa fa-plus-circle blueText top-up"></i>
                                                 <!-- link topup screen -->
                                             </td>
                                             <td class="text-center ">
-                                                <span *ngIf="account.status.active && !(account.processDefKey=='MELUnsecured' && !enableMelEditDemographics) " class="pointer">
+                                                <span *ngIf="account.status.active && !(account.processDefKey=='MELUnsecured' && !enableMelEditDemographics)">
                                                     <i class="fa fa-edit blueText edit" [tooltip]="'Edit Loan Level details'" placement="top" ></i>
                                         <!-- link edit loan details screen -->
                                                </span>
@@ -262,7 +370,137 @@
                     </div>
                 </div>
             </div>
-            <div *ngSwitchCase="2">Two</div>
+            <div *ngSwitchCase="2">
+                <div class="card">
+                    <div class="card-header d-flex ">
+                        <i class="fa fa-list mr-2 mt-1"></i>
+                        <h5 class="mb-0 mr-auto">Personal Details
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="pt-4 pb-4" style="border: 1px solid #0000001a;">
+                            <div class="row col-sm-12">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Age</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    {{client.age}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Father's Name</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">{{client.spouseOrFatherFirstname + ' ' + client.spouseOrFatherMiddlename + ' ' + client.spouseOrFatherLastname}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Mother's Name</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">{{client.motherFirstName+ ' ' + client.motherMiddleName + ' '+client.motherLastName}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Martial Status</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">{{client.maritalStatus.label}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Religion</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">{{client.religion.label}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Spouse Name</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">{{client.spouseFirstName+ ' ' + client.spouseMiddleName + ' '+client.spouseLastName}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">CKYC No/Reference No</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">{{client.ckycNo}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngSwitchCase="3">Three</div>
+                <div *ngSwitchCase="4">
+                    <div class="card">
+                        <div class="card-header d-flex ">
+                            <i class="fa fa-list mr-2 mt-1"></i>
+                            <h5 class="mb-0 mr-auto">Addresses
+                            </h5>
+                            <button class="ml-auto btn btn-primary "><i class="fa fa-plus-circle mr-2 "></i>Add
+                        </button>
+                        </div>
+                        <div class="card-content ">
+                            <perfect-scrollbar>
+                                <div>
+                                    <table class="table table-striped mb-1" *ngIf="addresses.length" style="width:1500px;">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Address Type</th>
+                                                <th>Address Line</th>
+                                                <th>Street Name/Location</th>
+                                                <th>Landmark</th>
+                                                <th>Village /Town /City</th>
+                                                <th>District</th>
+                                                <th>State</th>
+                                                <th>Country</th>
+                                                <th>Postal Code</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let address of addresses">
+                                                <td>
+                                                    <span class="pointer">
+                                                    <i class="fa fa-edit blueText edit" [tooltip]="'Edit Address'" placement="top"></i>
+                                                </span>
+                                                </td>
+                                                <td>
+                                                    {{(address.addressType.name == 'Permanent Address') ? 'Address as per OVD' : address.addressType.name}}
+                                                </td>
+                                                <td>{{address.addressLine}}</td>
+                                                <td>{{address.street}}</td>
+                                                <td>{{address.landMark}}</td>
+                                                <td>
+                                                    <span *ngIf="address.vtcData.name">{{address.vtcData.name}}({{address.vtcData.code}})</span>
+                                                    <span *ngIf="address.vtcName && !address.vtcData.name">{{address.vtcName}}</span>
+                                                </td>
+                                                <td>{{address.vtcData.district.name}}({{address.vtcData.district.code}})</td>
+                                                <td>{{address.vtcData.district.stateName}}({{address.vtcData.district.stateCode}})</td>
+                                                <td>{{address.vtcData.district.countryName}}({{address.vtcData.district.countryCode}})</td>
+                                                <td>{{address.postalCode}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!addresses.length">
+                                        No addresses listed
+                                    </div>
+                                </div>
+                            </perfect-scrollbar>
+                        </div>
+                    </div>
+                </div>
+                <div *ngSwitchCase="5 ">Five</div>
+                <div *ngSwitchDefault>This is Default</div>
+            </div>
             <div *ngSwitchCase="3">Three</div>
             <div *ngSwitchCase="4">
                 <div class="card">
@@ -323,7 +561,9 @@
                     </div>
                 </div>
             </div>
-            <div *ngSwitchCase="5 ">Five</div>
+            <div *ngSwitchCase="5">Five</div>
+            <div *ngSwitchCase="6">Five</div>
+            <div *ngSwitchCase="7">Five</div>
             <div *ngSwitchDefault>This is Default</div>
         </div>
     </div>

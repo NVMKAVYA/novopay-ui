@@ -173,4 +173,25 @@ export class HttpService {
     params = isActive ? params.append('isActive', isActive) : params;
     return this._http.get(`${this.baseUrl}/processes${processId ? `/${processId}` : ''}${anotherresource ? `/${anotherresource}` : ''}`, { params: params })
   }
+
+  public getloanDisbursementPhaseResource(clientId): any {
+    return this._http.get(`${this.baseUrl}/loanapplicationreference/${clientId}/disbursementPhase`)
+  }
+
+  public demoAuthConfigDetailResource(officeId): any {
+    return this._http.get(`${this.baseUrl}/statedetail/${officeId}/demoauth`)
+  }
+
+  public checkerInboxResource(templateResource?, actionName?, entityName?, resourceId?): any {
+    let params = new HttpParams();
+    params = actionName ? params.append('actionName', actionName) : params;
+    params = entityName ? params.append('entityName', entityName) : params;
+    params = resourceId ? params.append('resourceId', resourceId) : params;
+    return this._http.get(`${this.baseUrl}/makercheckers${templateResource ? `/${templateResource}` : ''}`, { params: params })
+  }
+
+  public clientApiResource(clientId): any {
+    return this._http.get(`${this.baseUrl}/clients/bcEditDeathContext/${clientId}`)
+  }
+
 }

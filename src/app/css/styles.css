@@ -327,3 +327,7 @@ ul li {
 .breadcrumb {
     background-color: white !important;
 }
+
+a:hover {
+    text-decoration: none !important;
+}
