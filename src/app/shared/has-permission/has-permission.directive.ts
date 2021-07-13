@@ -12,7 +12,7 @@ export class HasPermissionDirective {
     private auth: AuthService
   ) { }
 
-  @Input("hasPermission") set checkPermission(permission: any) {
+  @Input('hasPermission') set checkPermission(permission: any) {
     if (this.auth.hasPermission(permission)) {
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {

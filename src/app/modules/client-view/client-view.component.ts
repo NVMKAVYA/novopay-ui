@@ -21,6 +21,8 @@ export class ViewClientComponent implements OnInit {
   activeLoanAccounts: any = [];
   closedLoanAccounts: any = [];
   showActiveLoans: boolean = true;
+  updateDefaultSavings: boolean = false;
+  enableEditDemographic: boolean = true;
   primaryLoanProducts: any = [];
   dateFormat: any = Constants.dateFormat1;
   clientStatus: ClientStatus = new ClientStatus();
@@ -43,6 +45,8 @@ export class ViewClientComponent implements OnInit {
 
     this.http.getclientResource(this.clientId, null, null, true).subscribe(data => {
       this.client = data;
+      this.enableEditDemographic = !(this.client.status.value == 'Closed' || this.client.status.value == 'Closed As Death');
+
       if (this.client.imagePresent) {
         this.http.getClientImage(this.clientId, 'maxHeight=300').subscribe(data => {
           this.clientImage = this.sanitizer.bypassSecurityTrustResourceUrl(data);
@@ -71,14 +75,21 @@ export class ViewClientComponent implements OnInit {
     })
 
     this.http.clientAccountResource(this.clientId).subscribe(data => {
-      data.loanAccounts.forEach(e => {
-        if (this.isLoanClosed(e, false)) {
-          this.activeLoanAccounts.push(e)
-        } else {
-          this.closedLoanAccounts.push(e)
-        }
-      });
+      if (data.savingsAccounts && data.savingsAccounts.length) {
+        this.updateDefaultSavings = data.savingsAccounts.some(e => {
+          return e.status.value === "Active"
+        })
+      }
 
+      if (data.loanAccounts && data.loanAccounts.length) {
+        data.loanAccounts.forEach(e => {
+          if (this.isLoanClosed(e, false)) {
+            this.activeLoanAccounts.push(e)
+          } else {
+            this.closedLoanAccounts.push(e)
+          }
+        });
+      }
     })
 
     this.http.loanProductResource().subscribe(data => {
@@ -90,6 +101,36 @@ export class ViewClientComponent implements OnInit {
         });
       }
     })
+
+    let configForDemographics = this.auth.getConfiguration("restricted_stage_edit_demographic");
+    let editDemographicRestrictedStage = configForDemographics.value.split(",");
+    if (configForDemographics.enabled) {
+      this.http.loanAppRefStatusResource(this.clientId).subscribe(data => {
+        this.enableEditDemographic = data.some(e => {
+          return !(editDemographicRestrictedStage.includes(e.status.code))
+        })
+      })
+    }
+
+    let enableMelEditDemographics = this.auth.getConfiguration("enable-edit-demographic-for-mel").enabled;
+    this.http.getProcessResource(null, null, this.clientId).subscribe(data => {
+      if (data && data.length) {
+        data.forEach(function (e) {
+          if (e.processName == "MEL Unsecured") {
+            this.showClientDemographicForMel = enableMelEditDemographics;
+          }
+          if (e.processName == "MEL Unsecured" || e.processName == "JLGRegular" || e.processName == "JLGSeasonal" || e.processName == "JLGBC" ||
+            e.processName == "Suvidha Shakti" || e.processName == 'JLGBCRevised') {
+          }
+        })
+      }
+      this.enableEditDemographic = data.some(e => {
+        return !(editDemographicRestrictedStage.includes(e.activityName))
+      })
+    });
+
+
+
 
   }
 

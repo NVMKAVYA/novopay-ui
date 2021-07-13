@@ -162,4 +162,15 @@ export class HttpService {
   public addressResource(entityType, entityId, addressId?): any {
     return this._http.get(`${this.baseUrl}/${entityType}/${entityId}/address${addressId ? `/${addressId}` : ''}`)
   }
+
+  public loanAppRefStatusResource(clientId): any {
+    return this._http.get(`${this.baseUrl}/loanapplicationreference/${clientId}/appRefStatus`)
+  }
+
+  public getProcessResource(processId?, anotherresource?, clientId?, isActive?: string): any {
+    let params = new HttpParams();
+    params = clientId ? params.append('clientId', clientId) : params;
+    params = isActive ? params.append('isActive', isActive) : params;
+    return this._http.get(`${this.baseUrl}/processes${processId ? `/${processId}` : ''}${anotherresource ? `/${anotherresource}` : ''}`, { params: params })
+  }
 }
