@@ -42,6 +42,8 @@ export class ViewClientComponent implements OnInit {
     singlebuttons: null
   };
   addresses: any = [];
+  associatedWorkflows: any = [];
+  showLoanAccountNumberHeader:boolean = false;
 
   constructor(private http: HttpService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private auth: AuthService, private form: FormService) { }
 
@@ -126,13 +128,18 @@ export class ViewClientComponent implements OnInit {
     let enableMelEditDemographics = this.auth.getConfiguration("enable-edit-demographic-for-mel").enabled;
 
     this.http.getProcessResource(null, null, this.clientId).subscribe(data => {
+      
       if (data && data.length) {
-        data.forEach(function (e) {
+        data.forEach( e=> {
           if (e.processName == "MEL Unsecured") {
             this.showClientDemographicForMel = enableMelEditDemographics;
           }
           if (e.processName == "MEL Unsecured" || e.processName == "JLGRegular" || e.processName == "JLGSeasonal" || e.processName == "JLGBC" ||
             e.processName == "Suvidha Shakti" || e.processName == 'JLGBCRevised') {
+              this.associatedWorkflows.push(e);
+              if (e.loanAccountNumber) {
+                this.showLoanAccountNumberHeader = true;
+            }
           }
         })
       }
