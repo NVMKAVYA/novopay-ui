@@ -99,3 +99,7 @@ span>a:hover {
 .dropdown-item {
     color: #212529 !important;
 }
+
+hr {
+    margin-top: 0.5rem !important
+}

@@ -285,7 +285,7 @@
                     <div class="card-content ">
                         <perfect-scrollbar>
                             <div *ngIf="showActiveLoans ">
-                                <table class="table card-table " *ngIf="activeLoanAccounts.length ">
+                                <table class="table card-table table-striped" *ngIf="activeLoanAccounts.length ">
                                     <thead>
                                         <tr>
                                             <th>Account #</th>
@@ -378,7 +378,7 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <div class="pt-4 pb-4" style="border: 1px solid #0000001a;">
+                        <div class="pt-3 pb-3" style="border: 1px solid #0000001a;">
                             <div class="row col-sm-12">
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Age</h6>
@@ -562,8 +562,8 @@
                 </div>
             </div>
             <div *ngSwitchCase="5">Five</div>
-            <div *ngSwitchCase="6">Five</div>
-            <div *ngSwitchCase="7">Five</div>
+            <div *ngSwitchCase="6">Six</div>
+            <div *ngSwitchCase="7">Seven</div>
             <div *ngSwitchDefault>This is Default</div>
         </div>
     </div>

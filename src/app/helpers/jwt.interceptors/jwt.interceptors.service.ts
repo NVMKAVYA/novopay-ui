@@ -17,7 +17,8 @@ export class JwtInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.totalRequests++;
-    setTimeout(() => { this.loader.show(); }, 0)
+    this.loader.show()
+
     if (this.auth.userData && this.auth.userData.sessionKey) {
       return next.handle(req.clone({
         setHeaders: {
@@ -42,10 +43,12 @@ export class JwtInterceptor implements HttpInterceptor {
   }
 
   private hideLoader() {
-    this.totalRequests--;
-    if (this.totalRequests === 0) {
-      setTimeout(() => { this.loader.hide(); }, 0)
-    }
+    setTimeout(() => {
+      this.totalRequests--;
+      if (this.totalRequests === 0)
+        this.loader.hide();
+    }, 800)
+
   }
 
 }

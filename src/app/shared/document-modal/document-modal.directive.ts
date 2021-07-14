@@ -46,15 +46,16 @@ export class DocumentModalDirective {
   checkDocument(document) {
     this.documentType = document.type;
     if (document.isFileExists) {
+      this.entityType = this.entityType != 'clientSignature' ? this.entityType : 'clients';
       if (document.type === 'application/pdf') {
-        this.http.getPdf(this.entityType, this.entityId, document.id, this.auth.getOtp(), this.auth.userData.id).subscribe(data => {
+        this.http.getPdf(this.entityType, this.entityId, document.id, this.auth.getOtp(), this.auth.userData.userId).subscribe(data => {
           if (data) {
-            document.documentUrl = this.sanitizer.bypassSecurityTrustResourceUrl("data:application/pdf;base64," + data.data);
+            this.documentUrl = this.sanitizer.bypassSecurityTrustResourceUrl("data:application/pdf;base64," + data.data);
           }
           this.showModal();
         });
       } else {
-        document.documentUrl = this.http.getImageUrl(this.entityType, this.entityId, document.id, this.auth.getOtp(), this.auth.userData.id);
+        this.documentUrl = this.http.getImageUrl(this.entityType, this.entityId, document.id, this.auth.getOtp(), this.auth.userData.userId);
         this.showModal();
       }
     } else if (document.dmsUpload) {
