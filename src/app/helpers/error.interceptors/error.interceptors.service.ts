@@ -16,15 +16,16 @@ export class ErrorInterceptor implements HttpInterceptor {
             if (err.status === 401) {
                 // auto logout if 401 response returned from api
                 this.auth.logout();
+            } else if (err.status !== 404) {
+                if (err.url.includes("/authentication")) {
+                    this.toastr.error(err.error.errors[0].developerMessage, 'Error', {
+                        timeOut: 5000
+                    })
+                } else {
+                    this.toastr.error(err.error.errors[0].developerMessage, 'Error')
+                }
+                return throwError(err);
             }
-            if (err.url.includes("/authentication")) {
-                this.toastr.error(err.error.errors[0].developerMessage, 'Error', {
-                    timeOut: 5000
-                })
-            } else {
-                this.toastr.error(err.error.errors[0].developerMessage, 'Error',)
-            }
-            return throwError(err);
         }))
     }
 }
