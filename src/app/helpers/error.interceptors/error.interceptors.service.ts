@@ -24,8 +24,8 @@ export class ErrorInterceptor implements HttpInterceptor {
                 } else {
                     this.toastr.error(err.error.errors[0].developerMessage, 'Error')
                 }
-                return throwError(err);
             }
+            return throwError(err);
         }))
     }
 }

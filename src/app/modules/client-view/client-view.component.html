@@ -319,7 +319,7 @@
                                                 </button>
                                             </td>
                                             <td class="text-center ">
-                                                <i [tooltip]="'Disburse'" placement="top" *ngIf="!account.status.pendingApproval && !account.status.active && account.status !=='loanStatusType.overpaid' " class="fa fa-flag blueText top-up"></i>
+                                                <i [tooltip]="'Disburse'" placement="top" *ngIf="!account.status.pendingApproval && !account.status.active && account.status.code !=='loanStatusType.overpaid' " class="fa fa-flag blueText top-up"></i>
                                                 <!-- link disburse screen -->
                                                 <i [tooltip]="'Add a Top-up loan'" placement="top" *ngIf="account.status.active && isPrimaryLoan(account.productId) && !account.isSubsidiary " class="fa fa-plus-circle blueText top-up"></i>
                                                 <!-- link topup screen -->
@@ -367,6 +367,41 @@
                                 </div>
                             </div>
                         </perfect-scrollbar>
+                    </div>
+
+                </div>
+                <div class="card" *ngIf="associatedWorkflows.length">
+                    <div class="card-header d-flex ">
+                        <i class="fa fa-list mr-2 "></i>
+                        <h5 class="mb-0 mr-auto " style="line-height: 1; ">Associated Loan Applications
+                        </h5>
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <table class="table card-table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Process Instance ID</th>
+                                        <th>Process Name</th>
+                                        <th>Task Name</th>
+                                        <th>Loan Application Status</th>
+                                        <th *ngIf="showLoanAccountNumberHeader">Account #</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let workflow of associatedWorkflows" class="pointer">
+                                        <td>{{workflow.instanceId}}</td>
+                                        <td>{{workflow.processName}}</td>
+                                        <td>{{workflow.activityName}}</td>
+                                        <td>{{workflow.status}}<span *ngIf="workflow.status == 'REJECTED'"> - {{workflow.rejectReason}}</span>
+                                        </td>
+                                        <td>
+                                            <div *ngIf="workflow.loanAccountNumber">{{workflow.loanAccountNumber}}</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -568,5 +603,7 @@
         </div>
     </div>
 </div>
+
+
 
 <div class="modal-container "></div>

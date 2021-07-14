@@ -18,7 +18,7 @@ export class JwtInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     this.totalRequests++;
-    this.loader.show()
+    setTimeout(() => { this.loader.show() }, 0);
 
     if (this.auth.userData && this.auth.userData.sessionKey) {
       return next.handle(req.clone({
