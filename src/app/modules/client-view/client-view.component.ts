@@ -43,6 +43,7 @@ export class ViewClientComponent implements OnInit {
   };
   addresses: any = [];
   associatedWorkflows: any = [];
+  associatedloanapplications: any = [];
   showLoanAccountNumberHeader: boolean = false;
 
   constructor(private http: HttpService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private auth: AuthService, private form: FormService) { }
@@ -146,6 +147,14 @@ export class ViewClientComponent implements OnInit {
         return !(editDemographicRestrictedStage.includes(e.activityName))
       })
     });
+
+    this.http.nonWorkflowLoanAccounts(null, this.clientId).subscribe(data => {
+      if (data && data.length > 0) {
+        data.forEach(e => {
+          this.associatedloanapplications.push(e);
+        })
+      }  
+    }); 
 
     this.http.getloanDisbursementPhaseResource(this.clientId).subscribe(data => {
       this.editDemoPermission = data.isPrePhase ? 'CREATECLIENT_EDITDEMOGRAPHIC_PRE_SANCTION' : 'CREATECLIENT_EDITDEMOGRAPHIC_POST_DISBURSEMENT';

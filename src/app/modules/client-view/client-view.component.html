@@ -404,6 +404,36 @@
                         </div>
                     </div>
                 </div>
+                <div class="card" *ngIf="associatedloanapplications.length">
+                    <div class="card-header d-flex ">
+                        <i class="fa fa-list mr-2 "></i>
+                        <h5 class="mb-0 mr-auto " style="line-height: 1; ">Associated Non WorkFlow Loan Applications
+                        </h5>
+                    </div>  
+                    <div class="card-content no-h-padding">
+                        <div *ngIf="client.status.value=='Closed'">
+                             <h3>Client Closed</h3>
+                        </div>
+                    <div class="card-content">
+                        <table class="table card-table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Application Reference No</th>
+                                    <th>Loan Application Stage</th>
+                                    <th>Loan Application Status</th>
+                                </tr>
+                            </thead>
+                    <tbody>
+                        <tr *ngFor="let applications of associatedloanapplications" class="pointer">
+                             <td class="pointer">{{applications.applicationReferenceNo}}</td>
+                             <td class="pointer">{{applications.applicationStage}}</td>
+                            <td class="pointer">{{applications.applicationStatus}}</td>
+                         </tr>
+                         </tbody>
+                        </table>
+                    </div>
+                    </div>
+                </div>
             </div>
             <div *ngSwitchCase="2">
                 <div class="card">
