@@ -194,4 +194,10 @@ export class HttpService {
     return this._http.get(`${this.baseUrl}/clients/bcEditDeathContext/${clientId}`)
   }
 
+  public nonWorkflowLoanAccounts( anotherresource?, clientId?): any {
+    let params = new HttpParams();
+    params = clientId ? params.append('clientId', clientId) : params;
+    return this._http.get(`${this.baseUrl}/loanApplications${clientId ? `/${clientId}` : ''}${anotherresource ? `/${anotherresource}` : ''}`, { params: params })
+  }
+
 }
