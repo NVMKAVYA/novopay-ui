@@ -7,6 +7,7 @@ import { TooltipModule } from '../../shared/tooltip/tooltip.module';
 import { StatusColourModule } from '../../shared/status-colour/status-colour.module';
 import { HasPermissionModule } from 'src/app/shared/has-permission/has-permission.module';
 import { DocumentModalModule } from 'src/app/shared/document-modal/document-modal.module';
+import { ActualAadhaarNumberModule } from 'src/app/shared/actual-aadhaar-number/actual-aadhar-number.module';
 import { OrderModule } from 'ngx-order-pipe';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
@@ -20,6 +21,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
     StatusColourModule,
     HasPermissionModule,
     DocumentModalModule,
+    ActualAadhaarNumberModule,
     OrderModule,
     PerfectScrollbarModule
   ]

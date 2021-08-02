@@ -9,12 +9,16 @@
         <div class="card-header-banner">
             <div class="d-flex ml-3">
                 <div class="imagecontainer {{client.status.code | StatusLookup}}">
-                    <img *ngIf="!client.imagePresent || !clientImage" class="img-responsive img-circle" src="../assets/client-image-placeholder.png" alt="Avatar" height="133" width="130">
-                    <img *ngIf="client.imagePresent && clientImage" class="img-responsive img-circle pointer" [src]="clientImage" alt="Avatar" height="130" width="130" [tooltip]="'Show Larger'" placement="right" [document]="'view'" entityType="clientImage" [entityId]="clientId">
+                    <img *ngIf="!client.imagePresent || !clientImage" class="img-responsive img-circle"
+                        src="../assets/client-image-placeholder.png" alt="Avatar" height="133" width="130">
+                    <img *ngIf="client.imagePresent && clientImage" class="img-responsive img-circle pointer"
+                        [src]="clientImage" alt="Avatar" height="130" width="130" [tooltip]="'Show Larger'"
+                        placement="right" [document]="'view'" entityType="clientImage" [entityId]="clientId">
                 </div>
                 <div class="d-flex fd-flex card-content">
                     <div class="d-flex">
-                        <h1 class="mr-2 ml-2 mt-2 mb-2 text-white mr-auto">{{client.customerTitles.name}} {{client.displayName}}</h1>
+                        <h1 class="mr-2 ml-2 mt-2 mb-2 text-white mr-auto">{{client.customerTitles.name}}
+                            {{client.displayName}}</h1>
                     </div>
                     <div class="d-flex ml-2 text-white card-sub-header">
                         <div class="mr-4 mb-2">
@@ -22,7 +26,8 @@
                             <span class="ml-1">{{client.accountNo}}</span>
                         </div>
                         <div class="mr-4 mb-2">
-                            <span>Activation Date:</span><span class="ml-1">{{client.timeline.activatedOnDate | date: dateFormat}}</span>
+                            <span>Activation Date:</span><span class="ml-1">{{client.timeline.activatedOnDate | date:
+                                dateFormat}}</span>
                         </div>
                         <div class="mr-4 mb-2" *ngIf="!client.timeline.activatedOnDate">
                             <span>Not activated</span>
@@ -31,7 +36,8 @@
                             <span>Staff:</span><span class="ml-1">{{client.staffName}}</span>
                         </div>
                         <div class="mr-4 mb-2" *ngIf="client.dateOfDeath">
-                            <span>Deceased Date:</span><span class="ml-1">{{client.dateOfDeath | date: dateFormat}}</span>
+                            <span>Deceased Date:</span><span class="ml-1">{{client.dateOfDeath | date:
+                                dateFormat}}</span>
                         </div>
                         <div class="mr-4 mb-2">
                             <span>Branch Name:</span><span class="ml-1">{{client.officeName}}</span>
@@ -60,22 +66,22 @@
                                     <li>
                                         <span class="detail-key">Group :</span>
                                         <span>
-                                                <span *ngFor="let group of client.groups; let last = last" >
-                                                    <!-- link groups -->
-                                                    <a href="">{{group.name}}</a>
-                                                    <span *ngIf="!client.groups">Unassigned</span>
-                                        <span *ngIf="!last">|</span>
-                                        </span>
+                                            <span *ngFor="let group of client.groups; let last = last">
+                                                <!-- link groups -->
+                                                <a href="">{{group.name}}</a>
+                                                <span *ngIf="!client.groups">Unassigned</span>
+                                                <span *ngIf="!last">|</span>
+                                            </span>
                                         </span>
                                     </li>
                                     <li>
                                         <span class="detail-key">Center :</span>
                                         <span>
-                                                <span *ngFor="let group of client.groups; let last = last" >
-                                                    <a href="">{{group.centerName}}</a>
-                                                    <span *ngIf="!client.groups">Unassigned</span>
-                                        <span *ngIf="!last">|</span>
-                                        </span>
+                                            <span *ngFor="let group of client.groups; let last = last">
+                                                <a href="">{{group.centerName}}</a>
+                                                <span *ngIf="!client.groups">Unassigned</span>
+                                                <span *ngIf="!last">|</span>
+                                            </span>
                                         </span>
                                     </li>
                                 </ul>
@@ -104,7 +110,8 @@
                                     </li>
                                     <li>
                                         <span class="detail-key">Signature :</span>
-                                        <span [document]="'view'" entityType="clientSignature" [entityId]="clientId" class="pointer blueText">
+                                        <span [document]="'view'" entityType="clientSignature" [entityId]="clientId"
+                                            class="pointer blueText">
                                             <a>View</a>
                                         </span>
                                     </li>
@@ -145,20 +152,28 @@
             </div>
             <ul class="nav nav-tabs bg-white">
                 <li class="nav-item">
-                    <a href="" class="nav-link active" data-toggle="tab" (click)="setTab(1)">General</a></li>
-                <li class=" nav-item ">
-                    <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(2)">Personal Details</a></li>
-                <li class=" nav-item ">
-                    <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(3)">Client GST Details</a></li>
-                <li class="nav-item ">
-                    <a href=" " class="nav-link " data-toggle="tab" *hasPermission=" 'READ_ADDRESS' " (click)="setTab(4);getAddresses()">Addresses</a>
+                    <a href="" class="nav-link active" data-toggle="tab" (click)="setTab(1)">General</a>
                 </li>
                 <li class=" nav-item ">
-                    <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(5)">Identities</a></li>
-                <li class="nav-item ">
-                    <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(6)">Documents</a></li>
+                    <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(2)">Personal Details</a>
+                </li>
                 <li class=" nav-item ">
-                    <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(7)">Notes</a></li>
+                    <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(3)">Client GST Details</a>
+                </li>
+                <li class="nav-item ">
+                    <a href=" " class="nav-link " data-toggle="tab" *hasPermission=" 'READ_ADDRESS' "
+                        (click)="setTab(4);getAddresses()">Addresses</a>
+                </li>
+                <li class=" nav-item ">
+                    <a href=" " class="nav-link " data-toggle="tab"
+                        (click)="setTab(5);getClientIdentityDocuments()">Identities</a>
+                </li>
+                <li class="nav-item ">
+                    <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(6)">Documents</a>
+                </li>
+                <li class=" nav-item ">
+                    <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(7)">Notes</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -168,7 +183,8 @@
             </button>
             <button class="btn btn-primary card-btn"><i class="fa fa-history mr-2"></i>Client Transfer History
             </button>
-            <button class="btn btn-primary dropdown-toggle card-btn" data-toggle="dropdown"> More <span class="caret"></span>
+            <button class="btn btn-primary dropdown-toggle card-btn" data-toggle="dropdown"> More <span
+                    class="caret"></span>
             </button>
             <div class="dropdown-menu dropdown-menu-right">
                 <div *ngFor="let btn of buttonsArray.singlebuttons">
@@ -179,12 +195,13 @@
                 </div>
                 <!-- Add route path-->
                 <div *ngIf="client.status.value ==='Pending'">
-                    <a class="dropdown-item" *hasPermission="'DELETE_CLIENT'" type="button"><i class="fa fa-trash mr-2"></i>Delete</a>
+                    <a class="dropdown-item" *hasPermission="'DELETE_CLIENT'" type="button"><i
+                            class="fa fa-trash mr-2"></i>Delete</a>
                 </div>
                 <!-- Add route path -->
                 <div *ngIf="updateDefaultSavings">
                     <a class="dropdown-item" type="button" *hasPermission="'UPDATESAVINGSACCOUNT_CLIENT'"><i
-                    class="fa fa-edit mr-2"></i>Update Default Savings
+                            class="fa fa-edit mr-2"></i>Update Default Savings
                     </a>
                 </div>
                 <!-- Add route path -->
@@ -279,7 +296,7 @@
                         <h5 class="mb-0 mr-auto">Loan Account Overview
                         </h5>
                         <a class="ml-auto pointer" (click)="showActiveLoans=! showActiveLoans ">
-                        View {{showActiveLoans ? 'Closed' : 'Active'}} Loans
+                            View {{showActiveLoans ? 'Closed' : 'Active'}} Loans
                         </a>
                     </div>
                     <div class="card-content ">
@@ -300,40 +317,57 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let account of activeLoanAccounts |orderBy: 'id': true " class="pointer">
+                                        <tr *ngFor="let account of activeLoanAccounts |orderBy: 'id': true "
+                                            class="pointer">
                                             <td>
-                                                <i *ngIf="!account.inArrears " [tooltip]="account.status.value " placement="right" class="fa fa-stop {{account.status.code | StatusLookup}}"></i>
-                                                <i *ngIf="account.inArrears " [tooltip]="account.status.value " placement="right" class="fa fa-stop {{account.status.code | StatusLookup}}overdue"></i> {{account.accountNo}}
+                                                <i *ngIf="!account.inArrears " [tooltip]="account.status.value "
+                                                    placement="right"
+                                                    class="fa fa-stop {{account.status.code | StatusLookup}}"></i>
+                                                <i *ngIf="account.inArrears " [tooltip]="account.status.value "
+                                                    placement="right"
+                                                    class="fa fa-stop {{account.status.code | StatusLookup}}overdue"></i>
+                                                {{account.accountNo}}
                                             </td>
                                             <td>{{account.productName}}</td>
                                             <td>{{account.originalLoan}}</td>
                                             <td>{{account.loanBalance}}</td>
                                             <td>{{account.amountPaid}}</td>
                                             <td>
-                                                <i [tooltip]="account.loanType.value " placement="top" [ngClass]="(account.loanType.value=='Individual' ) ? 'fa fa-user' : 'fa fa-users' "></i>
+                                                <i [tooltip]="account.loanType.value " placement="top"
+                                                    [ngClass]="(account.loanType.value=='Individual' ) ? 'fa fa-user' : 'fa fa-users' "></i>
                                             </td>
                                             <td class="text-center ">
-                                                <button [tooltip]=" 'Make Repayment' " placement="top" class="btn btn-primary pt-0 pb-0 pr-2 pl-2" *ngIf="account.status.active " style="border-radius: 50% !important; ">
+                                                <button [tooltip]=" 'Make Repayment' " placement="top"
+                                                    class="btn btn-primary pt-0 pb-0 pr-2 pl-2"
+                                                    *ngIf="account.status.active "
+                                                    style="border-radius: 50% !important; ">
                                                     <i class="fa fa-dollar "></i>
-                                        <!-- link repayment screen -->
+                                                    <!-- link repayment screen -->
                                                 </button>
                                             </td>
                                             <td class="text-center ">
-                                                <i [tooltip]="'Disburse'" placement="top" *ngIf="!account.status.pendingApproval && !account.status.active && account.status.code !=='loanStatusType.overpaid' " class="fa fa-flag blueText top-up"></i>
+                                                <i [tooltip]="'Disburse'" placement="top"
+                                                    *ngIf="!account.status.pendingApproval && !account.status.active && account.status.code !=='loanStatusType.overpaid' "
+                                                    class="fa fa-flag blueText top-up"></i>
                                                 <!-- link disburse screen -->
-                                                <i [tooltip]="'Add a Top-up loan'" placement="top" *ngIf="account.status.active && isPrimaryLoan(account.productId) && !account.isSubsidiary " class="fa fa-plus-circle blueText top-up"></i>
+                                                <i [tooltip]="'Add a Top-up loan'" placement="top"
+                                                    *ngIf="account.status.active && isPrimaryLoan(account.productId) && !account.isSubsidiary "
+                                                    class="fa fa-plus-circle blueText top-up"></i>
                                                 <!-- link topup screen -->
                                             </td>
                                             <td class="text-center ">
-                                                <span *ngIf="account.status.active && !(account.processDefKey=='MELUnsecured' && !enableMelEditDemographics)">
-                                                    <i class="fa fa-edit blueText edit" [tooltip]="'Edit Loan Level details'" placement="top" ></i>
-                                        <!-- link edit loan details screen -->
-                                               </span>
+                                                <span
+                                                    *ngIf="account.status.active && !(account.processDefKey=='MELUnsecured' && !enableMelEditDemographics)">
+                                                    <i class="fa fa-edit blueText edit"
+                                                        [tooltip]="'Edit Loan Level details'" placement="top"></i>
+                                                    <!-- link edit loan details screen -->
+                                                </span>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!activeLoanAccounts.length ">
+                                <div class="alert alert-warning m-4 text-center " role="alert "
+                                    *ngIf="!activeLoanAccounts.length ">
                                     No active Loans
                                 </div>
                             </div>
@@ -348,21 +382,28 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="account of closedLoanAccounts | orderBy: 'id':true | filter:isClosed ">
+                                        <tr
+                                            *ngFor="account of closedLoanAccounts | orderBy: 'id':true | filter:isClosed ">
                                             <td>
-                                                <i placement="right" [tooltip]="account.status.value " class="fa fa-stop {{account.status.code | StatusLookup}}"></i> {{account.accountNo}}
+                                                <i placement="right" [tooltip]="account.status.value "
+                                                    class="fa fa-stop {{account.status.code | StatusLookup}}"></i>
+                                                {{account.accountNo}}
                                             </td>
                                             <td>{{account.productName}}</td>
                                             <td>
-                                                <i [tooltip]="account.loanType.value " placement="top" [ngClass]="(account.loanType.value=='Individual' ) ? 'fa fa-user' : 'fa fa-users' "></i>
+                                                <i [tooltip]="account.loanType.value " placement="top"
+                                                    [ngClass]="(account.loanType.value=='Individual' ) ? 'fa fa-user' : 'fa fa-users' "></i>
                                             </td>
                                             <td>
-                                                <span *ngIf="account.timeline.closedOnDate ">{{loanaccount.timeline.closedOnDate | date : dateFormat}}</span>
+                                                <span
+                                                    *ngIf="account.timeline.closedOnDate ">{{loanaccount.timeline.closedOnDate
+                                                    | date : dateFormat}}</span>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!closedLoanAccounts.length ">
+                                <div class="alert alert-warning m-4 text-center " role="alert "
+                                    *ngIf="!closedLoanAccounts.length ">
                                     No closed Loans
                                 </div>
                             </div>
@@ -393,11 +434,42 @@
                                         <td>{{workflow.instanceId}}</td>
                                         <td>{{workflow.processName}}</td>
                                         <td>{{workflow.activityName}}</td>
-                                        <td>{{workflow.status}}<span *ngIf="workflow.status == 'REJECTED'"> - {{workflow.rejectReason}}</span>
+                                        <td>{{workflow.status}}<span *ngIf="workflow.status == 'REJECTED'"> -
+                                                {{workflow.rejectReason}}</span>
                                         </td>
                                         <td>
                                             <div *ngIf="workflow.loanAccountNumber">{{workflow.loanAccountNumber}}</div>
                                         </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" *ngIf="associatedloanapplications.length">
+                    <div class="card-header d-flex ">
+                        <i class="fa fa-list mr-2 "></i>
+                        <h5 class="mb-0 mr-auto " style="line-height: 1; ">Associated Non WorkFlow Loan Applications
+                        </h5>
+                    </div>
+                    <div class="card-content no-h-padding">
+                        <div *ngIf="client.status.value=='Closed'">
+                            <h3>Client Closed</h3>
+                        </div>
+                        <div class="card-content">
+                            <table class="table card-table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Application Reference No</th>
+                                        <th>Loan Application Stage</th>
+                                        <th>Loan Application Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let applications of associatedloanapplications" class="pointer">
+                                        <td class="pointer">{{applications.applicationReferenceNo}}</td>
+                                        <td class="pointer">{{applications.applicationStage}}</td>
+                                        <td class="pointer">{{applications.applicationStatus}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -427,7 +499,8 @@
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Father's Name</h6>
                                 </div>
-                                <div class="col-sm-9 text-secondary">{{client.spouseOrFatherFirstname + ' ' + client.spouseOrFatherMiddlename + ' ' + client.spouseOrFatherLastname}}
+                                <div class="col-sm-9 text-secondary">{{client.spouseOrFatherFirstname + ' ' +
+                                    client.spouseOrFatherMiddlename + ' ' + client.spouseOrFatherLastname}}
                                 </div>
                             </div>
                             <hr>
@@ -435,7 +508,8 @@
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Mother's Name</h6>
                                 </div>
-                                <div class="col-sm-9 text-secondary">{{client.motherFirstName+ ' ' + client.motherMiddleName + ' '+client.motherLastName}}
+                                <div class="col-sm-9 text-secondary">{{client.motherFirstName+ ' ' +
+                                    client.motherMiddleName + ' '+client.motherLastName}}
                                 </div>
                             </div>
                             <hr>
@@ -459,7 +533,8 @@
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Spouse Name</h6>
                                 </div>
-                                <div class="col-sm-9 text-secondary">{{client.spouseFirstName+ ' ' + client.spouseMiddleName + ' '+client.spouseLastName}}
+                                <div class="col-sm-9 text-secondary">{{client.spouseFirstName+ ' ' +
+                                    client.spouseMiddleName + ' '+client.spouseLastName}}
                                 </div>
                             </div>
                             <hr>
@@ -481,12 +556,13 @@
                             <h5 class="mb-0 mr-auto">Addresses
                             </h5>
                             <button class="ml-auto btn btn-primary "><i class="fa fa-plus-circle mr-2 "></i>Add
-                        </button>
+                            </button>
                         </div>
                         <div class="card-content ">
                             <perfect-scrollbar>
                                 <div>
-                                    <table class="table table-striped mb-1" *ngIf="addresses.length" style="width:1500px;">
+                                    <table class="table table-striped mb-1" *ngIf="addresses.length"
+                                        style="width:1500px;">
                                         <thead>
                                             <tr>
                                                 <th></th>
@@ -505,27 +581,35 @@
                                             <tr *ngFor="let address of addresses">
                                                 <td>
                                                     <span class="pointer">
-                                                    <i class="fa fa-edit blueText edit" [tooltip]="'Edit Address'" placement="top"></i>
-                                                </span>
+                                                        <i class="fa fa-edit blueText edit" [tooltip]="'Edit Address'"
+                                                            placement="top"></i>
+                                                    </span>
                                                 </td>
                                                 <td>
-                                                    {{(address.addressType.name == 'Permanent Address') ? 'Address as per OVD' : address.addressType.name}}
+                                                    {{(address.addressType.name == 'Permanent Address') ? 'Address as
+                                                    per OVD' : address.addressType.name}}
                                                 </td>
                                                 <td>{{address.addressLine}}</td>
                                                 <td>{{address.street}}</td>
                                                 <td>{{address.landMark}}</td>
                                                 <td>
-                                                    <span *ngIf="address.vtcData.name">{{address.vtcData.name}}({{address.vtcData.code}})</span>
-                                                    <span *ngIf="address.vtcName && !address.vtcData.name">{{address.vtcName}}</span>
+                                                    <span
+                                                        *ngIf="address.vtcData.name">{{address.vtcData.name}}({{address.vtcData.code}})</span>
+                                                    <span
+                                                        *ngIf="address.vtcName && !address.vtcData.name">{{address.vtcName}}</span>
                                                 </td>
-                                                <td>{{address.vtcData.district.name}}({{address.vtcData.district.code}})</td>
-                                                <td>{{address.vtcData.district.stateName}}({{address.vtcData.district.stateCode}})</td>
-                                                <td>{{address.vtcData.district.countryName}}({{address.vtcData.district.countryCode}})</td>
+                                                <td>{{address.vtcData.district.name}}({{address.vtcData.district.code}})
+                                                </td>
+                                                <td>{{address.vtcData.district.stateName}}({{address.vtcData.district.stateCode}})
+                                                </td>
+                                                <td>{{address.vtcData.district.countryName}}({{address.vtcData.district.countryCode}})
+                                                </td>
                                                 <td>{{address.postalCode}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!addresses.length">
+                                    <div class="alert alert-warning m-4 text-center " role="alert "
+                                        *ngIf="!addresses.length">
                                         No addresses listed
                                     </div>
                                 </div>
@@ -568,27 +652,35 @@
                                         <tr *ngFor="let address of addresses">
                                             <td>
                                                 <span class="pointer">
-                                                    <i class="fa fa-edit blueText edit" [tooltip]="'Edit Address'" placement="top"></i>
+                                                    <i class="fa fa-edit blueText edit" [tooltip]="'Edit Address'"
+                                                        placement="top"></i>
                                                 </span>
                                             </td>
                                             <td>
-                                                {{(address.addressType.name == 'Permanent Address') ? 'Address as per OVD' : address.addressType.name}}
+                                                {{(address.addressType.name == 'Permanent Address') ? 'Address as per
+                                                OVD' : address.addressType.name}}
                                             </td>
                                             <td>{{address.addressLine}}</td>
                                             <td>{{address.street}}</td>
                                             <td>{{address.landMark}}</td>
                                             <td>
-                                                <span *ngIf="address.vtcData.name">{{address.vtcData.name}}({{address.vtcData.code}})</span>
-                                                <span *ngIf="address.vtcName && !address.vtcData.name">{{address.vtcName}}</span>
+                                                <span
+                                                    *ngIf="address.vtcData.name">{{address.vtcData.name}}({{address.vtcData.code}})</span>
+                                                <span
+                                                    *ngIf="address.vtcName && !address.vtcData.name">{{address.vtcName}}</span>
                                             </td>
-                                            <td>{{address.vtcData.district.name}}({{address.vtcData.district.code}})</td>
-                                            <td>{{address.vtcData.district.stateName}}({{address.vtcData.district.stateCode}})</td>
-                                            <td>{{address.vtcData.district.countryName}}({{address.vtcData.district.countryCode}})</td>
+                                            <td>{{address.vtcData.district.name}}({{address.vtcData.district.code}})
+                                            </td>
+                                            <td>{{address.vtcData.district.stateName}}({{address.vtcData.district.stateCode}})
+                                            </td>
+                                            <td>{{address.vtcData.district.countryName}}({{address.vtcData.district.countryCode}})
+                                            </td>
                                             <td>{{address.postalCode}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!addresses.length">
+                                <div class="alert alert-warning m-4 text-center " role="alert "
+                                    *ngIf="!addresses.length">
                                     No addresses listed
                                 </div>
                             </div>
@@ -596,7 +688,64 @@
                     </div>
                 </div>
             </div>
-            <div *ngSwitchCase="5">Five</div>
+            <div *ngSwitchCase="5">
+                <div class="card" select="getClientIdentityDocuments()" *hasPermission="'READ_CLIENTIDENTIFIER'">
+                    <div class="card-header d-flex ">
+                        <i class="fa fa-list mr-2 mt-1"></i>
+                        <h5 class="mb-0 mr-auto">List of Identities
+                        </h5>
+                    </div>
+                    <div class="card-content">
+                        <table class="table card-table table-striped" *ngIf="identitydocuments.length > 0">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Identifier Type</th>
+                                    <th>Type</th>
+                                    <th>Identity Documents</th>
+                                    <th>Documents Expiry Date</th>
+                                    <th>View Actual Aadhaar Number</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let document of identitydocuments" class="pointer"
+                                    ng-model="identitydocuments" aadhaar-masking identitydocuments={{identitydocuments}}
+                                    clientId={{clientId}}>
+                                    <td>{{document.documentKey}}</td>
+                                    <td>{{document.identifierType.label}}</td>
+                                    <td *ngIf="document.documentType.name == 'Aadhar'">{{document.documentType.name}}
+                                    </td>
+                                    <td>
+                                        <span href="" *ngFor="let file of document.documents"
+                                            [document]="(document.documentType.name == 'Aadhar' || (document.documentType.name | uppercase) == 'UID') ? 'view' : 'download'"
+                                            [entityType]="file.parentEntityType" [entityId]="file.parentEntityId"
+                                            [documentList]="file"
+                                            [tooltip]="(document.documentType.name == 'Aadhar' || (document.documentType.name | uppercase) == 'UID') ? 'view' : 'download'"
+                                            placement="top" class="mr-1 tag">
+                                            {{file.fileName}} </span>
+                                    </td>
+                                    <td><span *ngIf="document.isValidTillRequired">{{document.documentExpiryDate |
+                                            DateFormat}}</span></td>
+                                    <td>
+                                        <span *ngIf="document.documentType.name == 'Aadhar'">
+                                            <button class="btn btn-primary"
+                                                *hasPermission="'VIEW_ACTUAL_AADHAAR_NUMBER'" actualAadhaar
+                                                [document]="document" [clientId]="clientId">View</button>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            <a *hasPermission="'CREATE_DOCUMENT'"><i
+                                                    class="icon-cloud-upload"></i></a>&nbsp;
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
             <div *ngSwitchCase="6">Six</div>
             <div *ngSwitchCase="7">Seven</div>
             <div *ngSwitchDefault>This is Default</div>

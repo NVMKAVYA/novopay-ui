@@ -121,7 +121,7 @@ export class HttpService {
 
   public getclientResource(clientId?, resource?, resourceId?, getDemographicsStatus?): any {
     let params = new HttpParams();
-    params = getDemographicsStatus ? params.append('getDemographicsStatus', getDemographicsStatus) : params;
+    params = getDemographicsStatus ? params.append('getDemographicsStatus', getDemographicsStatus) : params; 
     return this._http.get(`${this.baseUrl}/clients${clientId ? `/${clientId}` : ''}${resource ? `/${resource}` : ''}${resourceId ? `/${resourceId}` : ''}`, { params: params });
   }
 
@@ -138,7 +138,7 @@ export class HttpService {
   }
 
   public getPdf(entityType, entityId, documentId, otp, userId): any {
-    return this._http.get(`${this.baseUrl}/${entityType}/${entityId}/documents/${documentId}/attachment?raw=true&base64=true&tenantIdentifier=${environment.tenantIdentifier}&authKey=${encodeURIComponent(otp)}&userId=${userId}`);
+    return this._http.get(`${this.baseUrl}/${entityType}/${entityId}/documents/${documentId}/attachment?raw=true&base64=true&tenantIdentifier=${environment.tenantIdentifier}&authKey=${encodeURIComponent(otp)}&userId=${userId}`,{responseType: 'text'});
   }
 
   public runReportsResource(reportSource, genericResultSet?, R_clientId?): any {
@@ -192,6 +192,27 @@ export class HttpService {
 
   public clientApiResource(clientId): any {
     return this._http.get(`${this.baseUrl}/clients/bcEditDeathContext/${clientId}`)
+  }
+
+  public nonWorkflowLoanAccounts( anotherresource?, clientId?): any {
+    let params = new HttpParams();
+    params = clientId ? params.append('clientId', clientId) : params;
+    return this._http.get(`${this.baseUrl}/loanApplications${clientId ? `/${clientId}` : ''}${anotherresource ? `/${anotherresource}` : ''}`, { params: params })
+  }
+
+  public clientIdentifierResource( clientIdentityId): any {
+    return this._http.get(`${this.baseUrl}/client_identifiers/${clientIdentityId}/documents`);
+  }
+
+  public clientIdenfierTemplateResource( clientId): any {
+    return this._http.get(`${this.baseUrl}/clients/${clientId}/identifiers/template`);
+  }
+
+  public aadharVaultGetApiResource( clientId,aadharRefNum): any {
+    let params = new HttpParams();
+    params = clientId ? params.append('clientId', clientId) : params;
+    params = aadharRefNum ? params.append('aadharRefNum', aadharRefNum) : params;
+    return this._http.get(`${this.baseUrl}/aadharVault/getAadhar`, { params: params });
   }
 
 }

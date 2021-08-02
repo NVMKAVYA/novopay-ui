@@ -43,7 +43,10 @@ export class ViewClientComponent implements OnInit {
   };
   addresses: any = [];
   associatedWorkflows: any = [];
+  associatedloanapplications: any = [];
   showLoanAccountNumberHeader: boolean = false;
+  identitydocuments: any = [];
+  customerIdentifierTypeOptions: any = [];
 
   constructor(private http: HttpService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private auth: AuthService, private form: FormService) { }
 
@@ -79,6 +82,7 @@ export class ViewClientComponent implements OnInit {
       }
       this.buttonsArray.singlebuttons = buttons;
     })
+
 
     this.http.runReportsResource('ClientSummary', 'false', this.clientId).subscribe(data => {
       this.clientSummary = data[0];
@@ -145,6 +149,14 @@ export class ViewClientComponent implements OnInit {
       this.enableEditDemographic = data.some(e => {
         return !(editDemographicRestrictedStage.includes(e.activityName))
       })
+    });
+
+    this.http.nonWorkflowLoanAccounts(null, this.clientId).subscribe(data => {
+      if (data && data.length > 0) {
+        data.forEach(e => {
+          this.associatedloanapplications.push(e);
+        })
+      }
     });
 
     this.http.getloanDisbursementPhaseResource(this.clientId).subscribe(data => {
@@ -220,9 +232,36 @@ export class ViewClientComponent implements OnInit {
   };
 
   getAddresses = function () {
-    this.http.addressResource('clients', this.clientId).subscribe(data => {
-      this.addresses = data;
-    })
+    if (this.addresses.length) {
+      return;
+    } else {
+      this.http.addressResource('clients', this.clientId).subscribe(data => {
+        this.addresses = data;
+      })
+    }
   };
 
+  getClientIdentityDocuments = function () {
+    if (this.identitydocuments.length) {
+      return;
+    } else {
+      this.http.getclientResource(this.clientId, 'identifiers').subscribe(data => {
+        this.identitydocuments = data;
+        data.forEach(e => {
+          if (e.documentType.name == 'Passport' || e.documentType.name == 'Drivers License' || e.documentType.name == 'Aadhaar Enrollment Number') {
+            e.isValidTillRequired = true;
+          } else {
+            e.isValidTillRequired = false;
+          }
+          this.http.clientIdentifierResource(e.id).subscribe(data => {
+            e.documents = data;
+          });
+        })
+      })
+
+      this.http.clientIdenfierTemplateResource(this.clientId).subscribe(data => {
+        this.customerIdentifierTypeOptions = data.allowedIdentifierTypes;
+      })
+    }
+  };
 }

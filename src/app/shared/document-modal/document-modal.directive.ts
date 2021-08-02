@@ -13,10 +13,11 @@ export class DocumentModalDirective {
 
   @Input() entityType: string;
   @Input() entityId: number;
-  @Input() document: any;
+  @Input() documentList: any;
   @Input('document') action: string;
   documentUrl: SafeResourceUrl;
   documentType: string;
+
 
   constructor(private http: HttpService, private sanitizer: DomSanitizer, private auth: AuthService, private modal: SimpleModalService, private toastr: ToastrService) { }
 
@@ -31,6 +32,7 @@ export class DocumentModalDirective {
         this.entityType = this.entityType != 'clientSignature' ? this.entityType : 'clients';
         this.http.getDocuments(this.entityType, this.entityId).subscribe(data => {
           let selectedDocument = { id: null };
+          this.documentList = data;
           data.forEach(doc => {
             if (selectedDocument.id < doc.id) {
               selectedDocument = doc;
@@ -49,7 +51,7 @@ export class DocumentModalDirective {
       if (document.type === 'application/pdf') {
         this.http.getPdf(this.entityType, this.entityId, document.id, this.auth.getOtp(), this.auth.userData.userId).subscribe(data => {
           if (data) {
-            this.documentUrl = this.sanitizer.bypassSecurityTrustResourceUrl("data:application/pdf;base64," + data.data);
+            this.documentUrl = this.base64ToArrayBuffer(data);
           }
           this.showModal();
         });
@@ -73,6 +75,16 @@ export class DocumentModalDirective {
         timeOut: 10000
       })
     }
+  }
+
+  base64ToArrayBuffer(base64) {
+    const binary_string = window.atob(base64);
+    const len = binary_string.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+      bytes[i] = binary_string.charCodeAt(i);
+    }
+    return bytes.buffer;
   }
 
 
