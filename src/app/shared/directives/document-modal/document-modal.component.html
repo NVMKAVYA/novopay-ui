@@ -1,0 +1,13 @@
+<div class="modal-content">
+    <div class="pointer pr-1" (click)="confirm()" style="text-align: right;"> <i class="fa fa-close" [tooltip]="'Close'" placement="right"></i>
+    </div>
+    <div class="modal-body pt-0">
+        <div class="pdf-viewer img-modal" *ngIf="documentUrl && documentType !== 'application/pdf'">
+            <img [src]="documentUrl" alt="Avatar">
+        </div>
+        <div class="pdf-viewer" *ngIf="documentUrl && documentType == 'application/pdf'">
+            <pdf-viewer class="pdf-viewer" [src]="documentUrl" [original-size]="false">
+            </pdf-viewer>
+        </div>
+    </div>
+</div>

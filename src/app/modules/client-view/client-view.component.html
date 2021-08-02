@@ -9,16 +9,13 @@
         <div class="card-header-banner">
             <div class="d-flex ml-3">
                 <div class="imagecontainer {{client.status.code | StatusLookup}}">
-                    <img *ngIf="!client.imagePresent || !clientImage" class="img-responsive img-circle"
-                        src="../assets/client-image-placeholder.png" alt="Avatar" height="133" width="130">
-                    <img *ngIf="client.imagePresent && clientImage" class="img-responsive img-circle pointer"
-                        [src]="clientImage" alt="Avatar" height="130" width="130" [tooltip]="'Show Larger'"
-                        placement="right" [document]="'view'" entityType="clientImage" [entityId]="clientId">
+                    <img *ngIf="!client.imagePresent || !clientImage" class="img-responsive img-circle" src="../assets/client-image-placeholder.png" alt="Avatar" height="133" width="130">
+                    <img *ngIf="client.imagePresent && clientImage" class="img-responsive img-circle pointer" [src]="clientImage" alt="Avatar" height="130" width="130" [tooltip]="'Show Larger'" placement="right" [documentView]="'view'" entityType="clientImage" [entityId]="clientId">
                 </div>
                 <div class="d-flex fd-flex card-content">
                     <div class="d-flex">
-                        <h1 class="mr-2 ml-2 mt-2 mb-2 text-white mr-auto">{{client.customerTitles.name}}
-                            {{client.displayName}}</h1>
+                        <h1 class="mr-2 ml-2 mt-2 mb-2 text-white mr-auto">{{client.customerTitles.name}} {{client.displayName}}
+                        </h1>
                     </div>
                     <div class="d-flex ml-2 text-white card-sub-header">
                         <div class="mr-4 mb-2">
@@ -70,8 +67,8 @@
                                                 <!-- link groups -->
                                                 <a href="">{{group.name}}</a>
                                                 <span *ngIf="!client.groups">Unassigned</span>
-                                                <span *ngIf="!last">|</span>
-                                            </span>
+                                        <span *ngIf="!last">|</span>
+                                        </span>
                                         </span>
                                     </li>
                                     <li>
@@ -80,8 +77,8 @@
                                             <span *ngFor="let group of client.groups; let last = last">
                                                 <a href="">{{group.centerName}}</a>
                                                 <span *ngIf="!client.groups">Unassigned</span>
-                                                <span *ngIf="!last">|</span>
-                                            </span>
+                                        <span *ngIf="!last">|</span>
+                                        </span>
                                         </span>
                                     </li>
                                 </ul>
@@ -110,8 +107,7 @@
                                     </li>
                                     <li>
                                         <span class="detail-key">Signature :</span>
-                                        <span [document]="'view'" entityType="clientSignature" [entityId]="clientId"
-                                            class="pointer blueText">
+                                        <span [documentView]="'view'" entityType="clientSignature" [entityId]="clientId" class="pointer blueText">
                                             <a>View</a>
                                         </span>
                                     </li>
@@ -161,12 +157,10 @@
                     <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(3)">Client GST Details</a>
                 </li>
                 <li class="nav-item ">
-                    <a href=" " class="nav-link " data-toggle="tab" *hasPermission=" 'READ_ADDRESS' "
-                        (click)="setTab(4);getAddresses()">Addresses</a>
+                    <a href=" " class="nav-link " data-toggle="tab" *hasPermission=" 'READ_ADDRESS' " (click)="setTab(4);getAddresses()">Addresses</a>
                 </li>
                 <li class=" nav-item ">
-                    <a href=" " class="nav-link " data-toggle="tab"
-                        (click)="setTab(5);getClientIdentityDocuments()">Identities</a>
+                    <a href=" " class="nav-link " data-toggle="tab" *hasPermission="'READ_CLIENTIDENTIFIER'" (click)="setTab(5);getClientIdentityDocuments()">Identities</a>
                 </li>
                 <li class="nav-item ">
                     <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(6)">Documents</a>
@@ -317,47 +311,32 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let account of activeLoanAccounts |orderBy: 'id': true "
-                                            class="pointer">
+                                        <tr *ngFor="let account of activeLoanAccounts |orderBy: 'id': true " class="pointer">
                                             <td>
-                                                <i *ngIf="!account.inArrears " [tooltip]="account.status.value "
-                                                    placement="right"
-                                                    class="fa fa-stop {{account.status.code | StatusLookup}}"></i>
-                                                <i *ngIf="account.inArrears " [tooltip]="account.status.value "
-                                                    placement="right"
-                                                    class="fa fa-stop {{account.status.code | StatusLookup}}overdue"></i>
-                                                {{account.accountNo}}
+                                                <i *ngIf="!account.inArrears " [tooltip]="account.status.value " placement="right" class="fa fa-stop {{account.status.code | StatusLookup}}"></i>
+                                                <i *ngIf="account.inArrears " [tooltip]="account.status.value " placement="right" class="fa fa-stop {{account.status.code | StatusLookup}}overdue"></i> {{account.accountNo}}
                                             </td>
                                             <td>{{account.productName}}</td>
                                             <td>{{account.originalLoan}}</td>
                                             <td>{{account.loanBalance}}</td>
                                             <td>{{account.amountPaid}}</td>
                                             <td>
-                                                <i [tooltip]="account.loanType.value " placement="top"
-                                                    [ngClass]="(account.loanType.value=='Individual' ) ? 'fa fa-user' : 'fa fa-users' "></i>
+                                                <i [tooltip]="account.loanType.value " placement="top" [ngClass]="(account.loanType.value=='Individual' ) ? 'fa fa-user' : 'fa fa-users' "></i>
                                             </td>
                                             <td class="text-center ">
-                                                <button [tooltip]=" 'Make Repayment' " placement="top"
-                                                    class="btn btn-primary pt-0 pb-0 pr-2 pl-2"
-                                                    *ngIf="account.status.active "
-                                                    style="border-radius: 50% !important; ">
+                                                <button [tooltip]=" 'Make Repayment' " placement="top" class="btn btn-primary pt-0 pb-0 pr-2 pl-2" *ngIf="account.status.active " style="border-radius: 50% !important; ">
                                                     <i class="fa fa-dollar "></i>
                                                     <!-- link repayment screen -->
                                                 </button>
                                             </td>
                                             <td class="text-center ">
-                                                <i [tooltip]="'Disburse'" placement="top"
-                                                    *ngIf="!account.status.pendingApproval && !account.status.active && account.status.code !=='loanStatusType.overpaid' "
-                                                    class="fa fa-flag blueText top-up"></i>
+                                                <i [tooltip]="'Disburse'" placement="top" *ngIf="!account.status.pendingApproval && !account.status.active && account.status.code !=='loanStatusType.overpaid' " class="fa fa-flag blueText top-up"></i>
                                                 <!-- link disburse screen -->
-                                                <i [tooltip]="'Add a Top-up loan'" placement="top"
-                                                    *ngIf="account.status.active && isPrimaryLoan(account.productId) && !account.isSubsidiary "
-                                                    class="fa fa-plus-circle blueText top-up"></i>
+                                                <i [tooltip]="'Add a Top-up loan'" placement="top" *ngIf="account.status.active && isPrimaryLoan(account.productId) && !account.isSubsidiary " class="fa fa-plus-circle blueText top-up"></i>
                                                 <!-- link topup screen -->
                                             </td>
                                             <td class="text-center ">
-                                                <span
-                                                    *ngIf="account.status.active && !(account.processDefKey=='MELUnsecured' && !enableMelEditDemographics)">
+                                                <span *ngIf="account.status.active && !(account.processDefKey=='MELUnsecured' && !enableMelEditDemographics)">
                                                     <i class="fa fa-edit blueText edit"
                                                         [tooltip]="'Edit Loan Level details'" placement="top"></i>
                                                     <!-- link edit loan details screen -->
@@ -366,8 +345,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="alert alert-warning m-4 text-center " role="alert "
-                                    *ngIf="!activeLoanAccounts.length ">
+                                <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!activeLoanAccounts.length ">
                                     No active Loans
                                 </div>
                             </div>
@@ -382,28 +360,22 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr
-                                            *ngFor="account of closedLoanAccounts | orderBy: 'id':true | filter:isClosed ">
+                                        <tr *ngFor="account of closedLoanAccounts | orderBy: 'id':true | filter:isClosed ">
                                             <td>
-                                                <i placement="right" [tooltip]="account.status.value "
-                                                    class="fa fa-stop {{account.status.code | StatusLookup}}"></i>
-                                                {{account.accountNo}}
+                                                <i placement="right" [tooltip]="account.status.value " class="fa fa-stop {{account.status.code | StatusLookup}}"></i> {{account.accountNo}}
                                             </td>
                                             <td>{{account.productName}}</td>
                                             <td>
-                                                <i [tooltip]="account.loanType.value " placement="top"
-                                                    [ngClass]="(account.loanType.value=='Individual' ) ? 'fa fa-user' : 'fa fa-users' "></i>
+                                                <i [tooltip]="account.loanType.value " placement="top" [ngClass]="(account.loanType.value=='Individual' ) ? 'fa fa-user' : 'fa fa-users' "></i>
                                             </td>
                                             <td>
-                                                <span
-                                                    *ngIf="account.timeline.closedOnDate ">{{loanaccount.timeline.closedOnDate
+                                                <span *ngIf="account.timeline.closedOnDate ">{{loanaccount.timeline.closedOnDate
                                                     | date : dateFormat}}</span>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="alert alert-warning m-4 text-center " role="alert "
-                                    *ngIf="!closedLoanAccounts.length ">
+                                <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!closedLoanAccounts.length ">
                                     No closed Loans
                                 </div>
                             </div>
@@ -413,8 +385,8 @@
                 </div>
                 <div class="card" *ngIf="associatedWorkflows.length">
                     <div class="card-header d-flex ">
-                        <i class="fa fa-list mr-2 "></i>
-                        <h5 class="mb-0 mr-auto " style="line-height: 1; ">Associated Loan Applications
+                        <i class="fa fa-list mr-2 mt-1"></i>
+                        <h5 class="mb-0 mr-auto">Associated Loan Applications
                         </h5>
                     </div>
                     <div class="card-content">
@@ -448,8 +420,8 @@
                 </div>
                 <div class="card" *ngIf="associatedloanapplications.length">
                     <div class="card-header d-flex ">
-                        <i class="fa fa-list mr-2 "></i>
-                        <h5 class="mb-0 mr-auto " style="line-height: 1; ">Associated Non WorkFlow Loan Applications
+                        <i class="fa fa-list mr-2 mt-1"></i>
+                        <h5 class="mb-0 mr-auto ">Associated Non WorkFlow Loan Applications
                         </h5>
                     </div>
                     <div class="card-content no-h-padding">
@@ -499,8 +471,7 @@
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Father's Name</h6>
                                 </div>
-                                <div class="col-sm-9 text-secondary">{{client.spouseOrFatherFirstname + ' ' +
-                                    client.spouseOrFatherMiddlename + ' ' + client.spouseOrFatherLastname}}
+                                <div class="col-sm-9 text-secondary">{{client.spouseOrFatherFirstname + ' ' + client.spouseOrFatherMiddlename + ' ' + client.spouseOrFatherLastname}}
                                 </div>
                             </div>
                             <hr>
@@ -508,8 +479,7 @@
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Mother's Name</h6>
                                 </div>
-                                <div class="col-sm-9 text-secondary">{{client.motherFirstName+ ' ' +
-                                    client.motherMiddleName + ' '+client.motherLastName}}
+                                <div class="col-sm-9 text-secondary">{{client.motherFirstName+ ' ' + client.motherMiddleName + ' '+client.motherLastName}}
                                 </div>
                             </div>
                             <hr>
@@ -533,8 +503,7 @@
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Spouse Name</h6>
                                 </div>
-                                <div class="col-sm-9 text-secondary">{{client.spouseFirstName+ ' ' +
-                                    client.spouseMiddleName + ' '+client.spouseLastName}}
+                                <div class="col-sm-9 text-secondary">{{client.spouseFirstName+ ' ' + client.spouseMiddleName + ' '+client.spouseLastName}}
                                 </div>
                             </div>
                             <hr>
@@ -561,8 +530,7 @@
                         <div class="card-content ">
                             <perfect-scrollbar>
                                 <div>
-                                    <table class="table table-striped mb-1" *ngIf="addresses.length"
-                                        style="width:1500px;">
+                                    <table class="table table-striped mb-1" *ngIf="addresses.length" style="width:1500px;">
                                         <thead>
                                             <tr>
                                                 <th></th>
@@ -586,17 +554,14 @@
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    {{(address.addressType.name == 'Permanent Address') ? 'Address as
-                                                    per OVD' : address.addressType.name}}
+                                                    {{(address.addressType.name == 'Permanent Address') ? 'Address as per OVD' : address.addressType.name}}
                                                 </td>
                                                 <td>{{address.addressLine}}</td>
                                                 <td>{{address.street}}</td>
                                                 <td>{{address.landMark}}</td>
                                                 <td>
-                                                    <span
-                                                        *ngIf="address.vtcData.name">{{address.vtcData.name}}({{address.vtcData.code}})</span>
-                                                    <span
-                                                        *ngIf="address.vtcName && !address.vtcData.name">{{address.vtcName}}</span>
+                                                    <span *ngIf="address.vtcData.name">{{address.vtcData.name}}({{address.vtcData.code}})</span>
+                                                    <span *ngIf="address.vtcName && !address.vtcData.name">{{address.vtcName}}</span>
                                                 </td>
                                                 <td>{{address.vtcData.district.name}}({{address.vtcData.district.code}})
                                                 </td>
@@ -608,8 +573,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <div class="alert alert-warning m-4 text-center " role="alert "
-                                        *ngIf="!addresses.length">
+                                    <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!addresses.length">
                                         No addresses listed
                                     </div>
                                 </div>
@@ -625,7 +589,7 @@
                 <div class="card">
                     <div class="card-header d-flex ">
                         <i class="fa fa-list mr-2 "></i>
-                        <h5 class="mb-0 mr-auto " style="line-height: 1; ">Addresses
+                        <h5 class="mb-0 mr-auto ">Addresses
                         </h5>
                         <button class="ml-auto btn btn-primary "><i class="fa fa-plus-circle mr-2 "></i>Add
                         </button>
@@ -657,17 +621,14 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                {{(address.addressType.name == 'Permanent Address') ? 'Address as per
-                                                OVD' : address.addressType.name}}
+                                                {{(address.addressType.name == 'Permanent Address') ? 'Address as per OVD' : address.addressType.name}}
                                             </td>
                                             <td>{{address.addressLine}}</td>
                                             <td>{{address.street}}</td>
                                             <td>{{address.landMark}}</td>
                                             <td>
-                                                <span
-                                                    *ngIf="address.vtcData.name">{{address.vtcData.name}}({{address.vtcData.code}})</span>
-                                                <span
-                                                    *ngIf="address.vtcName && !address.vtcData.name">{{address.vtcName}}</span>
+                                                <span *ngIf="address.vtcData.name">{{address.vtcData.name}}({{address.vtcData.code}})</span>
+                                                <span *ngIf="address.vtcName && !address.vtcData.name">{{address.vtcName}}</span>
                                             </td>
                                             <td>{{address.vtcData.district.name}}({{address.vtcData.district.code}})
                                             </td>
@@ -679,8 +640,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="alert alert-warning m-4 text-center " role="alert "
-                                    *ngIf="!addresses.length">
+                                <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!addresses.length">
                                     No addresses listed
                                 </div>
                             </div>
@@ -689,14 +649,16 @@
                 </div>
             </div>
             <div *ngSwitchCase="5">
-                <div class="card" select="getClientIdentityDocuments()" *hasPermission="'READ_CLIENTIDENTIFIER'">
+                <div class="card">
                     <div class="card-header d-flex ">
                         <i class="fa fa-list mr-2 mt-1"></i>
                         <h5 class="mb-0 mr-auto">List of Identities
                         </h5>
+                        <button class="ml-auto btn btn-primary "><i class="fa fa-plus-circle mr-2 "></i>Add
+                        </button>
                     </div>
                     <div class="card-content">
-                        <table class="table card-table table-striped" *ngIf="identitydocuments.length > 0">
+                        <table class="table card-table table-striped" *ngIf="identitydocuments.length">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -705,44 +667,42 @@
                                     <th>Identity Documents</th>
                                     <th>Documents Expiry Date</th>
                                     <th>View Actual Aadhaar Number</th>
-                                    <th>Actions</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let document of identitydocuments" class="pointer"
-                                    ng-model="identitydocuments" aadhaar-masking identitydocuments={{identitydocuments}}
-                                    clientId={{clientId}}>
+                                <tr *ngFor="let document of identitydocuments" class="pointer">
                                     <td>{{document.documentKey}}</td>
+                                    <!-- Aadhaar masking -->
                                     <td>{{document.identifierType.label}}</td>
-                                    <td *ngIf="document.documentType.name == 'Aadhar'">{{document.documentType.name}}
+                                    <td>{{document.documentType.name}}</td>
+                                    <td>
+                                        <span *ngFor="let file of document.documents" [documentView]="(document.documentType.name == 'Aadhar' || (document.documentType.name | uppercase) == 'UID') ? 'view' : 'download'" [entityType]="file.parentEntityType" [entityId]="file.parentEntityId" [document]="file"
+                                            [tooltip]="(document.documentType.name == 'Aadhar' || (document.documentType.name | uppercase) == 'UID') ? 'View' : 'Download'" placement="top" class="mr-1 tag">{{file.fileName}} 
+                                        </span>
                                     </td>
                                     <td>
-                                        <span href="" *ngFor="let file of document.documents"
-                                            [document]="(document.documentType.name == 'Aadhar' || (document.documentType.name | uppercase) == 'UID') ? 'view' : 'download'"
-                                            [entityType]="file.parentEntityType" [entityId]="file.parentEntityId"
-                                            [documentList]="file"
-                                            [tooltip]="(document.documentType.name == 'Aadhar' || (document.documentType.name | uppercase) == 'UID') ? 'view' : 'download'"
-                                            placement="top" class="mr-1 tag">
-                                            {{file.fileName}} </span>
+                                        <span *ngIf="document.documentExpiryDate">{{document.documentExpiryDate |  date : dateFormat}}
+                                        </span>
                                     </td>
-                                    <td><span *ngIf="document.isValidTillRequired">{{document.documentExpiryDate |
-                                            DateFormat}}</span></td>
                                     <td>
                                         <span *ngIf="document.documentType.name == 'Aadhar'">
                                             <button class="btn btn-primary"
-                                                *hasPermission="'VIEW_ACTUAL_AADHAAR_NUMBER'" actualAadhaar
-                                                [document]="document" [clientId]="clientId">View</button>
+                                            *hasPermission="'VIEW_ACTUAL_AADHAAR_NUMBER'" actualAadhaar
+                                            [document]="document" [clientId]="clientId">View</button>
                                         </span>
                                     </td>
                                     <td>
-                                        <span>
-                                            <a *hasPermission="'CREATE_DOCUMENT'"><i
-                                                    class="icon-cloud-upload"></i></a>&nbsp;
-                                        </span>
+                                        <a *hasPermission="'CREATE_DOCUMENT'">
+                                            <i class="fa fa-cloud-upload mr-2"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!identitydocuments.length">
+                            No Identities present
+                        </div>
                     </div>
                 </div>
             </div>

@@ -7,12 +7,12 @@ import { CreateClientComponent } from './client-create.component';
 import { NgWizardModule, NgWizardConfig } from 'ng-wizard';
 import { DatePipe } from '@angular/common';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { TooltipModule } from '../../shared/tooltip/tooltip.module';
-import { InputFieldModule } from '../../shared/input-field/input-field.module';
-import { DropdownModule } from '../../shared/dropdown/dropdown.module';
+import { TooltipModule } from '../../shared/directives/tooltip/tooltip.module';
+import { InputFieldModule } from '../../shared/components/input-field/input-field.module';
+import { DropdownModule } from '../../shared/components/dropdown/dropdown.module';
 
-import { DualEntryComponent } from '../../shared/dual-entry/dual-entry.component';
-import { DocumentUploadComponent } from '../../shared/document-upload/document-upload.component';
+import { DualEntryComponent } from '../../shared/components/dual-entry/dual-entry.component';
+import { DocumentUploadComponent } from '../../shared/components/document-upload/document-upload.component';
 
 const ngWizardConfig: NgWizardConfig = {};
 

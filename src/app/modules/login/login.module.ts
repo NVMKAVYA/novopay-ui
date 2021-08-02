@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
-import { CookieService } from 'ngx-cookie-service';
 
 import { FormsModule } from '@angular/forms';
 
@@ -14,7 +13,6 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     LoginRoutingModule,
     FormsModule
-  ],
-  providers : [CookieService]
+  ]
 })
 export class LoginModule { }

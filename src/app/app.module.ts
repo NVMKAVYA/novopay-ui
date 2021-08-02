@@ -25,7 +25,7 @@ import { ErrorInterceptor } from './helpers/error.interceptors/error.interceptor
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       timeOut: 10000, positionClass: 'toast-top-right',
-      preventDuplicates: true, closeButton: true
+      closeButton: true
     })
   ],
   providers: [{

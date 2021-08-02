@@ -332,26 +332,38 @@ a:hover {
     text-decoration: none !important;
 }
 
+.modal-body {
+    padding: 20px !important;
+}
+
 .pdf-viewer {
-    display: block;
     height: 550px;
-    width: 545px;
+    width: 540px;
 }
 
 .modal-open .modal {
-     overflow-y: hidden !important;
+    overflow-y: hidden !important;
 }
 
 .ng2-pdf-viewer-container {
     width: inherit !important;
     height: 97% !important;
+    border: 1px solid #e6e2e2;
+    background-color: #e6e2e2;
 }
 
-.tag{
+.tag {
     background-color: #5b6268;
     color: white;
     border-radius: 5px;
     padding: 3px;
     margin-bottom: 5px;
     display: inline-block;
+}
+
+.img-modal {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border: 1px solid #e6e2e2;
 }
