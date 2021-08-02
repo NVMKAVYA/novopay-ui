@@ -129,8 +129,8 @@ export class HttpService {
     return this._http.get(`${this.baseUrl}/clients/${clientId}/images?${size}`, { responseType: 'text' });
   }
 
-  public getClientDocuments(clientId): any {
-    return this._http.get(`${this.baseUrl}/clients/${clientId}/documents`);
+  public getDocuments(entityType, entityId): any {
+    return this._http.get(`${this.baseUrl}/${entityType}/${entityId}/documents`);
   }
 
   public getImageUrl(entityType, entityId, documentId, otp, userId): any {

@@ -28,11 +28,11 @@ export class DocumentModalDirective {
           this.showModal();
         })
       } else {
-
-        this.http.getClientDocuments(this.entityId).subscribe(data => {
+        this.entityType = this.entityType != 'clientSignature' ? this.entityType : 'clients';
+        this.http.getDocuments(this.entityType, this.entityId).subscribe(data => {
           let selectedDocument = { id: null };
           data.forEach(doc => {
-            if (doc.name === 'clientSignature' && selectedDocument.id < doc.id) {
+            if (selectedDocument.id < doc.id) {
               selectedDocument = doc;
             }
           });
@@ -46,7 +46,6 @@ export class DocumentModalDirective {
   checkDocument(document) {
     this.documentType = document.type;
     if (document.isFileExists) {
-      this.entityType = this.entityType != 'clientSignature' ? this.entityType : 'clients';
       if (document.type === 'application/pdf') {
         this.http.getPdf(this.entityType, this.entityId, document.id, this.auth.getOtp(), this.auth.userData.userId).subscribe(data => {
           if (data) {
