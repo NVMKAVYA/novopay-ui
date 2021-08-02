@@ -331,3 +331,27 @@ ul li {
 a:hover {
     text-decoration: none !important;
 }
+
+.pdf-viewer {
+    display: block;
+    height: 550px;
+    width: 545px;
+}
+
+.modal-open .modal {
+     overflow-y: hidden !important;
+}
+
+.ng2-pdf-viewer-container {
+    width: inherit !important;
+    height: 97% !important;
+}
+
+.tag{
+    background-color: #5b6268;
+    color: white;
+    border-radius: 5px;
+    padding: 3px;
+    margin-bottom: 5px;
+    display: inline-block;
+}

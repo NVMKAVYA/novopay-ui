@@ -1,18 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DocumentModalComponent } from './document-modal.component';
+import { ActualAadhaarNumberDirective } from './actual-aadhar-number.directive';
 import { SimpleModalModule, defaultSimpleModalOptions } from 'ngx-simple-modal';
-import { DocumentModalDirective } from './document-modal.directive';
+import { ActualAadhaarNumberComponent } from './actual-aadhar-number.component';
 import { TooltipModule } from '../tooltip/tooltip.module';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 
 @NgModule({
-  declarations: [DocumentModalComponent, DocumentModalDirective],
+  declarations: [ActualAadhaarNumberDirective, ActualAadhaarNumberComponent],
   imports: [
     CommonModule,
     TooltipModule,
-    PdfViewerModule,
     SimpleModalModule.forRoot({ container: 'modal-container' }, {
       ...defaultSimpleModalOptions, ...{
         closeOnEscape: true,
@@ -22,8 +20,10 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     })
   ],
   entryComponents: [
-    DocumentModalComponent
+    ActualAadhaarNumberComponent
   ],
-  exports: [DocumentModalDirective]
+  exports: [ActualAadhaarNumberDirective]
 })
-export class DocumentModalModule { }
+export class ActualAadhaarNumberModule {
+
+}

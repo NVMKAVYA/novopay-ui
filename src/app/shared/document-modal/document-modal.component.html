@@ -3,5 +3,8 @@
     </div>
     <div class="modal-body pt-0">
         <img style="width:546px" [src]="documentUrl" alt="Avatar" *ngIf="documentUrl && documentType !== 'application/pdf'">
+        <div class="pdf-viewer"  *ngIf="documentUrl && documentType == 'application/pdf'">
+        <pdf-viewer  class="pdf-viewer" [src]="documentUrl" [original-size]="false" ></pdf-viewer>
+       </div>
     </div>
 </div>
