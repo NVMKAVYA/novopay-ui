@@ -154,7 +154,7 @@
                     <a href="" class="nav-link " data-toggle="tab" (click)="setTab(2)">Personal Details</a>
                 </li>
                 <li class=" nav-item ">
-                    <a href="" class="nav-link " data-toggle="tab" (click)="setTab(3)">Client GST Details</a>
+                    <a href="" class="nav-link " data-toggle="tab" (click)="setTab(3);getGSTDetails()">Client GST Details</a>
                 </li>
                 <li class="nav-item ">
                     <a href="" class="nav-link " data-toggle="tab" *hasPermission=" 'READ_ADDRESS' " (click)="setTab(4);getAddresses()">Addresses</a>
@@ -306,7 +306,7 @@
                                             <th>Amount Paid</th>
                                             <th>Type</th>
                                             <th>Repayment</th>
-                                            <th>Top-up Loan </th>
+                                            <th>Action</th>
                                             <th>Edit</th>
                                         </tr>
                                     </thead>
@@ -457,7 +457,7 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <div class="pt-3 pb-3" style="border: 1px solid #0000001a;">
+                        <div class="pt-3 pb-3">
                             <div class="row col-sm-12">
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Age</h6>
@@ -517,74 +517,107 @@
                         </div>
                     </div>
                 </div>
-                <div *ngSwitchCase="3">Three</div>
-                <div *ngSwitchCase="4">
-                    <div class="card">
-                        <div class="card-header d-flex ">
-                            <i class="fa fa-list mr-2 mt-1"></i>
-                            <h5 class="mb-0 mr-auto">Addresses
-                            </h5>
-                            <button class="ml-auto btn btn-primary "><i class="fa fa-plus-circle mr-2 "></i>Add
-                            </button>
-                        </div>
-                        <div class="card-content ">
-                            <perfect-scrollbar>
-                                <div>
-                                    <table class="table table-striped mb-1" *ngIf="addresses.length" style="width:1500px;">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th>Address Type</th>
-                                                <th>Address Line</th>
-                                                <th>Street Name/Location</th>
-                                                <th>Landmark</th>
-                                                <th>Village /Town /City</th>
-                                                <th>District</th>
-                                                <th>State</th>
-                                                <th>Country</th>
-                                                <th>Postal Code</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let address of addresses">
-                                                <td>
-                                                    <span class="pointer">
-                                                        <i class="fa fa-edit blueText edit" [tooltip]="'Edit Address'"
-                                                            placement="top"></i>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    {{(address.addressType.name == 'Permanent Address') ? 'Address as per OVD' : address.addressType.name}}
-                                                </td>
-                                                <td>{{address.addressLine}}</td>
-                                                <td>{{address.street}}</td>
-                                                <td>{{address.landMark}}</td>
-                                                <td>
-                                                    <span *ngIf="address.vtcData.name">{{address.vtcData.name}}({{address.vtcData.code}})</span>
-                                                    <span *ngIf="address.vtcName && !address.vtcData.name">{{address.vtcName}}</span>
-                                                </td>
-                                                <td>{{address.vtcData.district.name}}({{address.vtcData.district.code}})
-                                                </td>
-                                                <td>{{address.vtcData.district.stateName}}({{address.vtcData.district.stateCode}})
-                                                </td>
-                                                <td>{{address.vtcData.district.countryName}}({{address.vtcData.district.countryCode}})
-                                                </td>
-                                                <td>{{address.postalCode}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!addresses.length">
-                                        No addresses listed
-                                    </div>
+            </div>
+            <div *ngSwitchCase="3">
+                <div class="card">
+                    <div class="card-header d-flex ">
+                        <i class="fa fa-list mr-2 mt-1"></i>
+                        <h5 class="mb-0 mr-auto">Client GST Details
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="pt-3 pb-3">
+                            <div class="row col-sm-12">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">GST Registered ?</h6>
                                 </div>
-                            </perfect-scrollbar>
+                                <div class="col-sm-9 text-secondary">
+                                    {{gst.isGSTNRegistered ? 'Yes' : 'No'}}
+                                </div>
+                            </div>
+                            <div *ngIf="gst.isGSTNRegistered">
+                                <table class="table card-table">
+                                    <thead>
+                                        <tr>
+                                            <th>State</th>
+                                            <th>GST Number</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="clientGSTN of gst.clientGSTN">
+                                            <td>
+                                                <select class="form-control">
+                                                    <option [ngValue]="null" disabled>Select {{labelname}}</option>
+                                                    <option *ngFor="let option of options" [ngValue]="optionvalue ? option[optionvalue] : option">{{option[displayfield]}}</option>
+                                                </select>
+                                            </td>
+                                            <td>{{account.productName}}</td>
+                                            <td>
+                                                <i [tooltip]="account.loanType.value " placement="top" [ngClass]="(account.loanType.value=='Individual' ) ? 'fa fa-user' : 'fa fa-users' "></i>
+                                            </td>
+                                            <td>
+                                                <span *ngIf="account.timeline.closedOnDate ">{{loanaccount.timeline.closedOnDate
+                                                    | date : dateFormat}}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!closedLoanAccounts.length ">
+                                    No closed Loans
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">GST Exemption Status</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">{{client.spouseOrFatherFirstname + ' ' + client.spouseOrFatherMiddlename + ' ' + client.spouseOrFatherLastname}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Mother's Name</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">{{client.motherFirstName+ ' ' + client.motherMiddleName + ' '+client.motherLastName}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Martial Status</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">{{client.maritalStatus.label}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Religion</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">{{client.religion.label}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Spouse Name</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">{{client.spouseFirstName+ ' ' + client.spouseMiddleName + ' '+client.spouseLastName}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">CKYC No/Reference No</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">{{client.ckycNo}}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div *ngSwitchCase="5 ">Five</div>
-                <div *ngSwitchDefault>This is Default</div>
             </div>
-            <div *ngSwitchCase="3">Three</div>
             <div *ngSwitchCase="4">
                 <div class="card">
                     <div class="card-header d-flex ">

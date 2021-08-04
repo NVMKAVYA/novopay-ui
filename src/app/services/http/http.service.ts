@@ -227,4 +227,8 @@ export class HttpService {
     return this._http.put(`${this.baseUrl}/clients/${clientId}/${resource}${resourceId ? `/${resourceId}` : ''}`, data);
   }
 
+  public getGSTResource(requestType, entityType, entityId): any {
+    return this._http.get(`${this.baseUrl}/gst/${requestType}/${entityType}/${entityId}`);
+  }
+
 }

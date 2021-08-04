@@ -6,6 +6,7 @@ import { Constants } from 'src/app/models/Constants';
 import { ClientStatus } from 'src/app/models/clientStatus';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { FormService } from 'src/app/services/form/form.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-view-client',
@@ -49,6 +50,7 @@ export class ViewClientComponent implements OnInit {
   clientNotes: any = [];
   createNoteText: string;
   errorMessage: string;
+  gst: any = {};
 
   constructor(private http: HttpService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private auth: AuthService, private form: FormService) { }
 
@@ -232,6 +234,15 @@ export class ViewClientComponent implements OnInit {
       return true;
     }
   };
+
+  getGSTDetails() {
+    forkJoin([this.http.getGSTResource('GSTNumberData', 'CLIENT', this.clientId), this.http.getGSTResource('GSTExemptionData', 'CLIENT', this.clientId),
+    this.http.getGSTResource('ClientBankRelationData', 'CLIENT', this.clientId)]).subscribe((data: any) => {
+      this.gst.isGSTNRegistered = data[0][0].isGSTNRegistered;
+      this.gst.clientGSTN = data[0];
+      this.gst.clientGSTExemption.isExemptionActive = data[1].isExemptionActive || false;
+    })
+  }
 
   getAddresses() {
     if (!this.addresses.length) {
