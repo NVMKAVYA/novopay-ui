@@ -10,6 +10,7 @@ import { DocumentModalModule } from 'src/app/shared/directives/document-modal/do
 import { ActualAadhaarNumberModule } from 'src/app/shared/directives/actual-aadhaar-number/actual-aadhar-number.module';
 import { OrderModule } from 'ngx-order-pipe';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
     DocumentModalModule,
     ActualAadhaarNumberModule,
     OrderModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    FormsModule
   ]
 })
 export class ViewClientModule { }

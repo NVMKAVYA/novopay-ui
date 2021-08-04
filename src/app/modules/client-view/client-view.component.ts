@@ -46,7 +46,9 @@ export class ViewClientComponent implements OnInit {
   associatedloanapplications: any = [];
   showLoanAccountNumberHeader: boolean = false;
   identitydocuments: any = [];
-  customerIdentifierTypeOptions: any = [];
+  clientNotes: any = [];
+  createNoteText: string;
+  errorMessage: string;
 
   constructor(private http: HttpService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private auth: AuthService, private form: FormService) { }
 
@@ -209,7 +211,7 @@ export class ViewClientComponent implements OnInit {
     this.tab = tab;
   }
 
-  isLoanClosed = function (account, close) {
+  isLoanClosed(account, close) {
     if (account.status.code === "loanStatusType.closed.written.off" ||
       account.status.code === "loanStatusType.closed.obligations.met" ||
       account.status.code === "loanStatusType.closed.reschedule.outstanding.amount" ||
@@ -225,43 +227,70 @@ export class ViewClientComponent implements OnInit {
     }
   };
 
-  isPrimaryLoan = function (id) {
+  isPrimaryLoan(id) {
     if (this.primaryLoanProducts.indexOf(id) > -1) {
       return true;
     }
   };
 
-  getAddresses = function () {
-    if (this.addresses.length) {
-      return;
-    } else {
+  getAddresses() {
+    if (!this.addresses.length) {
       this.http.addressResource('clients', this.clientId).subscribe(data => {
         this.addresses = data;
       })
     }
   };
 
-  getClientIdentityDocuments = function () {
-    if (this.identitydocuments.length) {
-      return;
-    } else {
+  getClientIdentityDocuments() {
+    if (!this.identitydocuments.length) {
       this.http.getclientResource(this.clientId, 'identifiers').subscribe(data => {
         this.identitydocuments = data;
         data.forEach(e => {
-          if (e.documentType.name == 'Passport' || e.documentType.name == 'Drivers License' || e.documentType.name == 'Aadhaar Enrollment Number') {
-            e.isValidTillRequired = true;
-          } else {
-            e.isValidTillRequired = false;
-          }
           this.http.clientIdentifierResource(e.id).subscribe(data => {
             e.documents = data;
           });
         })
       })
-
-      this.http.clientIdenfierTemplateResource(this.clientId).subscribe(data => {
-        this.customerIdentifierTypeOptions = data.allowedIdentifierTypes;
-      })
     }
   };
+
+  getNotes() {
+    this.http.getclientNotesResource(this.clientId).subscribe(data => {
+      this.clientNotes = data;
+    })
+  }
+
+  createNote() {
+    if (this.createNoteText) {
+      let data = { note: this.createNoteText };
+      this.http.saveClientResource(this.clientId, 'notes', data).subscribe(data => {
+        let currentNote = {
+          id: data.resourceId,
+          note: this.createNoteText,
+          createdByUsername: this.auth.userData.username,
+          createdOn: new Date()
+        };
+        this.clientNotes.push(currentNote);
+        this.createNoteText = null;
+      });
+    }
+  }
+
+  editNote(note) {
+    note.showEdit = true;
+    note.newNote = note.note;
+  }
+
+  saveEditedNote(note) {
+    this.errorMessage = "";
+    if (note.note != note.newNote) {
+      let data = { note: note.newNote };
+      this.http.updateClientResource(this.clientId, 'notes', data, note.id).subscribe(data => {
+        this.getNotes();
+      });
+    } else {
+      this.errorMessage = 'No changes done to save'
+    }
+  }
+
 }

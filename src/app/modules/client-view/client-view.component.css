@@ -103,3 +103,8 @@ span>a:hover {
 hr {
     margin-top: 0.5rem !important
 }
+
+.note-header {
+    background-color: var(--darkGrey);
+    height: 51px;
+}

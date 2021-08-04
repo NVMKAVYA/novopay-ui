@@ -7,6 +7,7 @@
     --black: #424242 !important;
     --darkGrey: #5b6268 !important;
     --red: #e93b3e !important;
+    --lightGrey: #e6e2e2 !important;
 }
 
 html {
@@ -278,6 +279,11 @@ input:disabled {
     align-items: center;
 }
 
+.f-ver-end {
+    display: flex;
+    align-items: flex-end;
+}
+
 .table td,
 .table th {
     text-align: center !important;
@@ -348,12 +354,12 @@ a:hover {
 .ng2-pdf-viewer-container {
     width: inherit !important;
     height: 97% !important;
-    border: 1px solid #e6e2e2;
-    background-color: #e6e2e2;
+    border: 1px solid var(--lightGrey);
+    background-color: var(--lightGrey);
 }
 
 .tag {
-    background-color: #5b6268;
+    background-color: var(--darkGrey);
     color: white;
     border-radius: 5px;
     padding: 3px;
@@ -365,5 +371,9 @@ a:hover {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    border: 1px solid #e6e2e2;
+    border: 1px solid var(--lightGrey);
+}
+
+.circle {
+    border-radius: 50% !important;
 }

@@ -210,9 +210,21 @@ export class HttpService {
 
   public aadharVaultGetApiResource(clientId, aadharRefNum): any {
     let params = new HttpParams();
-    params = clientId ? params.append('clientId', clientId) : params;
-    params = aadharRefNum ? params.append('aadharRefNum', aadharRefNum) : params;
+    params.append('clientId', clientId);
+    params.append('aadharRefNum', aadharRefNum);
     return this._http.get(`${this.baseUrl}/aadharVault/getAadhar`, { params: params });
+  }
+
+  public getclientNotesResource(clientId): any {
+    return this._http.get(`${this.baseUrl}/clients/${clientId}/notes`);
+  }
+
+  public saveClientResource(clientId, resource, data): any {
+    return this._http.post(`${this.baseUrl}/clients/${clientId}/${resource}`, data);
+  }
+
+  public updateClientResource(clientId, resource, data, resourceId?): any {
+    return this._http.put(`${this.baseUrl}/clients/${clientId}/${resource}${resourceId ? `/${resourceId}` : ''}`, data);
   }
 
 }
