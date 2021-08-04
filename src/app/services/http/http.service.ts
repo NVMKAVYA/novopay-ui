@@ -85,9 +85,9 @@ export class HttpService {
     return this._http.get(`${this.baseUrl}/countrydetail`, { params: params });
   }
 
-  public getstateDetailResource(countryId): any {
+  public getstateDetailResource(countryId?): any {
     let params = new HttpParams();
-    params = params.append('countryId', countryId);
+    params = countryId ? params.append('countryId', countryId) : params;
     params = params.append('limit', '-1');
     return this._http.get(`${this.baseUrl}/statedetail`, { params: params });
   }

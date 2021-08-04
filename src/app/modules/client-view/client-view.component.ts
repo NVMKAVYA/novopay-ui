@@ -32,7 +32,6 @@ export class ViewClientComponent implements OnInit {
   enableMelEditDemographics: boolean = false;
   showClientDemographicForMel: boolean = true;
   showDemoAuthButton: boolean = true;
-  isBC: boolean = false;
   allowEditingOfDeathDate: boolean = false;
   editDemoPermission: string;
   clientAccounts: any;
@@ -46,18 +45,19 @@ export class ViewClientComponent implements OnInit {
   associatedWorkflows: any = [];
   associatedloanapplications: any = [];
   showLoanAccountNumberHeader: boolean = false;
-  identitydocuments: any = [];
-  clientNotes: any = [];
+  identitydocuments: any;
+  clientNotes: any;
   createNoteText: string;
   errorMessage: string;
   gst: any = {};
+  clientDocuments: any;
+  stateOptions: any[] = [];
 
   constructor(private http: HttpService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private auth: AuthService, private form: FormService) { }
 
   ngOnInit(): void {
 
     this.clientId = parseInt(this.route.snapshot.paramMap.get('id'));
-    this.isBC = this.auth.isBC;
     this.enableMelEditDemographics = this.auth.getConfiguration("enable-edit-demographic-for-mel").enabled;
 
     this.http.getclientResource(this.clientId, null, null, true).subscribe(data => {
@@ -86,7 +86,6 @@ export class ViewClientComponent implements OnInit {
       }
       this.buttonsArray.singlebuttons = buttons;
     })
-
 
     this.http.runReportsResource('ClientSummary', 'false', this.clientId).subscribe(data => {
       this.clientSummary = data[0];
@@ -175,7 +174,7 @@ export class ViewClientComponent implements OnInit {
       this.deathRequestPending = data.length > 0 ? true : false;
     })
 
-    if (this.isBC) {
+    if (this.auth.isBC) {
       let daysConfiguration = parseInt(this.auth.getConfiguration('bc-death-tagging-edit-days').value);
       let daysConfigurationEnabled = this.auth.getConfiguration('bc-death-tagging-edit-days').enabled;
 
@@ -236,12 +235,28 @@ export class ViewClientComponent implements OnInit {
   };
 
   getGSTDetails() {
-    forkJoin([this.http.getGSTResource('GSTNumberData', 'CLIENT', this.clientId), this.http.getGSTResource('GSTExemptionData', 'CLIENT', this.clientId),
-    this.http.getGSTResource('ClientBankRelationData', 'CLIENT', this.clientId)]).subscribe((data: any) => {
-      this.gst.isGSTNRegistered = data[0][0].isGSTNRegistered;
-      this.gst.clientGSTN = data[0];
-      this.gst.clientGSTExemption.isExemptionActive = data[1].isExemptionActive || false;
-    })
+    if (!Object.keys(this.gst).length) {
+      forkJoin([this.http.getGSTResource('GSTNumberData', 'CLIENT', this.clientId), this.http.getGSTResource('GSTExemptionData', 'CLIENT', this.clientId),
+      this.http.getGSTResource('ClientBankRelationData', 'CLIENT', this.clientId)]).subscribe((data: any) => {
+        this.gst.isGSTNRegistered = data[0][0]?.isGSTNRegistered;
+        this.gst.clientGSTN = data[0];
+        this.gst.isExemptionActive = data[1]?.isExemptionActive || false;
+        this.gst.isRelatedParty = data[2]?.isRelatedParty || false;
+        if (this.gst.isGSTNRegistered) {
+          this.http.getstateDetailResource().subscribe(data => {
+            this.stateOptions = data;
+          })
+        }
+        if (this.gst.isExemptionActive) {
+          this.gst.exemptionStartDate = data[1]?.exemptionStartDate;
+          this.gst.exemptionEndDate = data[1]?.exemptionEndDate;
+        }
+        if (this.gst.isRelatedParty) {
+          this.gst.relationStartDate = data[2]?.relationStartDate;
+          this.gst.relationEndDate = data[2]?.relationEndDate;
+        }
+      })
+    }
   }
 
   getAddresses() {
@@ -253,7 +268,7 @@ export class ViewClientComponent implements OnInit {
   };
 
   getClientIdentityDocuments() {
-    if (!this.identitydocuments.length) {
+    if (!this.identitydocuments) {
       this.http.getclientResource(this.clientId, 'identifiers').subscribe(data => {
         this.identitydocuments = data;
         data.forEach(e => {
@@ -265,10 +280,24 @@ export class ViewClientComponent implements OnInit {
     }
   };
 
+  getDocumentsData(data) {
+    this.clientDocuments = data;
+  }
+
+  getClientDocuments() {
+    if (!this.clientDocuments) {
+      this.http.getDocuments('clients', this.clientId).subscribe(data => {
+        this.clientDocuments = data;
+      })
+    }
+  };
+
   getNotes() {
-    this.http.getclientNotesResource(this.clientId).subscribe(data => {
-      this.clientNotes = data;
-    })
+    if (!this.clientNotes) {
+      this.http.getclientNotesResource(this.clientId).subscribe(data => {
+        this.clientNotes = data;
+      })
+    }
   }
 
   createNote() {
@@ -297,6 +326,7 @@ export class ViewClientComponent implements OnInit {
     if (note.note != note.newNote) {
       let data = { note: note.newNote };
       this.http.updateClientResource(this.clientId, 'notes', data, note.id).subscribe(data => {
+        this.clientNotes = null;
         this.getNotes();
       });
     } else {

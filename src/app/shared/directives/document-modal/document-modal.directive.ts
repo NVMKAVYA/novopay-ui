@@ -1,4 +1,4 @@
-import { Directive, Input, HostListener } from '@angular/core';
+import { Directive, Input, HostListener, Output, EventEmitter } from '@angular/core';
 import { HttpService } from 'src/app/services/http/http.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -13,8 +13,9 @@ export class DocumentModalDirective {
 
   @Input() entityType: string;
   @Input() entityId: number;
-  @Input() document: any;
+  @Input() document: any[];
   @Input('documentView') action: string;
+  @Output() valuechange = new EventEmitter();
   documentUrl: any;
   documentType: string;
 
@@ -27,38 +28,41 @@ export class DocumentModalDirective {
         this.documentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(data)
         this.showModal();
       })
+    } else if (this.entityType == 'clientSignature' && this.document) {
+      this.findSignatureDocument(this.document);
+    } else if (this.entityType == 'clientSignature' && !this.document) {
+      this.http.getDocuments('clients', this.entityId).subscribe(data => {
+        this.document = data;
+        this.valuechange.emit(this.document);
+        this.findSignatureDocument(data);
+      })
     } else {
-      if (this.document) {
-        this.checkDocument(this.document);
-      } else {
-        this.entityType = this.entityType != 'clientSignature' ? this.entityType : 'clients';
-        this.http.getDocuments(this.entityType, this.entityId).subscribe(data => {
-          let selectedDocument = { id: null };
-          this.document = data;
-          data.forEach(doc => {
-            if (selectedDocument.id < doc.id) {
-              selectedDocument = doc;
-            }
-          });
-          this.checkDocument(selectedDocument);
-        })
-      }
+      this.analyzeDocument(this.document, this.entityType);
     }
   }
 
+  findSignatureDocument(data) {
+    let selectedDocument = { id: null };
+    data.forEach(doc => {
+      if (selectedDocument.id < doc.id && doc.name.toUpperCase() == 'clientSignature'.toUpperCase()) {
+        selectedDocument = doc;
+      }
+    });
+    this.analyzeDocument(selectedDocument, 'clients');
+  }
 
-  checkDocument(document) {
+  analyzeDocument(document, type) {
     this.documentType = document.type;
     if (document.isFileExists) {
       if (document.type === 'application/pdf' && this.action == 'view') {
-        this.http.getPdf(this.entityType, this.entityId, document.id, this.auth.getOtp(), this.auth.userData.userId).subscribe(data => {
+        this.http.getPdf(type, this.entityId, document.id, this.auth.getOtp(), this.auth.userData.userId).subscribe(data => {
           if (data) {
             this.documentUrl = this.base64ToArrayBuffer(data);
           }
           this.showModal();
         });
       } else {
-        this.documentUrl = this.http.getUrl(this.entityType, this.entityId, document.id, this.auth.getOtp(), this.auth.userData.userId);
+        this.documentUrl = this.http.getUrl(type, this.entityId, document.id, this.auth.getOtp(), this.auth.userData.userId);
         this.action == 'view' ? this.showModal() : window.open(this.documentUrl);
       }
     } else if (document.dmsUpload) {

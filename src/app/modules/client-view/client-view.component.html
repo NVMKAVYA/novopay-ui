@@ -107,7 +107,7 @@
                                     </li>
                                     <li>
                                         <span class="detail-key">Signature :</span>
-                                        <span [documentView]="'view'" entityType="clientSignature" [entityId]="clientId" class="pointer blueText">
+                                        <span [documentView]="'view'" entityType="clientSignature" [document]="clientDocuments" [entityId]="clientId" (valuechange)="getDocumentsData($event)" class="pointer blueText">
                                             <a>View</a>
                                         </span>
                                     </li>
@@ -163,7 +163,7 @@
                     <a href="" class="nav-link " data-toggle="tab" *hasPermission="'READ_CLIENTIDENTIFIER'" (click)="setTab(5);getClientIdentityDocuments()">Identities</a>
                 </li>
                 <li class="nav-item ">
-                    <a href="" class="nav-link " data-toggle="tab" (click)="setTab(6)">Documents</a>
+                    <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(6);getClientDocuments()">Documents</a>
                 </li>
                 <li class="nav-item">
                     <a href="" class="nav-link " data-toggle="tab" *hasPermission="'READ_CLIENTNOTE'" (click)="setTab(7);getNotes()">Notes</a>
@@ -171,7 +171,7 @@
             </ul>
         </div>
     </div>
-    <div class="card pr-4 pl-4" style="width:inherit; " *ngIf="client">
+    <div class="card pr-4 pl-4" style="width:inherit;" *ngIf="client">
         <div class="ml-auto pt-2 pb-2">
             <button class="btn btn-primary card-btn"><i class="fa fa-history mr-2"></i>Demographic History
             </button>
@@ -296,7 +296,7 @@
                     <div class="card-content ">
                         <perfect-scrollbar>
                             <div *ngIf="showActiveLoans ">
-                                <table class="table card-table table-striped" *ngIf="activeLoanAccounts.length ">
+                                <table class="table table-striped" *ngIf="activeLoanAccounts.length ">
                                     <thead>
                                         <tr>
                                             <th>Account #</th>
@@ -350,7 +350,7 @@
                                 </div>
                             </div>
                             <div *ngIf="!showActiveLoans ">
-                                <table class="table card-table " *ngIf="closedLoanAccounts.length ">
+                                <table class="table table-striped" *ngIf="closedLoanAccounts.length ">
                                     <thead>
                                         <tr>
                                             <th>Account #</th>
@@ -391,7 +391,7 @@
                     </div>
                     <div class="card-content">
                         <div>
-                            <table class="table card-table table-striped">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>Process Instance ID</th>
@@ -429,7 +429,7 @@
                             <h3>Client Closed</h3>
                         </div>
                         <div class="card-content">
-                            <table class="table card-table table-striped">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>Application Reference No</th>
@@ -471,7 +471,7 @@
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Father's Name</h6>
                                 </div>
-                                <div class="col-sm-9 text-secondary">{{client.spouseOrFatherFirstname + ' ' + client.spouseOrFatherMiddlename + ' ' + client.spouseOrFatherLastname}}
+                                <div class="col-sm-9 text-secondary">{{(client.spouseOrFatherFirstname || '') + ' ' + (client.spouseOrFatherMiddlename || '') + ' ' + (client.spouseOrFatherLastname || '') }}
                                 </div>
                             </div>
                             <hr>
@@ -479,7 +479,7 @@
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Mother's Name</h6>
                                 </div>
-                                <div class="col-sm-9 text-secondary">{{client.motherFirstName+ ' ' + client.motherMiddleName + ' '+client.motherLastName}}
+                                <div class="col-sm-9 text-secondary">{{(client.motherFirstName || '' )+ ' ' + (client.motherMiddleName || '' ) + ' '+ (client.motherLastName || '' )}}
                                 </div>
                             </div>
                             <hr>
@@ -503,7 +503,7 @@
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Spouse Name</h6>
                                 </div>
-                                <div class="col-sm-9 text-secondary">{{client.spouseFirstName+ ' ' + client.spouseMiddleName + ' '+client.spouseLastName}}
+                                <div class="col-sm-9 text-secondary">{{(client.spouseFirstName || '' ) + ' ' + (client.spouseMiddleName || '' ) + ' '+ (client.spouseLastName || '' )}}
                                 </div>
                             </div>
                             <hr>
@@ -528,90 +528,81 @@
                     <div class="card-body">
                         <div class="pt-3 pb-3">
                             <div class="row col-sm-12">
-                                <div class="col-sm-3">
+                                <div class="col-sm-3 mb-4">
                                     <h6 class="mb-0">GST Registered ?</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
                                     {{gst.isGSTNRegistered ? 'Yes' : 'No'}}
                                 </div>
                             </div>
-                            <div *ngIf="gst.isGSTNRegistered">
-                                <table class="table card-table">
-                                    <thead>
+                            <div *ngIf="gst?.isGSTNRegistered">
+                                <table class="table table-bordered col-md-5 ml-3 mb-4">
+                                    <thead class="thead-light">
                                         <tr>
                                             <th>State</th>
                                             <th>GST Number</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="clientGSTN of gst.clientGSTN">
+                                        <tr *ngFor="let clientGSTN of gst.clientGSTN">
                                             <td>
-                                                <select class="form-control">
-                                                    <option [ngValue]="null" disabled>Select {{labelname}}</option>
-                                                    <option *ngFor="let option of options" [ngValue]="optionvalue ? option[optionvalue] : option">{{option[displayfield]}}</option>
+                                                <select class="form-control" disabled>
+                                                    <option *ngFor="let option of stateOptions" [ngValue]="option.id">{{option.name}}</option>
                                                 </select>
                                             </td>
-                                            <td>{{account.productName}}</td>
-                                            <td>
-                                                <i [tooltip]="account.loanType.value " placement="top" [ngClass]="(account.loanType.value=='Individual' ) ? 'fa fa-user' : 'fa fa-users' "></i>
-                                            </td>
-                                            <td>
-                                                <span *ngIf="account.timeline.closedOnDate ">{{loanaccount.timeline.closedOnDate
-                                                    | date : dateFormat}}</span>
-                                            </td>
+                                            <td>{{clientGSTN?.gSTNumber}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!closedLoanAccounts.length ">
-                                    No closed Loans
-                                </div>
                             </div>
-                            <hr>
                             <div class="row col-sm-12">
-                                <div class="col-sm-3">
+                                <div class="col-sm-3 mb-4">
                                     <h6 class="mb-0">GST Exemption Status</h6>
                                 </div>
-                                <div class="col-sm-9 text-secondary">{{client.spouseOrFatherFirstname + ' ' + client.spouseOrFatherMiddlename + ' ' + client.spouseOrFatherLastname}}
+                                <div class="col-sm-9 text-secondary">{{gst.isExemptionActive ? 'Exempted' : 'Not Exempted'}}
+                                </div>
+                                <div *ngIf="gst?.isExemptionActive">
+                                    <table class="table table-bordered col-md-5 ml-3 mb-4">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    {{gst.exemptionStartDate | date : dateFormat}}
+                                                </td>
+                                                <td>{{gst.exemptionEndDate | date : dateFormat}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                            <hr>
                             <div class="row col-sm-12">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">Mother's Name</h6>
+                                <div class="col-sm-3 mb-4">
+                                    <h6 class="mb-0">Is Client Related Party ?</h6>
                                 </div>
-                                <div class="col-sm-9 text-secondary">{{client.motherFirstName+ ' ' + client.motherMiddleName + ' '+client.motherLastName}}
+                                <div class="col-sm-9 text-secondary">{{gst.isRelatedParty ? 'Yes' : 'No'}}
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="row col-sm-12">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">Martial Status</h6>
-                                </div>
-                                <div class="col-sm-9 text-secondary">{{client.maritalStatus.label}}
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row col-sm-12">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">Religion</h6>
-                                </div>
-                                <div class="col-sm-9 text-secondary">{{client.religion.label}}
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row col-sm-12">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">Spouse Name</h6>
-                                </div>
-                                <div class="col-sm-9 text-secondary">{{client.spouseFirstName+ ' ' + client.spouseMiddleName + ' '+client.spouseLastName}}
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row col-sm-12">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">CKYC No/Reference No</h6>
-                                </div>
-                                <div class="col-sm-9 text-secondary">{{client.ckycNo}}
+                                <div *ngIf="gst?.isRelatedParty">
+                                    <table class="table table-bordered col-md-5 ml-3 mb-4">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Relation Start Date</th>
+                                                <th>Relation End date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    {{gst.relationStartDate | date : dateFormat}}
+                                                </td>
+                                                <td>{{gst.relationEndDate | date : dateFormat}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -691,7 +682,7 @@
                         </button>
                     </div>
                     <div class="card-content">
-                        <table class="table card-table table-striped" *ngIf="identitydocuments.length">
+                        <table class="table table-striped" *ngIf="identitydocuments?.length">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -733,13 +724,49 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!identitydocuments.length">
+                        <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!identitydocuments?.length">
                             No Identities present
                         </div>
                     </div>
                 </div>
             </div>
-            <div *ngSwitchCase="6">Six</div>
+            <div *ngSwitchCase="6">
+                <div class="card">
+                    <div class="card-header d-flex ">
+                        <i class="icon fa fa-file mr-2 mt-1"></i>
+                        <h5 class="mb-0 mr-auto">Documents</h5>
+                        <a class="ml-auto btn btn-primary" *hasPermission="'CREATE_DOCUMENT'"><i class="fa fa-plus-circle mr-2"></i> Upload
+                        </a>
+                    </div>
+                    <div class="card-content">
+                        <table class="table table-striped" *ngIf=" clientDocuments?.length">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>File Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let clientdocument of clientDocuments" class="pointer">
+                                    <td>{{clientdocument.name}}</td>
+                                    <td>{{clientdocument.description}}</td>
+                                    <td>{{clientdocument.fileName}}</td>
+                                    <td>
+                                        <span entityType="clients" [entityId]="clientId" [documentView]="'download'" [document]="clientdocument">
+                                           <i class="fa fa-cloud-download mr-2"></i>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!clientDocuments?.length">
+                            No documents present
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div *ngSwitchCase="7">
                 <div class="card">
                     <div class="card-header d-flex ">
@@ -795,7 +822,6 @@
                     </div>
                 </div>
             </div>
-            <div *ngSwitchDefault>This is Default</div>
         </div>
     </div>
 </div>
