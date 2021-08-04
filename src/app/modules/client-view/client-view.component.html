@@ -107,7 +107,7 @@
                                     </li>
                                     <li>
                                         <span class="detail-key">Signature :</span>
-                                        <span [documentView]="'view'" entityType="clientSignature" [entityId]="clientId" class="pointer blueText">
+                                        <span [documentView]="'view'" entityType="clientSignature" [document]="clientDocuments" [entityId]="clientId" class="pointer blueText">
                                             <a>View</a>
                                         </span>
                                     </li>
@@ -163,7 +163,7 @@
                     <a href="" class="nav-link " data-toggle="tab" *hasPermission="'READ_CLIENTIDENTIFIER'" (click)="setTab(5);getClientIdentityDocuments()">Identities</a>
                 </li>
                 <li class="nav-item ">
-                    <a href="" class="nav-link " data-toggle="tab" (click)="setTab(6)">Documents</a>
+                    <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(6);getClientDocuments()">Documents</a>
                 </li>
                 <li class="nav-item">
                     <a href="" class="nav-link " data-toggle="tab" *hasPermission="'READ_CLIENTNOTE'" (click)="setTab(7);getNotes()">Notes</a>
@@ -762,6 +762,42 @@
                     </div>
                 </div>
             </div>
+            <div *ngSwitchCase="6">
+                <div class="card">
+                    <div class="card-header d-flex ">
+                        <i class="icon fa fa-file mr-2 mt-1"></i>
+                        <h5 class="mb-0 mr-auto">Documents</h5> 
+                        <button class="ml-auto btn btn-primary" *hasPermission="'CREATE_DOCUMENT'"><i class="fa fa-plus-circle mr-2"> Upload</i><a href="#/addclientdocument/{{client.id}}"></a> 
+                        </button>       
+                    </div>
+                    <div class="card-content">
+                        <table class="table card-table table-striped" select="getClientDocuments()">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>File Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr *ngFor="let clientdocument of clientDocuments" class="pointer">
+                                    <td>{{clientdocument.name}}</td>
+                                    <td>{{clientdocument.description}}</td>
+                                    <td>{{clientdocument.fileName}}</td>
+                                    <td>
+                                    <span  entityType="clients"  [entityId]="clientId" [documentView]="'download'">
+                                     <i class="fa fa-cloud-upload mr-2"></i>&nbsp;
+                                    </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div *ngSwitchCase="7">Seven</div>
             <div *ngSwitchDefault>This is Default</div>
         </div>
     </div>

@@ -49,6 +49,8 @@ export class ViewClientComponent implements OnInit {
   clientNotes: any = [];
   createNoteText: string;
   errorMessage: string;
+  customerIdentifierTypeOptions: any = [];
+  clientDocuments:any;
 
   constructor(private http: HttpService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private auth: AuthService, private form: FormService) { }
 
@@ -292,5 +294,14 @@ export class ViewClientComponent implements OnInit {
       this.errorMessage = 'No changes done to save'
     }
   }
+  getClientDocuments(){
+    if (this.clientDocuments) {
+      return;
+    } else {
+      this.http.getDocuments('clients', this.clientId).subscribe(data => {
+        this.clientDocuments = data;
+      })
+    }
+  };
 
 }
