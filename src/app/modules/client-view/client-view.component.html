@@ -695,7 +695,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let document of identitydocuments" class="pointer">
+                                <tr *ngFor="let document of identitydocuments | aadhaarMask : clientAccounts " class="pointer">
                                     <td>{{document.documentKey}}</td>
                                     <!-- Aadhaar masking -->
                                     <td>{{document.identifierType.label}}</td>
