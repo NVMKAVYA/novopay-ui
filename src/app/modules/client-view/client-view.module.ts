@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { ViewClientRoutingModule } from './client-view-routing.module';
 import { ViewClientComponent } from './client-view.component';
 import { TooltipModule } from '../../shared/directives/tooltip/tooltip.module';
@@ -11,10 +10,10 @@ import { ActualAadhaarNumberModule } from 'src/app/shared/directives/actual-aadh
 import { OrderModule } from 'ngx-order-pipe';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { FormsModule } from '@angular/forms';
-
+import { AadhaarMaskPipe } from 'src/app/pipes/aadhaar-mask/aadhaar-mask.pipe';
 
 @NgModule({
-  declarations: [ViewClientComponent],
+  declarations: [ViewClientComponent,AadhaarMaskPipe],
   imports: [
     CommonModule,
     ViewClientRoutingModule,
@@ -28,4 +27,5 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ]
 })
-export class ViewClientModule { }
+export class ViewClientModule { 
+}
