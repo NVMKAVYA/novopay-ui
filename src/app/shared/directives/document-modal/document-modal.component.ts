@@ -22,9 +22,7 @@ export class DocumentModalComponent extends SimpleModalComponent<modal, boolean>
     super();
   }
 
-  ngOnInit(): void {
-    this.documentUrl;
-  }
+  ngOnInit(): void { }
 
   confirm() {
     this.close();
