@@ -1,15 +1,16 @@
 <div class="modal-content blueBorderModal">
-    <div class="modal-header modalBackground">
-        <h4 class="col-sm-12 h4">View Actual Aadhaar Number<span class="pointer pr-1" (click)="confirm()" style="position: absolute;
-        right: 0">
-                <i class="fa fa-close" [tooltip]="'Close'" placement="right"></i>
-            </span>
+    <div class="modal-header modalBackground pr-3 pl-1">
+        <h4 class="col-sm-12 h5 text-white mb-0 p-0">View Actual Aadhaar Number
         </h4>
+        <span class="pointer text-white" (click)="confirm()">
+			<i class="fa fa-close" [tooltip]="'Close'" placement="right"></i>
+		</span>
     </div>
-    <div class="modal-body pt-0 headingStyle">
-        <div class="col-sm-12">
-            <label class="mb-0">Actual Aadhaar Number : </label>
-            <span> {{ actualAadhaarNumber}}</span>
+    <div class="modal-body headingStyle">
+        <div class="col-sm-12 p-0">
+            <label class="mb-0 pr-5" style="font-weight: 600;">Actual Aadhaar Number</label>
+            <label class="mb-0 pr-5">:</label>
+            <span> {{actualAadhaarNumber}}</span>
         </div>
     </div>
 </div>

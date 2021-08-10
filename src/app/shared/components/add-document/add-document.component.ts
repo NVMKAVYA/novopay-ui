@@ -5,12 +5,12 @@ import { HttpService } from 'src/app/services/http/http.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Constants } from 'src/app/models/Constants';
 import { DatePipe } from '@angular/common';
-declare var $: any;
+// declare var $: any;
 
 @Component({
   selector: 'app-document-upload',
-  templateUrl: './document-upload.component.html',
-  styleUrls: ['./document-upload.component.css']
+  templateUrl: './add-document.component.html',
+  styleUrls: ['./add-document.component.css']
 })
 export class DocumentUploadComponent implements OnInit {
 

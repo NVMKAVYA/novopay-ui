@@ -11,9 +11,10 @@ import { OrderModule } from 'ngx-order-pipe';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { FormsModule } from '@angular/forms';
 import { AadhaarMaskPipe } from 'src/app/pipes/aadhaar-mask/aadhaar-mask.pipe';
+import { UploadModalComponent } from './upload-modal/upload-modal.component';
 
 @NgModule({
-  declarations: [ViewClientComponent,AadhaarMaskPipe],
+  declarations: [ViewClientComponent,AadhaarMaskPipe, UploadModalComponent],
   imports: [
     CommonModule,
     ViewClientRoutingModule,

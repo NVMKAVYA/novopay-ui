@@ -5,6 +5,8 @@ export class Constants {
     public static lang: string = "en";
     public static timeoutForErrorMessage: number = 5000;
     public static timeoutForWarningMessage: number = 5000;
+    public static supportedMimeTypesForClientImage: string = "image/jpeg,image/jpg,image/png";
+    public static supportedMimeTypes: string = "image/jpeg,image/jpg,image/png,application/pdf";
     public static pattern = {
         alphabets: {
             regex: '^[a-zA-Z]+$',

@@ -7,6 +7,8 @@ import { ClientStatus } from 'src/app/models/clientStatus';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { FormService } from 'src/app/services/form/form.service';
 import { forkJoin } from 'rxjs';
+import { SimpleModalService } from 'ngx-simple-modal';
+import { UploadModalComponent } from './upload-modal/upload-modal.component';
 
 @Component({
   selector: 'app-view-client',
@@ -53,7 +55,7 @@ export class ViewClientComponent implements OnInit {
   clientDocuments: any;
   stateOptions: any[] = [];
 
-  constructor(private http: HttpService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private auth: AuthService, private form: FormService) { }
+  constructor(private http: HttpService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private auth: AuthService, private form: FormService, private modal: SimpleModalService) { }
 
   ngOnInit(): void {
 
@@ -66,10 +68,9 @@ export class ViewClientComponent implements OnInit {
       this.enableEditDemographic = !(this.client.status.value == 'Closed' || this.client.status.value == 'Closed As Death');
 
       if (this.client.imagePresent) {
-        this.http.getClientImage(this.clientId, 'maxHeight=300').subscribe(data => {
-          this.clientImage = this.sanitizer.bypassSecurityTrustResourceUrl(data);
-        })
+        this.getClientImage();
       }
+
       let buttons;
       if (this.clientStatus.statusKnown(data.status.value)) {
         buttons = this.clientStatus.getStatus(data.status.value);
@@ -208,6 +209,12 @@ export class ViewClientComponent implements OnInit {
 
   }
 
+  getClientImage() {
+    this.http.getClientImage(this.clientId, 'maxHeight=300').subscribe(data => {
+      this.clientImage = this.sanitizer.bypassSecurityTrustResourceUrl(data);
+    })
+  }
+
   setTab(tab: number) {
     this.tab = tab;
   }
@@ -233,6 +240,25 @@ export class ViewClientComponent implements OnInit {
       return true;
     }
   };
+
+  showModal(entityId, ...type) {
+    this.modal.addModal(UploadModalComponent, {
+      type: type,
+      entityId: entityId
+    }).subscribe((data) => {
+      if (data) {
+        switch (type[0]) {
+          case 'Client Image': this.getClientImage();
+            break;
+          case 'Client Signature': this.clientDocuments = null;
+            break;
+          case 'Client Document': this.identitydocuments = null;
+            this.getClientIdentityDocuments();
+            break;
+        }
+      }
+    });
+  }
 
   getGSTDetails() {
     if (!Object.keys(this.gst).length) {

@@ -129,8 +129,16 @@ export class HttpService {
     return this._http.get(`${this.baseUrl}/clients/${clientId}/images?${size}`, { responseType: 'text' });
   }
 
+  public postClientImage(clientId, data): any {
+    return this._http.post(`${this.baseUrl}/clients/${clientId}/images`, data);
+  }
+
   public getDocuments(entityType, entityId): any {
     return this._http.get(`${this.baseUrl}/${entityType}/${entityId}/documents`);
+  }
+
+  public postDocuments(entityType, entityId, data): any {
+    return this._http.post(`${this.baseUrl}/${entityType}/${entityId}/documents`, data);
   }
 
   public getUrl(entityType, entityId, documentId, otp, userId): any {
@@ -147,6 +155,7 @@ export class HttpService {
     params = R_clientId ? params.append('R_clientId', R_clientId) : params;
     return this._http.get(`${this.baseUrl}/runreports/${reportSource}`, { params: params });
   }
+
   public globalSearch(query, resource, exactMatch): any {
     let params = new HttpParams();
     params = params.append('query', query);

@@ -223,12 +223,12 @@
                     </a>
                 </div>
                 <div>
-                    <a class="dropdown-item" type="button" *hasPermission="'CREATE_CLIENTIMAGE'">
+                    <a class="dropdown-item" type="button" *hasPermission="'CREATE_CLIENTIMAGE'" (click)="showModal(clientId,'Client Image')">
                         <i class="fa fa-cloud-upload mr-2"></i>Upload Client Image
                     </a>
                 </div>
                 <div>
-                    <a class="dropdown-item" type="button" *hasPermission="'CREATE_CLIENTIMAGE'">
+                    <a class="dropdown-item" type="button" *hasPermission="'CREATE_CLIENTIMAGE'" (click)="showModal(clientId,'Client Signature')">
                         <i class="fa fa-cloud-upload mr-2"></i>Upload Client Signature
                     </a>
                 </div>
@@ -717,7 +717,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <a *hasPermission="'CREATE_DOCUMENT'">
+                                        <a *hasPermission="'CREATE_DOCUMENT'" (click)="showModal(document.id,'Client Document', document.documentType.name)">
                                             <i class="fa fa-cloud-upload mr-2"></i>
                                         </a>
                                     </td>

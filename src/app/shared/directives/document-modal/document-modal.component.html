@@ -3,7 +3,7 @@
     </div>
     <div class="modal-body pt-0">
         <div class="pdf-viewer img-modal" *ngIf="documentUrl && documentType !== 'application/pdf'">
-            <img [src]="documentUrl" alt="Avatar">
+            <img [src]="documentUrl" alt="Avatar" class="maxdimension">
         </div>
         <div class="pdf-viewer" *ngIf="documentUrl && documentType == 'application/pdf'">
             <pdf-viewer class="pdf-viewer" [src]="documentUrl" [original-size]="false">

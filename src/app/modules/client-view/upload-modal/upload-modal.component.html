@@ -1,0 +1,24 @@
+<div class="modal-content blueBorderModal">
+    <div class="modal-header modalBackground pr-3 pl-1">
+        <h4 class="col-sm-12 h5 text-white mb-0 p-0">Select {{type[0]}}
+        </h4>
+        <span class="pointer text-white" (click)="cancel()">
+			<i class="fa fa-close" [tooltip]="'Close'" placement="right"></i>
+		</span>
+    </div>
+    <div class="modal-body headingStyle">
+        <div class="col-sm-12 p-0" *ngIf="type[1]">
+            <label class="pr-2 mb-3" style="font-weight: 600;">Document Name</label>
+            <label class="pr-2">:</label>
+            <span> {{type[1]}}</span>
+        </div>
+        <div class="col-sm-12 p-0">
+            <input type="file" accept="{{ type[0] == 'Client Document' ? mimetypes : mimetypesForImage }}" (change)="onFileChange($event.target.files)">
+        </div>
+    </div>
+
+
+    <div class="modal-footer">
+        <button class="btn btn-primary" (click)="submit()">Upload</button>
+    </div>
+</div>

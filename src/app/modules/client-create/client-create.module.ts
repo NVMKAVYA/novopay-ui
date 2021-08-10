@@ -12,7 +12,7 @@ import { InputFieldModule } from '../../shared/components/input-field/input-fiel
 import { DropdownModule } from '../../shared/components/dropdown/dropdown.module';
 
 import { DualEntryComponent } from '../../shared/components/dual-entry/dual-entry.component';
-import { DocumentUploadComponent } from '../../shared/components/document-upload/document-upload.component';
+import { DocumentUploadComponent } from '../../shared/components/add-document/add-document.component';
 
 const ngWizardConfig: NgWizardConfig = {};
 

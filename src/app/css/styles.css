@@ -343,7 +343,7 @@ a:hover {
 }
 
 .pdf-viewer {
-    height: 550px;
+    height: 540px;
     width: 540px;
 }
 
@@ -376,4 +376,24 @@ a:hover {
 
 .circle {
     border-radius: 50% !important;
+}
+
+.blueBorderModal {
+    border: 8px solid var(--blue) !important;
+    border-top: none !important;
+}
+
+.modalBackground {
+    background-color: var(--blue);
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+}
+
+.headingStyle {
+    padding: 30px !important;
+}
+
+.modal-footer,
+.modal-header {
+    height: 45px !important;
 }
