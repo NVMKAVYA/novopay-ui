@@ -240,4 +240,10 @@ export class HttpService {
     return this._http.get(`${this.baseUrl}/gst/${requestType}/${entityType}/${entityId}`);
   }
 
+  public LoanAccountResource(loanId,associations?): any {
+    let params = new HttpParams();
+    params.append('associations', associations);
+      return this._http.get(`${this.baseUrl}/loans/${loanId}`, { params: params });
+  }
+
 }

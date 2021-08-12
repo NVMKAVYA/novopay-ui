@@ -22,6 +22,10 @@ const routes: Routes = [{
 		{
 			path: 'client/view/:id',
 			loadChildren: () => import('../client-view/client-view.module').then(m => m.ViewClientModule)
+		},
+		{
+			path: 'loan/view/:id',
+			loadChildren: () => import('../loan-view/loan-view.module').then(m => m.LoanViewModule)
 		}
 
 
