@@ -8,18 +8,25 @@ import { Constants } from 'src/app/models/Constants';
   styleUrls: ['./loan-view.component.css']
 })
 export class LoanViewComponent implements OnInit {
-  loanId:number;
-  loanDetails:any;
+  loanId: number;
+  loanDetails: any;
   dateFormat: any = Constants.dateFormat1;
+  tab: number = 1;
+
   constructor(private http: HttpService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.loanId = parseInt(this.route.snapshot.paramMap.get('id'));
 
 
-    this.http.LoanAccountResource(this.loanId,'all').subscribe(data => {
+    this.http.LoanAccountResource(this.loanId, 'all').subscribe(data => {
       this.loanDetails = data;
     });
 
   }
+
+  setTab(tab: number) {
+    this.tab = tab;
+  }
+
 }

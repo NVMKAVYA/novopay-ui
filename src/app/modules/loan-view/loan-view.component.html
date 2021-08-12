@@ -7,168 +7,236 @@
     <div class="col-12 col-xxl row m-0 p-0">
         <div class="card mb-3" style="width: 100%;">
             <div class="card-header-banner " style="background-color:#5b6268;">
-                <!-- <i class="fa fa-stop {{loanId.status.code | StatusLookup}}"></i> -->
                 <h2 class="mr-2 ml-2 mt-2 mb-2 text-white mr-auto title">
                     {{loanDetails.loanProductName}}(#{{loanDetails.accountNo}})</h2>
-            </div>
-            <div class="card-body" style="background-color:#5b6268">
+                <div class="card-body" style="background-color:#5b6268">
+                    <div class="row col-sm-12">
+                        <div class="col-sm-6">
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">DisbursementDate : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.timeline.actualDisbursementDate |
+                                        date:
+                                        dateFormat}}</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">Currency : </span>
+                                    <span class="col-sm-9 text-white ">{{loanDetails.currency.name}}</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">Loan Officer : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.loanOfficerName}}</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">External Id : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.externalId}}</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">Loan Asset Classification Type : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.externalId}}</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">Application Ref No : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.applicationReferenceNo}}</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">CoApplicant : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.coApplicant1Name}}</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">CoApplicant Lead Id : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.loanOfficerName}}</span>
+                                </div>
+                            </div>
 
-                <div class="row col-sm-12">
-                    <div class="col-sm-6">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">DisbursementDate : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.timeline.actualDisbursementDate | date:
-                                    dateFormat}}</span>
+                            <div class="row col-sm-12">
+                                <div class="mr-4" *ngIf="loanDetails.foreclosureReason">
+                                    <span class="col-sm-3 detail-key">Foreclosure Reason : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.foreclosureReason.label}}</span>
+                                </div>
                             </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Currency : </span>
-                                <span class="col-sm-9 text-white ">{{loanDetails.currency.name}}</span>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">Is Loan in NPA Status : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.isNPA ? "Yes" : "No"}}</span>
+                                </div>
                             </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Loan Officer : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.loanOfficerName}}</span>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">Rescheduled due to moratorium : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.loanOfficerName}}</span>
+                                </div>
                             </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">External Id : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.externalId}}</span>
-                            </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Loan Asset Classification Type : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.externalId}}</span>
-                            </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Application Ref No : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.applicationReferenceNo}}</span>
-                            </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">CoApplicant : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.coApplicant1Name}}</span>
-                            </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">CoApplicant Lead Id : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.loanOfficerName}}</span>
-                            </div>
-                        </div>
-
-                        <div class="row col-sm-12">
-                            <div class="mr-4" *ngIf="loanDetails.foreclosureReason">
-                                <span class="col-sm-3 detail-key">Foreclosure Reason : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.foreclosureReason.label}}</span>
-                            </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Is Loan in NPA Status : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.isNPA ? "Yes" : "No"}}</span>
-                            </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Rescheduled due to moratorium : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.loanOfficerName}}</span>
-                            </div>
-                        </div>
 
 
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">E-Signed Documents : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.loanOfficerName}}</span>
-                            </div>
                         </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Loan Purpose : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.loanPurposeName}}</span>
+                        <div class="col-sm-6">
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">E-Signed Documents : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.loanOfficerName}}</span>
+                                </div>
                             </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Approved Amount : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.approvedPrincipal}}</span>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">Loan Purpose : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.loanPurposeName}}</span>
+                                </div>
                             </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Disburse Amount : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.principal}}</span>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">Approved Amount : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.approvedPrincipal}}</span>
+                                </div>
                             </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Net Outflow Amount : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.netDisbursementAmount}}</span>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">Disburse Amount : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.principal}}</span>
+                                </div>
                             </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Arrears By : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.summary.totalOverdue}}</span>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">Net Outflow Amount : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.netDisbursementAmount}}</span>
+                                </div>
                             </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Days Past Due : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.summary.daysPastDue}}</span>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">Arrears By : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.summary.totalOverdue}}</span>
+                                </div>
                             </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Total Advance Paid : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.summary.totalAdvancePaid}}</span>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">Days Past Due : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.summary.daysPastDue}}</span>
+                                </div>
                             </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Roundoff Amount : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.summary.roundoffAmount}}</span>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">Total Advance Paid : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.summary.totalAdvancePaid}}</span>
+                                </div>
                             </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Total RSD Amount : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.summary.daysPastDue}}</span>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">Roundoff Amount : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.summary.roundoffAmount}}</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row col-sm-12">
+                                <div class="mr-4">
+                                    <span class="col-sm-3 detail-key">Total RSD Amount : </span>
+                                    <span class="col-sm-9 text-white">{{loanDetails.summary.daysPastDue}}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
+
+
+                <ul class="nav nav-tabs bg-white">
+                    <li class="nav-item">
+                        <a href="" class="nav-link active" data-toggle="tab" (click)="setTab(1)">Account Detail</a>
+                    </li>
+                    <li class=" nav-item ">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(2)">Summary</a>
+                    </li>
+                    <li class=" nav-item ">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(3)">Repayment Schedule</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(4)">Transactions</a>
+                    </li>
+                    <li class=" nav-item ">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(5)">Charges</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(6)">Loan Documents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(7)">Assets</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(8)">Bank Accounts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(9)">Business Expenses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(10)">Cam Approver Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(11)">Change Log</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(12)">Deviation Rules</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(13)">Eligibility Rules</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link " data-toggle="tab"
+                            (click)="setTab(14)">d_eligibility_rules_history</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(15)">Existing Loan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(16)">FATCA</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(17)">Household Expenses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(18)">Household Income</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(19)">Nominee Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(20)">Personal Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link " data-toggle="tab" (click)="setTab(21)">End Use Check</a>
+                    </li>
+
+                </ul>
+            </div>
         </div>
     </div>
 
