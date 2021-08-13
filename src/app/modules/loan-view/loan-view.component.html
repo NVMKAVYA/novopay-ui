@@ -1,177 +1,193 @@
-<nav aria-label="breadcrumb">
+<nav aria-label="breadcrumb" *ngIf="loanDetails">
     <ol class="breadcrumb pl-0">
-        <li class="breadcrumb-item"><a [routerLink]="['/home']" [routerLinkActive]="['active']"
-                *ngIf="loanId">{{loanDetails.clientName}}</a></li>
+        <li class="breadcrumb-item"><a [routerLink]="['/home']" [routerLinkActive]="['active']">{{loanDetails.clientName}}</a></li>
         <li class="breadcrumb-item active">{{loanDetails.loanProductName}}({{loanDetails.accountNo}})</li>
     </ol>
-    <div class="col-12 col-xxl row m-0 p-0">
-        <div class="card mb-3" style="width: 100%;">
-            <div class="card-header-banner " style="background-color:#5b6268;">
-                <!-- <i class="fa fa-stop {{loanId.status.code | StatusLookup}}"></i> -->
-                <h2 class="mr-2 ml-2 mt-2 mb-2 text-white mr-auto title">
-                    {{loanDetails.loanProductName}}(#{{loanDetails.accountNo}})</h2>
-            </div>
-            <div class="card-body" style="background-color:#5b6268">
-
-                <div class="row col-sm-12">
-                    <div class="col-sm-6">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">DisbursementDate : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.timeline.actualDisbursementDate | date:
-                                    dateFormat}}</span>
-                            </div>
+</nav>
+<div class="col-12 col-xxl row m-0 p-0" *ngIf="loanDetails">
+    <div class="card mb-3" style="width: 100%; background-color:#5b6268">
+        <div class="card-header-banner">
+            <h2 class="ml-5 mt-4 mb-4 text-white">
+                <i *ngIf="!loanDetails.inArrears" class="fa fa-stop {{loanDetails.status.code | StatusLookup}}"></i>
+                <i *ngIf="loanDetails.inArrears" class="icon-stop {{loanDetails.status.code | StatusLookup}}overdue"></i> {{loanDetails.loanProductName}}(#{{loanDetails.accountNo}})
+                <span *ngIf="loanDetails.status.closed || loanDetails.status.deathOfApplicant">- {{loanDetails.status.value}}</span>
+            </h2>
+        </div>
+        <div class="card-body">
+            <div class="row col-sm-12 ml-2 mb-4">
+                <span *ngIf="showGenerateNocButton">
+                    <button class="btn btn-primary ml-auto mr-2 mb-2" *hasPermission="'UPDATE_NOCFORLOAN'">Generate NOC
+                    </button>
+                </span>
+                <!-- Generate NOC method on click-->
+                <span *ngFor="let button of buttons.singlebuttons">
+                    <span *ngIf="button.name" >
+                        <button class="btn btn-primary ml-auto mr-2 mb-2" [disabled]="isRepaid(button.name) || undoDisbursalCheck(button.name)" *hasPermission="button.taskPermissionName">
+                            <i class="{{button.icon}} text-white"></i>
+                        {{button.name}}
+                        </button>
+                        <!-- bind click event -->
+                    </span>
+                </span>
+                <span>
+                    <button class="btn btn-primary dropdown-toggle" *ngIf="buttons.options || isOverpaidExists || !hideButtonOptions" data-toggle="dropdown">More</button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div *ngFor="let btn of buttons.options">
+                            <a class="dropdown-item" type="button" *hasPermission="btn.taskPermissionName">
+                                <!-- Add click event -->
+                                {{btn.name}}
+                            </a>
                         </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Currency : </span>
-                                <span class="col-sm-9 text-white ">{{loanDetails.currency.name}}</span>
-                            </div>
+                        <div *ngIf="loanDetails.status.active">
+                             <!-- Add click event --> 
+                            <a class="dropdown-item" type="button" *hasPermission="'CREATE_FORECLOSURE'">
+                            ForeClosure</a> 
                         </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Loan Officer : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.loanOfficerName}}</span>
-                            </div>
+                        <div *ngIf="loanDetails.status.active || loanDetails.status.freezedForForeClosure"> 
+                             <!-- Add click event --> 
+                            <a class="dropdown-item" type="button" *hasPermission="'VIEW_FORECLOSURE_LOAN'"> Foreclosure(View Only)</a>
                         </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">External Id : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.externalId}}</span>
-                            </div>
+                        <div *ngIf="(loanDetails.status.pendingApproval || loanDetails.status.waitingForDisbursal || loanDetails.status.active) && loanAppRefData?.coApplicant1Id"> 
+                            <!-- Add href link --> 
+                            <a class="dropdown-item" type="button" *hasPermission="'COAPPLICANTDEATH_CLIENT'">
+                            Close(Death Of Co-Applicant)</a> 
                         </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Loan Asset Classification Type : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.externalId}}</span>
-                            </div>
+                        <div *ngIf="showCaptureAccountGstExemption"> 
+                            <!-- Add href link --> 
+                            <a class="dropdown-item" type="button" *hasPermission="'UPDATE_GST_NUMBER'">Capture Account GST Details</a> 
                         </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Application Ref No : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.applicationReferenceNo}}</span>
-                            </div>
+                        <div *ngIf="isOverpaidExists"> 
+                             <!-- Add click event --> 
+                            <a class="dropdown-item" type="button" *hasPermission="'OVERPAIDLOANCLOSURE_LOAN'">Post maturity overpaid closure</a> 
                         </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">CoApplicant : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.coApplicant1Name}}</span>
-                            </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">CoApplicant Lead Id : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.loanOfficerName}}</span>
-                            </div>
-                        </div>
-
-                        <div class="row col-sm-12">
-                            <div class="mr-4" *ngIf="loanDetails.foreclosureReason">
-                                <span class="col-sm-3 detail-key">Foreclosure Reason : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.foreclosureReason.label}}</span>
-                            </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Is Loan in NPA Status : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.isNPA ? "Yes" : "No"}}</span>
-                            </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Rescheduled due to moratorium : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.loanOfficerName}}</span>
-                            </div>
-                        </div>
-
-
                     </div>
-                    <div class="col-sm-6">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">E-Signed Documents : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.loanOfficerName}}</span>
-                            </div>
+                </span>
+            </div>
+            <div class="row col-sm-12">
+                <div class="col-sm-6">
+                    <div class="row col-sm-12 mb-3">
+                        <div class="col-sm-6 detail-key">DisbursementDate</div>
+                        <div class="col-sm-6 text-white">{{(loanDetails.timeline.actualDisbursementDate | date: dateFormat) || 'Not Available'}}
                         </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Loan Purpose : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.loanPurposeName}}</span>
-                            </div>
+                    </div>
+
+                    <div class="row col-sm-12 mb-3">
+                        <div class="col-sm-6 detail-key">Currency</div>
+                        <div class="col-sm-6 text-white ">{{loanDetails.currency.name}}</div>
+                    </div>
+
+                    <div class="row col-sm-12 mb-3">
+                        <div class="col-sm-6 detail-key">Loan Officer</div>
+                        <div class="col-sm-6 text-white">{{loanDetails.loanOfficerName || 'Unassigned'}}
+                            <span *ngIf="loanDetails.loanOfficerName" class="ml-2">
+                                <a type="button">
+                                    <i class="fa fa-remove"></i>
+                                </a>
+                            </span>
                         </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Approved Amount : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.approvedPrincipal}}</span>
-                            </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Disburse Amount : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.principal}}</span>
-                            </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Net Outflow Amount : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.netDisbursementAmount}}</span>
-                            </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Arrears By : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.summary.totalOverdue}}</span>
-                            </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Days Past Due : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.summary.daysPastDue}}</span>
-                            </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Total Advance Paid : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.summary.totalAdvancePaid}}</span>
-                            </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Roundoff Amount : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.summary.roundoffAmount}}</span>
-                            </div>
-                        </div>
-                        <hr class="hr">
-                        <div class="row col-sm-12">
-                            <div class="mr-4">
-                                <span class="col-sm-3 detail-key">Total RSD Amount : </span>
-                                <span class="col-sm-9 text-white">{{loanDetails.summary.daysPastDue}}</span>
-                            </div>
-                        </div>
+                    </div>
+
+                    <div class="row col-sm-12 mb-3">
+                        <div class="col-sm-6 detail-key">External Id</div>
+                        <div class="col-sm-6 text-white">{{loanDetails.externalId}}</div>
+                    </div>
+
+                    <div class="row col-sm-12 mb-3" *ngIf="loanDetails.loanClassificationData?.classification">
+                        <div class="col-sm-6 detail-key">Loan Asset Classification Type </div>
+                        <div class="col-sm-6 text-white">{{loanDetails.loanClassificationData.classification.value}}</div>
+                    </div>
+
+                    <div class="row col-sm-12 mb-3" *ngIf="loanAppRefData">
+                        <div class="col-sm-6 detail-key">Application Ref No </div>
+                        <div class="col-sm-6 text-white">{{loanAppRefData.applicationReferenceNo}}</div>
+                    </div>
+
+                    <div class="row col-sm-12 mb-3" *ngIf="loanAppRefData?.coApplicant1Name">
+                        <div class="col-sm-6 detail-key">CoApplicant </div>
+                        <div class="col-sm-6 text-white">{{loanAppRefData.coApplicant1Name}}</div>
+                    </div>
+
+                    <div class="row col-sm-12 mb-3" *ngIf="loanAppRefData?.coapplicantLeadid">
+                        <div class="col-sm-6 detail-key">CoApplicant Lead Id </div>
+                        <div class="col-sm-6 text-white">{{loanAppRefData.coapplicantLeadid}}</div>
+                    </div>
+                    <div class="row col-sm-12 mb-3" *ngIf="loanDetails.foreclosureReason">
+                        <div class="col-sm-6 detail-key">Foreclosure Reason </div>
+                        <div class="col-sm-6 text-white">{{loanDetails.foreclosureReason.label}}</div>
+                    </div>
+
+                    <div class="row col-sm-12 mb-3">
+                        <div class="col-sm-6 detail-key">Is Loan in NPA Status </div>
+                        <div class="col-sm-6 text-white">{{loanDetails.isNPA ? "Yes" : "No"}}</div>
+                    </div>
+
+                    <div *ngIf="loanDetails?.assetClassification" class="row col-sm-12 mb-3">
+                        <div class="col-sm-6 detail-key">Interface Asset Classification Type</div>
+                        <div class="col-sm-6 text-white">{{loanDetails.assetClassification}}</div>
+                    </div>
+                    <div class="row col-sm-12 mb-3">
+                        <div class="col-sm-6 detail-key">Rescheduled due to moratorium </div>
+                        <div class="col-sm-6 text-white">{{rescheduledByMoratorium ? "Yes" : "No"}}</div>
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+                    <!-- TODO -->
+                    <!-- <div class="row col-sm-12 mb-3">
+                        <div class="col-sm-6 detail-key">E-Signed Documents</div>
+                        <div class="col-sm-6 text-white">{{loanDetails.loanOfficerName}}</div>
+                    </div> -->
+                    <div class="row col-sm-12 mb-3">
+                        <div class="col-sm-6 detail-key">Loan Purpose </div>
+                        <div class="col-sm-6 text-white">{{loanDetails.loanPurposeName || 'Not Provided'}}</div>
+                    </div>
+
+                    <div class="row col-sm-12 mb-3">
+                        <div class="col-sm-6 detail-key">Approved Amount </div>
+                        <div class="col-sm-6 text-white">{{loanDetails.approvedPrincipal | number}}</div>
+                    </div>
+
+                    <div class="row col-sm-12 mb-3">
+                        <div class="col-sm-6 detail-key">Disburse Amount </div>
+                        <div class="col-sm-6 text-white">{{loanDetails.principal | number}}</div>
+                    </div>
+
+                    <div class="row col-sm-12 mb-3">
+                        <div class="col-sm-6 detail-key">Net Outflow Amount </div>
+                        <div class="col-sm-6 text-white">{{loanDetails.netDisbursementAmount | number}}</div>
+                    </div>
+
+                    <div class="row col-sm-12 mb-3">
+                        <div class="col-sm-6 detail-key">Arrears By </div>
+                        <div class="col-sm-6 text-white">{{loanDetails.summary.totalOverdue >= 0 ? loanDetails.summary.totalOverdue : 'Not Provided'}}</div>
+                    </div>
+
+                    <div class="row col-sm-12 mb-3">
+                        <div class="col-sm-6 detail-key">Days Past Due </div>
+                        <div class="col-sm-6 text-white">{{loanDetails.summary.daysPastDue}}</div>
+                    </div>
+
+                    <div class="row col-sm-12 mb-3">
+                        <div class="col-sm-6 detail-key">Total Advance Paid </div>
+                        <div class="col-sm-6 text-white">{{loanDetails.summary.totalAdvancePaid >= 0 ? loanDetails.summary.totalAdvancePaid :'Not Provided'}}</div>
+                    </div>
+
+                    <div class="row col-sm-12 mb-3" *ngIf="isOverpaidExists">
+                        <div class="col-sm-6 detail-key">Total Overpaid Amount</div>
+                        <div class="col-sm-6 text-white">{{loanDetails.totalOverpaid}}</div>
+                    </div>
+
+                    <div class="row col-sm-12 mb-3">
+                        <div class="col-sm-6 detail-key">Roundoff Amount </div>
+                        <div class="col-sm-6 text-white">{{loanDetails.summary.roundoffAmount}}</div>
+                    </div>
+
+                    <div class="row col-sm-12 mb-3">
+                        <div class="col-sm-6 detail-key">Total RSD Amount </div>
+                        <div class="col-sm-6 text-white">{{rsdTransactions.amount}}</div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
-
-
-</nav>
+</div>

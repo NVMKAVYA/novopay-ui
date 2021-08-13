@@ -1,14 +1,16 @@
+@import "../../css/status-colours";
 .detail-key {
     color: #c8c8c8;
 }
 
-.title{
-    padding-top: 10px;
-    padding-bottom: 10px;
+.hr {
+    border-top: 1px solid #f7f4f430;
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
 }
 
-.hr{
-    border-top: 1px solid #f7f4f430;
-    margin-top: 5px !important ;
-     margin-bottom: 5px !important;
+span>a,
+span>a:hover {
+    color: #599eca;
+    text-decoration: none;
 }

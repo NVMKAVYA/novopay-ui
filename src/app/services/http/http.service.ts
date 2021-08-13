@@ -51,8 +51,7 @@ export class HttpService {
       { params: params });
   }
 
-  public postTaskResource(type?: any, name?: any, taskId?: number, command?: string,
-    data?: any): any {
+  public postTaskResource(type?: any, name?: any, taskId?: number, command?: string, data?: any): any {
     let params = new HttpParams();
     params = command ? params.append('command', command) : params;
 
@@ -72,6 +71,7 @@ export class HttpService {
     params = params.append('staffInSelectedOfficeOnly', 'true');
     params = params.append('loanOfficersOnly', 'true');
     params = params.append('roleName', 'Loan Officer');
+
     return this._http.get(`${this.baseUrl}/clients/template`, { params: params });
   }
 
@@ -219,8 +219,8 @@ export class HttpService {
 
   public aadharVaultGetApiResource(clientId, aadharRefNum): any {
     let params = new HttpParams();
-    params.append('clientId', clientId);
-    params.append('aadharRefNum', aadharRefNum);
+    params = params.append('clientId', clientId);
+    params = params.append('aadharRefNum', aadharRefNum);
     return this._http.get(`${this.baseUrl}/aadharVault/getAadhar`, { params: params });
   }
 
@@ -240,10 +240,28 @@ export class HttpService {
     return this._http.get(`${this.baseUrl}/gst/${requestType}/${entityType}/${entityId}`);
   }
 
-  public LoanAccountResource(loanId,associations?): any {
+  public LoanAccountResource(loanId, associations?): any {
     let params = new HttpParams();
-    params.append('associations', associations);
-      return this._http.get(`${this.baseUrl}/loans/${loanId}`, { params: params });
+    params = associations ? params.append('associations', associations) : params;
+    return this._http.get(`${this.baseUrl}/loans/${loanId}`, { params: params });
+  }
+
+  // public LoanAccountNumberResource(accountNo): any {
+  //   return this._http.get(`${this.baseUrl}/loans/accountNo/${accountNo}`);
+  // }
+
+  public loanAppRefResource(appRefId): any {
+    return this._http.get(`${this.baseUrl}/loanapplicationreference/${appRefId}`);
+  }
+
+  public getStatusOfMoratorium(loanId): any {
+    return this._http.get(`${this.baseUrl}/loans/moratorium/${loanId}`);
+  }
+
+  public getRSDTransactionResource(loanId): any {
+    let params = new HttpParams();
+    params = params.append('loanId', loanId);
+    return this._http.get(`${this.baseUrl}/rsdtransaction`, { params: params });
   }
 
 }
