@@ -311,7 +311,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let account of activeLoanAccounts |orderBy: 'id': true " class="pointer">
+                                        <tr *ngFor="let account of activeLoanAccounts |orderBy: 'id': true " class="pointer" [routerLink]="['/home/loan/view',account.id]">
                                             <td>
                                                 <i *ngIf="!account.inArrears " [tooltip]="account.status.value " placement="right" class="fa fa-stop {{account.status.code | StatusLookup}}"></i>
                                                 <i *ngIf="account.inArrears " [tooltip]="account.status.value " placement="right" class="fa fa-stop {{account.status.code | StatusLookup}}overdue"></i> {{account.accountNo}}

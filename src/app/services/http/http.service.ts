@@ -246,9 +246,9 @@ export class HttpService {
     return this._http.get(`${this.baseUrl}/loans/${loanId}`, { params: params });
   }
 
-  // public LoanAccountNumberResource(accountNo): any {
-  //   return this._http.get(`${this.baseUrl}/loans/accountNo/${accountNo}`);
-  // }
+  public getRSDAccountResource(appRefId): any {
+    return this._http.get(`${this.baseUrl}/rsdaccounts/${appRefId}`);
+  }
 
   public loanAppRefResource(appRefId): any {
     return this._http.get(`${this.baseUrl}/loanapplicationreference/${appRefId}`);

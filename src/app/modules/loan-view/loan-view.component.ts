@@ -16,6 +16,7 @@ export class LoanViewComponent implements OnInit {
   loanDetails: any;
   loanAppRefData: any;
   rsdTransactions: any;
+  rsdAccountData: any = [];
   dateFormat: any = Constants.dateFormat1;
   showChargeTable: boolean = false;
   status: string;
@@ -141,6 +142,9 @@ export class LoanViewComponent implements OnInit {
           //   }
           // });
         });
+        this.http.getRSDAccountResource(this.loanDetails.loanApplicationReferenceId).subscribe(response => {
+          this.rsdAccountData = response;
+        })
       }
 
       if (this.loanDetails.summary && (this.loanDetails.summary.totalRepayment -

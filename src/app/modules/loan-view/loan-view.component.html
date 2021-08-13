@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb" *ngIf="loanDetails">
     <ol class="breadcrumb pl-0">
-        <li class="breadcrumb-item"><a [routerLink]="['/home']" [routerLinkActive]="['active']">{{loanDetails.clientName}}</a></li>
+        <li class="breadcrumb-item"><a [routerLink]="['/home/client/view',loanDetails.clientId]" [routerLinkActive]="['active']">{{loanDetails.clientName}}</a></li>
         <li class="breadcrumb-item active">{{loanDetails.loanProductName}}({{loanDetails.accountNo}})</li>
     </ol>
 </nav>
@@ -21,6 +21,12 @@
                     </button>
                 </span>
                 <!-- Generate NOC method on click-->
+                <!-- <div ng-show="loandetails.status.deathOfApplicant || loandetails.status.deathOfCoApplicant">
+                    <button class="btn btn-primary pull-right" ng-click="foreClosureEvent(loandetails.id)" has-permission='FORECLOSE_DECEASED_CLIENT'> {{'label.button.foreclosure' | translate}}</button>
+                </div>
+                <div ng-show="loandetails.status.deathOfApplicant  ||  loandetails.status.deathOfCoApplicant  || loandetails.status.deathForeclosureFreeze ||loandetails.status.deathCoApplicantForeclosureFreeze">
+                    <button class="btn btn-primary pull-right" ng-click="foreClosureViewEvent(loandetails.id)" has-permission='VIEW_FORECLOSURE_LOAN'> {{'label.button.viewforeclosure' | translate}}</button>
+                </div> -->
                 <span *ngFor="let button of buttons.singlebuttons" class="">
                     <span *ngIf="button.name" >
                         <button class="btn btn-primary mr-2 mb-2" [disabled]="isRepaid(button.name) || undoDisbursalCheck(button.name)" *hasPermission="button.taskPermissionName">
@@ -150,7 +156,7 @@
                     </div>
 
                     <div class="row col-sm-12 mb-3">
-                        <div class="col-sm-6 detail-key">Disburse Amount </div>
+                        <div class="col-sm-6 detail-key">Disbursed Amount </div>
                         <div class="col-sm-6 text-white">{{loanDetails.principal | number}}</div>
                     </div>
 
@@ -193,22 +199,25 @@
         </div>
         <ul class="nav nav-tabs bg-white">
             <li class="nav-item">
-                <a href="" class="nav-link active" data-toggle="tab" (click)="setTab(1)">Account Detail</a>
+                <a href="" class="nav-link active" data-toggle="tab" (click)="setTab(1)">Account Details</a>
             </li>
             <li class=" nav-item ">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(2)">Summary</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(2)">Loan witnesses</a>
             </li>
             <li class=" nav-item ">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(3)">Repayment Schedule</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(3)">Summary</a>
+            </li>
+            <li class=" nav-item ">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(4)">Repayment Schedule</a>
             </li>
             <li class="nav-item ">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(4)">Transactions</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(5)">Transactions</a>
             </li>
             <li class=" nav-item ">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(5)">Charges</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(6)">Charges</a>
             </li>
             <li class="nav-item ">
-                <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(6)">Loan Documents</a>
+                <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(7)">Loan Documents</a>
             </li>
             <li class="nav-item">
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(7)">Assets</a>
@@ -261,7 +270,272 @@
     <div class="card pr-4 pl-4" style="width:inherit;">
         <div [ngSwitch]="tab ">
             <div *ngSwitchCase="1">
-                one
+                <div class="card-body" id="border">
+                    <div class="pt-3 pb-3">
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Repayment Strategy</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">
+                                {{loanDetails.transactionProcessingStrategyName}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Repayments</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.numberOfRepayments}} Repayments, Repay Every {{loanDetails.repaymentEvery}} {{loanDetails.repaymentFrequencyType.value}}
+                            </div>
+                        </div>
+
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Amortization</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.amortizationType.value}}
+                            </div>
+                        </div>
+
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Interest</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.annualInterestRate}}% per annum - {{loanDetails.interestType.value}}
+                            </div>
+                        </div>
+
+                        <div class="row col-sm-12 pt-3 pb-3" *ngIf="loanDetails.discountPercentageOnInterest">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Promo Code Interest Discount</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.discountPercentageOnInterest}}%
+                            </div>
+                        </div>
+
+                        <div class="row col-sm-12 pt-3 pb-3" *ngIf="loanDetails.discountFeePercentageOrAmount">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Promo Code Fee Discount</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.discountFeePercentageOrAmount}}
+                            </div>
+                        </div>
+
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Grace: On Principal Payment</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.graceOnPrincipalPayment}}
+                            </div>
+                        </div>
+
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Grace: On Interest Payment</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.graceOnInterestPayment}}
+                            </div>
+                        </div>
+
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Grace on Arrears Ageing</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.graceOnArrearsAgeing}}
+                            </div>
+                        </div>
+
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Fund Source</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.fundName}}
+                            </div>
+                        </div>
+
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Interest Free Period</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.graceOnInterestCharged}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Interest Calculation Period</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.interestCalculationPeriodType.value}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Interest Type</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.interestType.value}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Submitted On</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.timeline.submittedOnDate | date : dateFormat}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Approved On</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.timeline.approvedOnDate | date : dateFormat}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Disbursed On</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.timeline.actualDisbursementDate | date : dateFormat}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Matures on</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.timeline.expectedMaturityDate | date : dateFormat}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Closed On</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.timeline.closedOnDate | date : dateFormat}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3" *ngIf="loanDetails.canDefineInstalmentAmount">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Installment Amount</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.fixedEmiAmount| number}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Recalculate Interest</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.isInterestRecalculationEnabled ? "Yes" : "No"}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Days in Year</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.daysInYearType.value}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Days in Month</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.daysInMonthType.value}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">RSD Product</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{ rsdAccountData[0]?.regularSavingsDeposit.productName }}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">RSD Amount</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{ rsdAccountData[0]?.rsdAmount }}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">RSD/CBS Account number</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{ rsdAccountData[0]?.cbsAccountId }}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3" *ngIf="loanDetails.isInterestRecalculationEnabled">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Interest recalculation compounding on</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.interestRecalculationData.interestRecalculationCompoundingType.value}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3" *ngIf="loanDetails.isInterestRecalculationEnabled">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Advance payments adjustment type</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.interestRecalculationData.rescheduleStrategyType.value}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3" *ngIf="loanDetails.isInterestRecalculationEnabled">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Frequency for recalculate Outstanding Principal</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.interestRecalculationData.calendarData.humanReadable}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3" *ngIf="loanDetails.debitFreezeFlag">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Interface debit freeze flag</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.debitFreezeFlag}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3" *ngIf="loanDetails.provisionAmount >= 0">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Interface provision amount</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.provisionAmount}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3" *ngIf="loanDetails.writeOffAmt >= 0">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Interface writeoff amount</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.writeOffAmt}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3" *ngIf="loanDetails.writeOffDate">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Interface writeoff date</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.writeOffDate | date : dateFormat}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3" *ngIf="loanDetails.incomeTreatmentFlag">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Interface income treatment flag</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.incomeTreatmentFlag}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3" *ngIf="loanDetails.npaEffectiveDate">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Interface NPA effective date</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.npaEffectiveDate | date : dateFormat}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3" *ngIf="loanDetails.nomineeClaimAmount >= 0">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Nominee Claim Amount</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary">{{loanDetails.nomineeClaimAmount}}
+                            </div>
+                        </div>
+                        <div class="row col-sm-12 pt-3 pb-3" *ngIf="loanDetails.nomineeClaimAmount >= 0">
+                            <div class="col-sm-4 p-0">
+                                <h6 class="mb-0">Subvention Scheme</h6>
+                            </div>
+                            <div class="col-sm-8 text-secondary"><span *ngFor="let schemeId in loandetails.schemeIds;last as last">{{schemeId}}<span ng-repeat-end ng-if="!$last">&nbsp;, </span> </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div *ngSwitchCase="2">
                 two
