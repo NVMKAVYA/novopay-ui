@@ -30,6 +30,7 @@ export class LoanViewComponent implements OnInit {
   rescheduledByMoratorium: any = false;
   closedOrObligationMetStatusIdList = [600, 602, 611, 612, 806];
   isOverpaidExists: boolean = false;
+  tab: number = 1;
 
   constructor(private http: HttpService, private route: ActivatedRoute, private datePipe: DatePipe, private auth: AuthService) { }
 
@@ -386,4 +387,8 @@ export class LoanViewComponent implements OnInit {
     }
     return false;
   };
+
+  setTab(tab: number) {
+    this.tab = tab;
+  }
 }

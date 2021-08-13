@@ -189,5 +189,81 @@
                 </div>
             </div>
         </div>
+        <ul class="nav nav-tabs bg-white">
+            <li class="nav-item">
+                <a href="" class="nav-link active" data-toggle="tab" (click)="setTab(1)">Account Detail</a>
+            </li>
+            <li class=" nav-item ">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(2)">Summary</a>
+            </li>
+            <li class=" nav-item ">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(3)">Repayment Schedule</a>
+            </li>
+            <li class="nav-item ">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(4)">Transactions</a>
+            </li>
+            <li class=" nav-item ">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(5)">Charges</a>
+            </li>
+            <li class="nav-item ">
+                <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(6)">Loan Documents</a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(7)">Assets</a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(8)">Bank Accounts</a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(9)">Business Expenses</a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(10)">Cam Approver Details</a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(11)">Change Log</a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(12)">Deviation Rules</a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(13)">Eligibility Rules</a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(14)">d_eligibility_rules_history</a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(15)">Existing Loan</a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(16)">FATCA</a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(17)">Household Expenses</a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(18)">Household Income</a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(19)">Nominee Details</a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(20)">Personal Details</a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(21)">End Use Check</a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="card pr-4 pl-4" style="width:inherit;">
+        <div [ngSwitch]="tab ">
+            <div *ngSwitchCase="1">
+                one
+            </div>
+            <div *ngSwitchCase="2">
+                two
+            </div>
+        </div>
     </div>
 </div>
