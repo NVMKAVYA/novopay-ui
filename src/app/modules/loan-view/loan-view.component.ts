@@ -46,100 +46,102 @@ export class LoanViewComponent implements OnInit {
         this.showGenerateNocButton = true;
       }
 
-      this.http.loanAppRefResource(this.loanDetails.loanApplicationReferenceId).subscribe(loanAppRefData => {
-        this.loanAppRefData = loanAppRefData;
-        // resourceFactory.processesResource.getAllProcesses({
-        //   variableName: "applicationRefId",
-        //   variableValue: scope.loandetails.loanApplicationReferenceId
-        // }, function (data) {
-        //   scope.associatedWorkflows = data;
-        //   scope.associatedWorkflow = scope.associatedWorkflows[0];
-        //   $rootScope.currentProcessId = scope.associatedWorkflow.instanceId;
-        // });
+      if (this.loanDetails.loanApplicationReferenceId) {
+        this.http.loanAppRefResource(this.loanDetails.loanApplicationReferenceId).subscribe(loanAppRefData => {
+          this.loanAppRefData = loanAppRefData;
+          // resourceFactory.processesResource.getAllProcesses({
+          //   variableName: "applicationRefId",
+          //   variableValue: scope.loandetails.loanApplicationReferenceId
+          // }, function (data) {
+          //   scope.associatedWorkflows = data;
+          //   scope.associatedWorkflow = scope.associatedWorkflows[0];
+          //   $rootScope.currentProcessId = scope.associatedWorkflow.instanceId;
+          // });
 
-        if (loanAppRefData.coApplicant1Id) {
-          // Calling this API just for Lead is unnecessary- need to discuss
-          this.http.getclientResource(loanAppRefData.coApplicant1Id).subscribe(data => {
-            this.loanAppRefData.coapplicantLeadid = data.leadId;
-          });
-        }
-        // resourceFactory.RSDAccountResource.get({ loanAppRefId: scope.loandetails.loanApplicationReferenceId }, function (rsdAccountData) {
-        //   scope.rsdAccountData = rsdAccountData;
-        // });
+          if (loanAppRefData.coApplicant1Id) {
+            // Calling this API just for Lead is unnecessary- need to discuss
+            this.http.getclientResource(loanAppRefData.coApplicant1Id).subscribe(data => {
+              this.loanAppRefData.coapplicantLeadid = data.leadId;
+            });
+          }
+          // resourceFactory.RSDAccountResource.get({ loanAppRefId: scope.loandetails.loanApplicationReferenceId }, function (rsdAccountData) {
+          //   scope.rsdAccountData = rsdAccountData;
+          // });
 
-        // if (scope.siApplicable) {
-        //   scope.installmentAmount = scope.loandetails.repaymentSchedule.periods[1].interestDue + scope.loandetails.repaymentSchedule.periods[1].principalDue;
-        //   scope.formData.siDetails.max_amount = scope.loandetails.approvedPrincipal;
-        //   scope.loanType = scope.loandetails.loanProductName;
+          // if (scope.siApplicable) {
+          //   scope.installmentAmount = scope.loandetails.repaymentSchedule.periods[1].interestDue + scope.loandetails.repaymentSchedule.periods[1].principalDue;
+          //   scope.formData.siDetails.max_amount = scope.loandetails.approvedPrincipal;
+          //   scope.loanType = scope.loandetails.loanProductName;
 
-        //   var periods = scope.loandetails.repaymentSchedule.periods;
-        //   var endDate = new Date(periods[periods.length - 1].dueDate);
-        //   scope.end_date = dateFilter(new Date(endDate.getFullYear() + 1, endDate.getMonth(), endDate.getDate(), 0, 0, 0), "dd/MM/yyyy");
-        //   scope.endDateOptions = ["Until Cancelled", scope.end_date.toString()];
+          //   var periods = scope.loandetails.repaymentSchedule.periods;
+          //   var endDate = new Date(periods[periods.length - 1].dueDate);
+          //   scope.end_date = dateFilter(new Date(endDate.getFullYear() + 1, endDate.getMonth(), endDate.getDate(), 0, 0, 0), "dd/MM/yyyy");
+          //   scope.endDateOptions = ["Until Cancelled", scope.end_date.toString()];
 
-        //   resourceFactory.codeCodeValuesResources.getAllCodesValues({ codeName: 'AccountType', context: scope.loandetails.processDefKey }, function (bankAccountCodeValues) {
-        //     scope.bankAccountTypes = _.filter(bankAccountCodeValues, function (accountType) {
-        //       return accountType.context.indexOf("repaymentAccountType") > -1;
-        //     });
-        //   });
+          //   resourceFactory.codeCodeValuesResources.getAllCodesValues({ codeName: 'AccountType', context: scope.loandetails.processDefKey }, function (bankAccountCodeValues) {
+          //     scope.bankAccountTypes = _.filter(bankAccountCodeValues, function (accountType) {
+          //       return accountType.context.indexOf("repaymentAccountType") > -1;
+          //     });
+          //   });
 
-        //   resourceFactory.codeCodeValuesResources.getAllCodesValues({ codeName: 'SIHoldReason' }, function (codeValues) {
-        //     scope.siHoldReasonDropDown = codeValues;
-        //   });
+          //   resourceFactory.codeCodeValuesResources.getAllCodesValues({ codeName: 'SIHoldReason' }, function (codeValues) {
+          //     scope.siHoldReasonDropDown = codeValues;
+          //   });
 
-        //   resourceFactory.taskRoleConfigResource.getAll(function (data) {
-        //     scope.allTasksData = data;
-        //     for (var i = 0; i < scope.allTasksData.length; i++) {
-        //       if (!scope.allTasksData[i].isWorkflowAvailable && scope.allTasksData[i].taskTypeName == "Standing Instruction") {
-        //         if (scope.allTasksData[i].subTaskTypeName == "Approve Standing Instruction") {
-        //           for (var j = 0; j < scope.allTasksData[i].taskRoleMapList[0].roles.length; j++)
-        //             scope.siApprovalRole.push(scope.allTasksData[i].taskRoleMapList[0].roles[j].name);
-        //         }
-        //       }
-        //     }
-        //   });
+          //   resourceFactory.taskRoleConfigResource.getAll(function (data) {
+          //     scope.allTasksData = data;
+          //     for (var i = 0; i < scope.allTasksData.length; i++) {
+          //       if (!scope.allTasksData[i].isWorkflowAvailable && scope.allTasksData[i].taskTypeName == "Standing Instruction") {
+          //         if (scope.allTasksData[i].subTaskTypeName == "Approve Standing Instruction") {
+          //           for (var j = 0; j < scope.allTasksData[i].taskRoleMapList[0].roles.length; j++)
+          //             scope.siApprovalRole.push(scope.allTasksData[i].taskRoleMapList[0].roles[j].name);
+          //         }
+          //       }
+          //     }
+          //   });
 
-        //   resourceFactory.codeCodeValuesResources.getAllCodesValues({ codeName: 'RepaymentMode', context: scope.loandetails.processDefKey }, function (repaymentModeDropDown) {
-        //     scope.modeOfRepaymentTypes = repaymentModeDropDown;
-        //     scope.defaultRepaymentMode = _.find(scope.modeOfRepaymentTypes, function (codevalue) { return codevalue.name == "Cash"; });
-        //     if (scope.loanAppRefData.repaymentTypeId) {
-        //       scope.formData.repaymentDetails.repaymentTypeId = scope.loanAppRefData.repaymentTypeId;
-        //       if (scope.formData.repaymentDetails.repaymentTypeId == scope.defaultRepaymentMode.id) {
-        //         scope.isNonCashRepaymentMode = false;
-        //       } else {
-        //         scope.isNonCashRepaymentMode = true;
-        //       }
-        //       scope.loadSIData(scope.loandetails.loanApplicationReferenceId);
-        //       if (scope.defaultRepaymentMode.id != scope.formData.repaymentDetails.repaymentTypeId) {
-        //         scope.repaymentModeFromAppRef = true;
-        //       }
-        //     } else {
-        //       scope.formData.repaymentDetails.repaymentTypeId = scope.defaultRepaymentMode.id;
-        //     }
-        //   });
-        // }
+          //   resourceFactory.codeCodeValuesResources.getAllCodesValues({ codeName: 'RepaymentMode', context: scope.loandetails.processDefKey }, function (repaymentModeDropDown) {
+          //     scope.modeOfRepaymentTypes = repaymentModeDropDown;
+          //     scope.defaultRepaymentMode = _.find(scope.modeOfRepaymentTypes, function (codevalue) { return codevalue.name == "Cash"; });
+          //     if (scope.loanAppRefData.repaymentTypeId) {
+          //       scope.formData.repaymentDetails.repaymentTypeId = scope.loanAppRefData.repaymentTypeId;
+          //       if (scope.formData.repaymentDetails.repaymentTypeId == scope.defaultRepaymentMode.id) {
+          //         scope.isNonCashRepaymentMode = false;
+          //       } else {
+          //         scope.isNonCashRepaymentMode = true;
+          //       }
+          //       scope.loadSIData(scope.loandetails.loanApplicationReferenceId);
+          //       if (scope.defaultRepaymentMode.id != scope.formData.repaymentDetails.repaymentTypeId) {
+          //         scope.repaymentModeFromAppRef = true;
+          //       }
+          //     } else {
+          //       scope.formData.repaymentDetails.repaymentTypeId = scope.defaultRepaymentMode.id;
+          //     }
+          //   });
+          // }
 
-        // resourceFactory.codeCodeValuesResources.getAllCodesValues({ codeName: 'SpdcStatusTypes', context: 'MELUnsecured' }, function (spdcTypeDropDowns) {
-        //   scope.spdcStatusDropDownTypes = spdcTypeDropDowns;
-        //   scope.spdcDataForReset = angular.copy(scope.loandetails.loanSpdcDatas);
-        //   for (var count = 0; count < scope.loandetails.loanSpdcDatas.length; count++) {
-        //     if (scope.loandetails.loanSpdcDatas[count].spdcChequeSrNumber == "" || scope.loandetails.loanSpdcDatas[count].spdcChequeSrNumber == undefined) {
-        //       scope.showSpdcTab = false;
-        //     }
-        //     console.log('scope.loandetails.loanSpdcDatas[count]', scope.loandetails.loanSpdcDatas[count]);
-        //     for (var innerCount = 0; innerCount < scope.spdcStatusDropDownTypes.length; innerCount++) {
-        //       if (scope.spdcStatusDropDownTypes[innerCount].id == scope.loandetails.loanSpdcDatas[count].spdcStatus &&
-        //         scope.spdcStatusDropDownTypes[innerCount].name == 'OUT') {
-        //         scope.loandetails.loanSpdcDatas[count].disabled = true;
-        //         break;
-        //       }
-        //     }
-        //     if (!scope.loandetails.loanSpdcDatas[count].hasOwnProperty('disabled')) {
-        //       scope.loandetails.loanSpdcDatas[count].disabled = false;
-        //     }
-        //   }
-        // });
-      });
+          // resourceFactory.codeCodeValuesResources.getAllCodesValues({ codeName: 'SpdcStatusTypes', context: 'MELUnsecured' }, function (spdcTypeDropDowns) {
+          //   scope.spdcStatusDropDownTypes = spdcTypeDropDowns;
+          //   scope.spdcDataForReset = angular.copy(scope.loandetails.loanSpdcDatas);
+          //   for (var count = 0; count < scope.loandetails.loanSpdcDatas.length; count++) {
+          //     if (scope.loandetails.loanSpdcDatas[count].spdcChequeSrNumber == "" || scope.loandetails.loanSpdcDatas[count].spdcChequeSrNumber == undefined) {
+          //       scope.showSpdcTab = false;
+          //     }
+          //     console.log('scope.loandetails.loanSpdcDatas[count]', scope.loandetails.loanSpdcDatas[count]);
+          //     for (var innerCount = 0; innerCount < scope.spdcStatusDropDownTypes.length; innerCount++) {
+          //       if (scope.spdcStatusDropDownTypes[innerCount].id == scope.loandetails.loanSpdcDatas[count].spdcStatus &&
+          //         scope.spdcStatusDropDownTypes[innerCount].name == 'OUT') {
+          //         scope.loandetails.loanSpdcDatas[count].disabled = true;
+          //         break;
+          //       }
+          //     }
+          //     if (!scope.loandetails.loanSpdcDatas[count].hasOwnProperty('disabled')) {
+          //       scope.loandetails.loanSpdcDatas[count].disabled = false;
+          //     }
+          //   }
+          // });
+        });
+      }
 
       if (this.loanDetails.summary && (this.loanDetails.summary.totalRepayment -
         (this.loanDetails.summary.feeChargesPaid + this.loanDetails.summary.insuranceFeePaid) != 0)) {

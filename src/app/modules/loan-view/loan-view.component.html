@@ -14,15 +14,16 @@
             </h2>
         </div>
         <div class="card-body">
-            <div class="row col-sm-12 ml-2 mb-4">
+            <div class="row ml-4 mb-4 mr-4">
+                <span class="ml-auto">
                 <span *ngIf="showGenerateNocButton">
-                    <button class="btn btn-primary ml-auto mr-2 mb-2" *hasPermission="'UPDATE_NOCFORLOAN'">Generate NOC
+                    <button class="btn btn-primary mr-2 mb-2" *hasPermission="'UPDATE_NOCFORLOAN'">Generate NOC
                     </button>
                 </span>
                 <!-- Generate NOC method on click-->
-                <span *ngFor="let button of buttons.singlebuttons">
+                <span *ngFor="let button of buttons.singlebuttons" class="">
                     <span *ngIf="button.name" >
-                        <button class="btn btn-primary ml-auto mr-2 mb-2" [disabled]="isRepaid(button.name) || undoDisbursalCheck(button.name)" *hasPermission="button.taskPermissionName">
+                        <button class="btn btn-primary mr-2 mb-2" [disabled]="isRepaid(button.name) || undoDisbursalCheck(button.name)" *hasPermission="button.taskPermissionName">
                             <i class="{{button.icon}} text-white"></i>
                         {{button.name}}
                         </button>
@@ -30,8 +31,8 @@
                     </span>
                 </span>
                 <span>
-                    <button class="btn btn-primary dropdown-toggle" *ngIf="buttons.options || isOverpaidExists || !hideButtonOptions" data-toggle="dropdown">More</button>
-                    <div class="dropdown-menu dropdown-menu-right">
+                    <button class="btn btn-primary dropdown-toggle mr-2 mb-2" *ngIf="buttons.options || isOverpaidExists || !hideButtonOptions" data-toggle="dropdown">More</button>
+                    <div class="dropdown-menu dropdown-menu">
                         <div *ngFor="let btn of buttons.options">
                             <a class="dropdown-item" type="button" *hasPermission="btn.taskPermissionName">
                                 <!-- Add click event -->
@@ -39,12 +40,12 @@
                             </a>
                         </div>
                         <div *ngIf="loanDetails.status.active">
-                             <!-- Add click event --> 
+                            <!-- Add click event --> 
                             <a class="dropdown-item" type="button" *hasPermission="'CREATE_FORECLOSURE'">
                             ForeClosure</a> 
                         </div>
                         <div *ngIf="loanDetails.status.active || loanDetails.status.freezedForForeClosure"> 
-                             <!-- Add click event --> 
+                            <!-- Add click event --> 
                             <a class="dropdown-item" type="button" *hasPermission="'VIEW_FORECLOSURE_LOAN'"> Foreclosure(View Only)</a>
                         </div>
                         <div *ngIf="(loanDetails.status.pendingApproval || loanDetails.status.waitingForDisbursal || loanDetails.status.active) && loanAppRefData?.coApplicant1Id"> 
@@ -57,10 +58,11 @@
                             <a class="dropdown-item" type="button" *hasPermission="'UPDATE_GST_NUMBER'">Capture Account GST Details</a> 
                         </div>
                         <div *ngIf="isOverpaidExists"> 
-                             <!-- Add click event --> 
+                            <!-- Add click event --> 
                             <a class="dropdown-item" type="button" *hasPermission="'OVERPAIDLOANCLOSURE_LOAN'">Post maturity overpaid closure</a> 
                         </div>
                     </div>
+                </span>
                 </span>
             </div>
             <div class="row col-sm-12">
@@ -159,17 +161,17 @@
 
                     <div class="row col-sm-12 mb-3">
                         <div class="col-sm-6 detail-key">Arrears By </div>
-                        <div class="col-sm-6 text-white">{{loanDetails.summary.totalOverdue >= 0 ? loanDetails.summary.totalOverdue : 'Not Provided'}}</div>
+                        <div class="col-sm-6 text-white">{{loanDetails.summary?.totalOverdue >= 0 ? loanDetails.summary?.totalOverdue : 'Not Provided'}}</div>
                     </div>
 
                     <div class="row col-sm-12 mb-3">
                         <div class="col-sm-6 detail-key">Days Past Due </div>
-                        <div class="col-sm-6 text-white">{{loanDetails.summary.daysPastDue}}</div>
+                        <div class="col-sm-6 text-white">{{loanDetails.summary?.daysPastDue}}</div>
                     </div>
 
                     <div class="row col-sm-12 mb-3">
                         <div class="col-sm-6 detail-key">Total Advance Paid </div>
-                        <div class="col-sm-6 text-white">{{loanDetails.summary.totalAdvancePaid >= 0 ? loanDetails.summary.totalAdvancePaid :'Not Provided'}}</div>
+                        <div class="col-sm-6 text-white">{{loanDetails.summary?.totalAdvancePaid >= 0 ? loanDetails.summary?.totalAdvancePaid :'Not Provided'}}</div>
                     </div>
 
                     <div class="row col-sm-12 mb-3" *ngIf="isOverpaidExists">
@@ -179,7 +181,7 @@
 
                     <div class="row col-sm-12 mb-3">
                         <div class="col-sm-6 detail-key">Roundoff Amount </div>
-                        <div class="col-sm-6 text-white">{{loanDetails.summary.roundoffAmount}}</div>
+                        <div class="col-sm-6 text-white">{{loanDetails.summary?.roundoffAmount}}</div>
                     </div>
 
                     <div class="row col-sm-12 mb-3">
