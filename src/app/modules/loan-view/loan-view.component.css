@@ -7,8 +7,27 @@
     padding-bottom: 10px;
 }
 
-.hr{
+ul li {
+    padding: 5px 0;
+}
+
+hr{
     border-top: 1px solid #f7f4f430;
     margin-top: 5px !important ;
      margin-bottom: 5px !important;
+}
+.nav-link {
+    color: var(--black);
+    font-weight: 600;
+}
+
+.nav-link.active {
+    color: #007bff;
+    border-color: white;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    color: #007bff;
+    border-color: white;
 }
