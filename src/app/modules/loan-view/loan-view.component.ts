@@ -32,6 +32,7 @@ export class LoanViewComponent implements OnInit {
   closedOrObligationMetStatusIdList = [600, 602, 611, 612, 806];
   isOverpaidExists: boolean = false;
   tab: number = 1;
+  guarantorDetails: any;
 
   constructor(private http: HttpService, private route: ActivatedRoute, private datePipe: DatePipe, private auth: AuthService) { }
 
@@ -42,6 +43,7 @@ export class LoanViewComponent implements OnInit {
     this.http.LoanAccountResource(this.loanId, 'all').subscribe(response => {
       this.loanDetails = response;
       this.status = this.loanDetails.status.value;
+      this.guarantorDetails = response.guarantors;
 
       if (this.closedOrObligationMetStatusIdList.indexOf(this.loanDetails.status.id) > -1 && (this.auth.userData.userRole.name == 'Transaction Officer' || this.auth.userData.userRole.name == 'Field Manager' || this.auth.userData.userRole.name == 'Account Manager')) {
         this.showGenerateNocButton = true;

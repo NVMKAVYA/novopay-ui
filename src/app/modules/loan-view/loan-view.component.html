@@ -541,7 +541,81 @@
                 </div>
             </div>
             <div *ngSwitchCase="2">
-                two
+                <div class="card mt-4 mb-4">
+                    <div class="card-content">
+                       <table class="table table-striped">
+                          <thead>
+                             <tr *ngIf="guarantorDetails">
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Relationship</th>
+                                <th>Guarantor Type</th>
+                                <th></th>
+                                <th></th>
+                             </tr>
+                          </thead>
+                          <tbody>
+                             <tr *ngFor="let guarantor of guarantorDetails">
+                                <td>{{guarantor.firstname}}</td>
+                                <td>{{guarantor.lastname}}</td>
+                                <td>{{guarantor.clientRelationshipType.name}}</td>
+                                <td>{{guarantor.guarantorType.value}}</td>
+                                <td><a data-ng-click="showDetails(guarantor.id)">Details</a></td>
+                                <td><a data-ng-show="guarantor.guarantorType.id == 3"
+                                   href="#/editguarantor/{{guarantor.id}}/{{guarantor.loanId}}"
+                                   class="btn btn-primary"> <i class="fa fa-edit"></i></a>
+                                   <button class="btn btn-warning" data-ng-click="deleteGroup(guarantor.id)"
+                                      data-ng-hide="group.status.value=='Active'"><i
+                                      class="fa fa-trash"></i></button>
+                                </td>
+                             </tr>
+                          </tbody>
+                       </table>
+                       <hr />
+                       <table *ngIf="guarantorData">
+                          <tr *ngIf="guarantorData.firstname">
+                             <td>First Name</td>
+                             <td>{{guarantorData.firstname}}</td>
+                          </tr>
+                          <tr *ngIf="guarantorData.lastname">
+                             <td>Last Name</td>
+                             <td>{{guarantorData.lastname}}</td>
+                          </tr>
+                          <tr *ngIf="guarantorData.clientRelationshipType.name">
+                             <td>Relationship:</td>
+                             <td>{{guarantorData.clientRelationshipType.name}}</td>
+                          </tr>
+                          <tr *ngIf="guarantorData.guarantorType.value">
+                             <td>Guarantor Type:</td>
+                             <td>{{guarantorData.guarantorType.value}}</td>
+                          </tr>
+                          <tr *ngIf="guarantorData.joinedDate">
+                             <td>Join Date:</td>
+                             <td>{{guarantorData.joinedDate | DateFormat}}</td>
+                          </tr>
+                          <tr *ngIf="guarantorData.officeName">
+                             <td>Office:</td>
+                             <td>{{guarantorData.officeName}}</td>
+                          </tr>
+                          <tr *ngIf="guarantorData.dob">
+                             <td>Dob:</td>
+                             <td>{{guarantorData.dob | DateFormat}}</td>
+                          </tr>
+                          <tr *ngIf="guarantorData.mobileNumber">
+                             <td>Mobile:</td>
+                             <td>{{guarantorData.mobileNumber}}</td>
+                          </tr>
+                          <tr *ngIf="guarantorData.housePhoneNumber">
+                             <td>Residence:</td>
+                             <td>{{guarantorData.housePhoneNumber}}</td>
+                          </tr>
+                          <tr *ngIf="guarantorData.city">
+                             <td>{{'label.heading.city' | translate}}:</td>
+                             <td>{{guarantorData.city}}</td>
+                          </tr>
+                       </table>
+                    </div>
+                 </div>
             </div>
             <div *ngSwitchCase="3">
                 <div class="card mt-4 mb-4">
