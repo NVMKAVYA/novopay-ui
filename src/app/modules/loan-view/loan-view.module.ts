@@ -7,6 +7,7 @@ import { LoanViewComponent } from './loan-view.component';
 import { StatusColourModule } from '../../shared/pipes/status-colour/status-colour.module';
 import { DatePipe } from '@angular/common';
 import { HasPermissionModule } from 'src/app/shared/directives/has-permission/has-permission.module';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 @NgModule({
   declarations: [LoanViewComponent],
@@ -14,7 +15,8 @@ import { HasPermissionModule } from 'src/app/shared/directives/has-permission/ha
     CommonModule,
     LoanViewRoutingModule,
     StatusColourModule,
-    HasPermissionModule
+    HasPermissionModule,
+    PerfectScrollbarModule
   ],
   providers: [DatePipe]
 })
