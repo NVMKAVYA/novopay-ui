@@ -32,7 +32,8 @@ export class LoanViewComponent implements OnInit {
   closedOrObligationMetStatusIdList = [600, 602, 611, 612, 806];
   isOverpaidExists: boolean = false;
   tab: number = 1;
-  guarantorDetails: any;
+  guarantorDetails: any = [];
+  guarantorDetailsTab: any = [];
 
   constructor(private http: HttpService, private route: ActivatedRoute, private datePipe: DatePipe, private auth: AuthService) { }
 
@@ -43,7 +44,6 @@ export class LoanViewComponent implements OnInit {
     this.http.LoanAccountResource(this.loanId, 'all').subscribe(response => {
       this.loanDetails = response;
       this.status = this.loanDetails.status.value;
-      this.guarantorDetails = response.guarantors;
 
       if (this.closedOrObligationMetStatusIdList.indexOf(this.loanDetails.status.id) > -1 && (this.auth.userData.userRole.name == 'Transaction Officer' || this.auth.userData.userRole.name == 'Field Manager' || this.auth.userData.userRole.name == 'Account Manager')) {
         this.showGenerateNocButton = true;
@@ -399,4 +399,19 @@ export class LoanViewComponent implements OnInit {
   setTab(tab: number) {
     this.tab = tab;
   }
+
+  showGurantorDetails(guarantorId, index) {
+    if (!this.guarantorDetailsTab[index]) {
+      if (!this.guarantorDetails[index]) {
+        this.http.guarantorResource(this.loanId, guarantorId).subscribe(data => {
+          this.guarantorDetails[index] = data;
+          this.guarantorDetailsTab[index] = true;
+        });
+      } else {
+        this.guarantorDetailsTab[index] = true;
+      }
+    } else {
+      this.guarantorDetailsTab[index] = false;
+    }
+  };
 }

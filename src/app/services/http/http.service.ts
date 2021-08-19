@@ -264,4 +264,10 @@ export class HttpService {
     return this._http.get(`${this.baseUrl}/rsdtransaction`, { params: params });
   }
 
+  public guarantorResource(loanId, guarantorId): any {
+    let params = new HttpParams();
+    params = params.append('loanId', loanId);
+    return this._http.get(`${this.baseUrl}/loans/${loanId}/guarantors/${guarantorId}`);
+  }
+
 }

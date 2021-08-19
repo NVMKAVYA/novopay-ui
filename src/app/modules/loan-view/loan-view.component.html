@@ -192,7 +192,7 @@
 
                     <div class="row col-sm-12 mb-3">
                         <div class="col-sm-6 detail-key">Total RSD Amount </div>
-                        <div class="col-sm-6 text-white">{{rsdTransactions.amount}}</div>
+                        <div class="col-sm-6 text-white">{{rsdTransactions?.amount}}</div>
                     </div>
                 </div>
             </div>
@@ -201,7 +201,7 @@
             <li class="nav-item">
                 <a href="" class="nav-link active" data-toggle="tab" (click)="setTab(1)">Account Details</a>
             </li>
-            <li class=" nav-item ">
+            <li class=" nav-item " *ngIf="loanDetails.guarantors">
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(2)">Loan witnesses</a>
             </li>
             <li class=" nav-item " *ngIf="loanDetails.summary">
@@ -543,79 +543,84 @@
             <div *ngSwitchCase="2">
                 <div class="card mt-4 mb-4">
                     <div class="card-content">
-                       <table class="table table-striped">
-                          <thead>
-                             <tr *ngIf="guarantorDetails">
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Relationship</th>
-                                <th>Guarantor Type</th>
-                                <th></th>
-                                <th></th>
-                             </tr>
-                          </thead>
-                          <tbody>
-                             <tr *ngFor="let guarantor of guarantorDetails">
-                                <td>{{guarantor.firstname}}</td>
-                                <td>{{guarantor.lastname}}</td>
-                                <td>{{guarantor.clientRelationshipType.name}}</td>
-                                <td>{{guarantor.guarantorType.value}}</td>
-                                <td><a data-ng-click="showDetails(guarantor.id)">Details</a></td>
-                                <td><a data-ng-show="guarantor.guarantorType.id == 3"
-                                   href="#/editguarantor/{{guarantor.id}}/{{guarantor.loanId}}"
-                                   class="btn btn-primary"> <i class="fa fa-edit"></i></a>
-                                   <button class="btn btn-warning" data-ng-click="deleteGroup(guarantor.id)"
-                                      data-ng-hide="group.status.value=='Active'"><i
-                                      class="fa fa-trash"></i></button>
-                                </td>
-                             </tr>
-                          </tbody>
-                       </table>
-                       <hr />
-                       <table *ngIf="guarantorData">
-                          <tr *ngIf="guarantorData.firstname">
-                             <td>First Name</td>
-                             <td>{{guarantorData.firstname}}</td>
-                          </tr>
-                          <tr *ngIf="guarantorData.lastname">
-                             <td>Last Name</td>
-                             <td>{{guarantorData.lastname}}</td>
-                          </tr>
-                          <tr *ngIf="guarantorData.clientRelationshipType.name">
-                             <td>Relationship:</td>
-                             <td>{{guarantorData.clientRelationshipType.name}}</td>
-                          </tr>
-                          <tr *ngIf="guarantorData.guarantorType.value">
-                             <td>Guarantor Type:</td>
-                             <td>{{guarantorData.guarantorType.value}}</td>
-                          </tr>
-                          <tr *ngIf="guarantorData.joinedDate">
-                             <td>Join Date:</td>
-                             <td>{{guarantorData.joinedDate | DateFormat}}</td>
-                          </tr>
-                          <tr *ngIf="guarantorData.officeName">
-                             <td>Office:</td>
-                             <td>{{guarantorData.officeName}}</td>
-                          </tr>
-                          <tr *ngIf="guarantorData.dob">
-                             <td>Dob:</td>
-                             <td>{{guarantorData.dob | DateFormat}}</td>
-                          </tr>
-                          <tr *ngIf="guarantorData.mobileNumber">
-                             <td>Mobile:</td>
-                             <td>{{guarantorData.mobileNumber}}</td>
-                          </tr>
-                          <tr *ngIf="guarantorData.housePhoneNumber">
-                             <td>Residence:</td>
-                             <td>{{guarantorData.housePhoneNumber}}</td>
-                          </tr>
-                          <tr *ngIf="guarantorData.city">
-                             <td>{{'label.heading.city' | translate}}:</td>
-                             <td>{{guarantorData.city}}</td>
-                          </tr>
-                       </table>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Relationship</th>
+                                    <th>Guarantor Type</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let guarantor of loanDetails.guarantors; index as i">
+                                    <tr>
+                                        <td>{{guarantor.firstname}}</td>
+                                        <td>{{guarantor.lastname}}</td>
+                                        <td>{{guarantor.clientRelationshipType.name}}</td>
+                                        <td>{{guarantor.guarantorType.value}}</td>
+                                        <td class="h5 mb-0">
+                                            <!-- bind link  -->
+                                            <i class="fa fa-edit blueText mr-3 pointer" *ngIf="guarantor.guarantorType.id == 3"></i>
+                                            <!-- bind click and link  -->
+                                            <i class="fa fa-trash required mr-3 pointer" *ngIf="loanDetails.group?.status.value =='Active'"></i>
+                                            <i class="blueText pointer" (click)="showGurantorDetails(guarantor.id, i)" [ngClass]="guarantorDetailsTab[i] ? 'fa fa-chevron-circle-up' : 'fa fa-chevron-circle-down'"></i>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="guarantorDetails[i] && guarantorDetailsTab[i]">
+                                        <td colspan="12" class="p-0">
+                                            <div class="card card-body mb-0 no-shadow">
+                                                <table class="table mb-0 table-bordered">
+                                                    <tr *ngIf="guarantorDetails[i].firstname" class="bg-white">
+                                                        <td>First Name</td>
+                                                        <td>{{guarantorDetails[i].firstname}}</td>
+                                                    </tr>
+                                                    <tr *ngIf="guarantorDetails[i].lastname" class="bg-white">
+                                                        <td>Last Name</td>
+                                                        <td>{{guarantorDetails[i].lastname}}</td>
+                                                    </tr>
+                                                    <tr *ngIf="guarantorDetails[i].clientRelationshipType.name" class="bg-white">
+                                                        <td>Relationship</td>
+                                                        <td>{{guarantorDetails[i].clientRelationshipType.name}}</td>
+                                                    </tr>
+                                                    <tr *ngIf="guarantorDetails[i].guarantorType.value" class="bg-white">
+                                                        <td>Guarantor Type</td>
+                                                        <td>{{guarantorDetails[i].guarantorType.value}}</td>
+                                                    </tr>
+                                                    <tr *ngIf="guarantorDetails[i].joinedDate" class="bg-white">
+                                                        <td>Join Date</td>
+                                                        <td>{{guarantorData[i].joinedDate | date : dateFormat}}</td>
+                                                    </tr>
+                                                    <tr *ngIf="guarantorDetails[i].officeName" class="bg-white">
+                                                        <td>Office</td>
+                                                        <td>{{guarantorDetails[i].officeName}}</td>
+                                                    </tr>
+                                                    <tr *ngIf="guarantorDetails[i].dob" class="bg-white">
+                                                        <td>Dob</td>
+                                                        <td>{{guarantorDetails[i].dob | date : dateFormat}}</td>
+                                                    </tr>
+                                                    <tr *ngIf="guarantorDetails[i].mobileNumber" class="bg-white">
+                                                        <td>Mobile</td>
+                                                        <td>{{guarantorDetails[i].mobileNumber}}</td>
+                                                    </tr>
+                                                    <tr *ngIf="guarantorDetails[i].housePhoneNumber" class="bg-white">
+                                                        <td>Residence</td>
+                                                        <td>{{guarantorDetails[i].housePhoneNumber}}</td>
+                                                    </tr>
+                                                    <tr *ngIf="guarantorDetails[i].city" class="bg-white">
+                                                        <td>City</td>
+                                                        <td>{{guarantorDetails[i].city}}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
                     </div>
-                 </div>
+                </div>
             </div>
             <div *ngSwitchCase="3">
                 <div class="card mt-4 mb-4">
