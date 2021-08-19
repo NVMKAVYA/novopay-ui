@@ -213,59 +213,62 @@
             <li class=" nav-item ">
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(5)">Repayment Schedule</a>
             </li>
+            <li class=" nav-item " *ngIf="loanDetails.repaymentSchedule.futurePeriods">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(6)">Future Schedule</a>
+            </li>
             <li class="nav-item ">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(5)">Transactions</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(7)">Transactions</a>
             </li>
             <li class=" nav-item ">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(6)">Charges</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(8)">Charges</a>
             </li>
             <li class="nav-item ">
-                <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(7)">Loan Documents</a>
+                <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(9)">Loan Documents</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(7)">Assets</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(10)">Assets</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(8)">Bank Accounts</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(10)">Bank Accounts</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(9)">Business Expenses</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(11)">Business Expenses</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(10)">Cam Approver Details</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(12)">Cam Approver Details</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(11)">Change Log</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(13)">Change Log</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(12)">Deviation Rules</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(14)">Deviation Rules</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(13)">Eligibility Rules</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(15)">Eligibility Rules</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(14)">d_eligibility_rules_history</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(16)">d_eligibility_rules_history</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(15)">Existing Loan</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(17)">Existing Loan</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(16)">FATCA</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(18)">FATCA</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(17)">Household Expenses</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(19)">Household Expenses</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(18)">Household Income</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(20)">Household Income</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(19)">Nominee Details</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(21)">Nominee Details</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(20)">Personal Details</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(22)">Personal Details</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(21)">End Use Check</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(23)">End Use Check</a>
             </li>
 
         </ul>
@@ -773,12 +776,12 @@
                         <div class="card-content">
                             <table class="table table-striped">
                                 <thead>
-                                    <!-- <tr>
+                                    <tr>
                                         <th colspan="5"></th>
                                         <th colspan="2">Loan Amount and Balance</th>
                                         <th colspan="3">Total Cost of Loan</th>
                                         <th colspan="6">Installment Totals</th>
-                                    </tr> -->
+                                    </tr>
                                     <tr>
                                         <th>#</th>
                                         <th>Days</th>
@@ -841,6 +844,9 @@
                         </div>
                     </perfect-scrollbar>
                 </div>
+            </div>
+            <div *ngSwitchCase="6">
+                six
             </div>
         </div>
     </div>
