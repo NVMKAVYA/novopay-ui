@@ -21,12 +21,14 @@
                     </button>
                 </span>
                 <!-- Generate NOC method on click-->
-                <!-- <div ng-show="loandetails.status.deathOfApplicant || loandetails.status.deathOfCoApplicant">
-                    <button class="btn btn-primary pull-right" ng-click="foreClosureEvent(loandetails.id)" has-permission='FORECLOSE_DECEASED_CLIENT'> {{'label.button.foreclosure' | translate}}</button>
-                </div>
-                <div ng-show="loandetails.status.deathOfApplicant  ||  loandetails.status.deathOfCoApplicant  || loandetails.status.deathForeclosureFreeze ||loandetails.status.deathCoApplicantForeclosureFreeze">
-                    <button class="btn btn-primary pull-right" ng-click="foreClosureViewEvent(loandetails.id)" has-permission='VIEW_FORECLOSURE_LOAN'> {{'label.button.viewforeclosure' | translate}}</button>
-                </div> -->
+                <span *ngIf="loanDetails.status.deathOfApplicant || loanDetails.status.deathOfCoApplicant">
+                    <button class="btn btn-primary" *hasPermission="'FORECLOSE_DECEASED_CLIENT'">Foreclosure</button>
+                </span>
+                <!-- Foreclosure event on click -->
+                <span *ngIf="loanDetails.status.deathOfApplicant  ||  loanDetails.status.deathOfCoApplicant  || loanDetails.status.deathForeclosureFreeze ||loanDetails.status.deathCoApplicantForeclosureFreeze">
+                    <button class="btn btn-primary" *hasPermission="'VIEW_FORECLOSURE_LOAN'">View Foreclosure</button>
+                </span>
+                <!-- View Foreclosure event on click -->
                 <span *ngFor="let button of buttons.singlebuttons" class="">
                     <span *ngIf="button.name" >
                         <button class="btn btn-primary mr-2 mb-2" [disabled]="isRepaid(button.name) || undoDisbursalCheck(button.name)" *hasPermission="button.taskPermissionName">
@@ -216,7 +218,7 @@
             <li class=" nav-item " *ngIf="loanDetails.repaymentSchedule.futurePeriods">
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(6)">Future Schedule</a>
             </li>
-            <li class="nav-item ">
+            <li class="nav-item " *ngIf="loanDetails.transactions">
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(7)">Transactions</a>
             </li>
             <li class=" nav-item ">
@@ -846,7 +848,99 @@
                 </div>
             </div>
             <div *ngSwitchCase="6">
-                six
+                <div class="card mt-4 mb-4">
+                    <div class="card-content">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th colspan="2">Loan Amount and Balance</th>
+                                    <th colspan="3">Total Cost of Loan</th>
+                                    <th colspan="1">Installment Totals</th>
+                                </tr>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Principal Due</th>
+                                    <th>Balance of Loan</th>
+                                    <th>Interest</th>
+                                    <th>Fees</th>
+                                    <th>Penalties</th>
+                                    <th>Outstanding</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let period in loanDetails.repaymentSchedule.futurePeriods">
+                                    <td>{{period.dueDate | date : dateFormat}}</td>
+                                    <td>{{period.principalDue | number}}</td>
+                                    <td>{{period.principalLoanBalanceOutstanding | number}}</td>
+                                    <td>{{period.interestOriginalDue | number}}</td>
+                                    <td>{{period.feeChargesDue | number}}</td>
+                                    <td>{{period.penaltyChargesDue | number}}</td>
+                                    <td>{{period.totalOutstandingForPeriod | number}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div *ngSwitchCase="7">
+                <div style="text-align: right;" class="mt-4">
+                    <input type="checkbox" [(ngModel)]="hideAccruals" class="mr-1">
+                    <label class="control-label mr-4">Hide accruals</label>
+                    <button class="btn btn-primary" (click)="export()">Export</button>
+                </div>
+                <div class="card mt-4 mb-4">
+                    <div class="card-content">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="pointer" (click)="changeTransactionSort('id')">ID</th>
+                                    <th class="pointer" (click)="changeTransactionSort('officeName')">Office</th>
+                                    <th class="pointer" (click)="changeTransactionSort('date')">Value Date</th>
+                                    <th class="pointer" (click)="changeTransactionSort('type.value')">Transaction Type</th>
+                                    <th class="pointer" (click)="changeTransactionSort('amount')">Amount</th>
+                                    <th class="pointer" (click)="changeTransactionSort('advancepaid')">Advance Payment</th>
+                                    <th class="pointer" (click)="changeTransactionSort('totalamount')">Total Amount</th>
+                                    <th class="pointer" colspan="4">Breakdown</th>
+                                    <th class="pointer">Loan Balance</th>
+                                    <th class="pointer">Reversed</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th class="pointer" (click)="changeTransactionSort('principalPortion')">Principal</th>
+                                    <th class="pointer" (click)="changeTransactionSort('interestPortion')">Interest</th>
+                                    <th class="pointer" (click)="changeTransactionSort('feeChargesPortion')">Fees</th>
+                                    <th class="pointer" (click)="changeTransactionSort('penaltyChargesPortion')">Penalities</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <!-- <tbody>
+                                <tr *ngFor="let transaction in loanDetails.transactions | filter:hideAccruals:transaction | orderBy:transactionSort.column:transactionSort.descending" ng-class="'loan-transaction-isreversed-'+transaction.isReversed">
+                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.id}} </td>
+                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.officeName}} </td>
+                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.date | DateFormat}} </td>
+                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.type.value}} </td>
+                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.amount | number}} </td>
+                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.advancePaymentPortion | number}} </td>
+                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.amount + transaction.advancePaymentPortion | number}} </td>
+                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.principalPortion | number}} </td>
+                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.interestPortion | number}} </td>
+                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.feeChargesPortion | number}} </td>
+                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.penaltyChargesPortion | number}} </td>
+                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.outstandingLoanBalance | number}} </td>
+                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.isReversed == true ? "Yes" : "No"}} </td>
+                                </tr>
+                            </tbody> -->
+                        </table>
+                    </div>
+                </div>
+                <!--  -->
             </div>
         </div>
     </div>

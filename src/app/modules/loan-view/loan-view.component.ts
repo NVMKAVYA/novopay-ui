@@ -34,6 +34,7 @@ export class LoanViewComponent implements OnInit {
   tab: number = 1;
   guarantorDetails: any = [];
   guarantorDetailsTab: any = [];
+  hideAccruals: boolean = true;
 
   constructor(private http: HttpService, private route: ActivatedRoute, private datePipe: DatePipe, private auth: AuthService) { }
 

@@ -360,7 +360,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="account of closedLoanAccounts | orderBy: 'id':true | filter:isClosed ">
+                                        <tr *ngFor="account of closedLoanAccounts | orderBy: 'id':true">
                                             <td>
                                                 <i placement="right" [tooltip]="account.status.value " class="fa fa-stop {{account.status.code | StatusLookup}}"></i> {{account.accountNo}}
                                             </td>

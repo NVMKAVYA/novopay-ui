@@ -5,20 +5,20 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 
 import { NgxPaginationModule } from 'ngx-pagination';
-import { SearchPipe } from 'src/app/pipes/search/search.pipe';
+import { SearchModule } from 'src/app/shared/pipes/search/search.module';
 import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
-    DashboardComponent, 
-    SearchPipe 
+    DashboardComponent
   ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    NgxPaginationModule ,
-    FormsModule
+    NgxPaginationModule,
+    FormsModule,
+    SearchModule
   ]
 })
 export class DashboardModule { }
