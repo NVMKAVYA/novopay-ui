@@ -9,7 +9,8 @@ import { DatePipe } from '@angular/common';
 import { HasPermissionModule } from 'src/app/shared/directives/has-permission/has-permission.module';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { FormsModule } from '@angular/forms';
-import { SearchModule } from 'src/app/shared/pipes/search/search.module';
+import { FilterModule } from 'src/app/shared/pipes/filter/filter.module';
+import { OrderModule } from 'ngx-order-pipe';
 
 @NgModule({
   declarations: [LoanViewComponent],
@@ -20,7 +21,8 @@ import { SearchModule } from 'src/app/shared/pipes/search/search.module';
     HasPermissionModule,
     PerfectScrollbarModule,
     FormsModule,
-    SearchModule
+    FilterModule,
+    OrderModule
   ],
   providers: [DatePipe]
 })

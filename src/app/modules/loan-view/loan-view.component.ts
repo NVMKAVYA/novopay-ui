@@ -35,6 +35,10 @@ export class LoanViewComponent implements OnInit {
   guarantorDetails: any = [];
   guarantorDetailsTab: any = [];
   hideAccruals: boolean = true;
+  transactionSort = {
+    column: 'date',
+    descending: true
+  };
 
   constructor(private http: HttpService, private route: ActivatedRoute, private datePipe: DatePipe, private auth: AuthService) { }
 
@@ -415,4 +419,21 @@ export class LoanViewComponent implements OnInit {
       this.guarantorDetailsTab[index] = false;
     }
   };
+
+  changeTransactionSort = function (column) {
+    if (this.transactionSort.column == column) {
+      this.transactionSort.descending = !this.transactionSort.descending;
+    } else {
+      this.transactionSort.column = column;
+      this.transactionSort.descending = true;
+    }
+  };
+
+  hideAccrualsTransaction(transaction) {
+    if ((transaction.type.accrual || transaction.type.accrualSuspense || transaction.type.accrualWrittenOff || transaction.type.accrualSuspenseReverse || transaction.type.accrualReverse) &&
+      this.hideAccruals) {
+      return false;
+    }
+    return true;
+  }
 }

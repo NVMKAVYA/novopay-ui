@@ -221,6 +221,12 @@
             <li class="nav-item " *ngIf="loanDetails.transactions">
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(7)">Transactions</a>
             </li>
+            <li class="nav-item " *ngIf="loanDetails.transactions">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(8)">Transactions</a>
+            </li>
+            <li class="nav-item " *ngIf="loanDetails.collateral">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(9)">Loan Collateral</a>
+            </li>
             <li class=" nav-item ">
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(8)">Charges</a>
             </li>
@@ -885,7 +891,7 @@
             </div>
             <div *ngSwitchCase="7">
                 <div style="text-align: right;" class="mt-4">
-                    <input type="checkbox" [(ngModel)]="hideAccruals" class="mr-1">
+                    <input type="checkbox" [(ngModel)]="hideAccruals" class="mr-1 pointer">
                     <label class="control-label mr-4">Hide accruals</label>
                     <button class="btn btn-primary" (click)="export()">Export</button>
                 </div>
@@ -894,13 +900,27 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th class="pointer" (click)="changeTransactionSort('id')">ID</th>
-                                    <th class="pointer" (click)="changeTransactionSort('officeName')">Office</th>
-                                    <th class="pointer" (click)="changeTransactionSort('date')">Value Date</th>
-                                    <th class="pointer" (click)="changeTransactionSort('type.value')">Transaction Type</th>
-                                    <th class="pointer" (click)="changeTransactionSort('amount')">Amount</th>
-                                    <th class="pointer" (click)="changeTransactionSort('advancepaid')">Advance Payment</th>
-                                    <th class="pointer" (click)="changeTransactionSort('totalamount')">Total Amount</th>
+                                    <th class="pointer" (click)="changeTransactionSort('id')" [ngClass]="transactionSort.column == 'id' ? 'f-ver-center' : ''">ID
+                                        <i class="ml-2 blueText" [ngClass]="transactionSort.descending ? 'fa fa-chevron-down' : 'fa fa-chevron-up'" *ngIf="transactionSort.column == 'id'"></i>
+                                    </th>
+                                    <th class="pointer" (click)="changeTransactionSort('officeName')" [ngClass]="transactionSort.column == 'officeName' ? 'f-ver-center' : ''">Office
+                                        <i class="ml-2 blueText" [ngClass]="transactionSort.descending ? 'fa fa-chevron-down' : 'fa fa-chevron-up'" *ngIf="transactionSort.column == 'officeName'"></i>
+                                    </th>
+                                    <th class="pointer" (click)="changeTransactionSort('date')" [ngClass]="transactionSort.column == 'date' ? 'f-ver-center' : ''">Value Date
+                                        <i class="ml-2 blueText" [ngClass]="transactionSort.descending ? 'fa fa-chevron-down' : 'fa fa-chevron-up'" *ngIf="transactionSort.column == 'date'"></i>
+                                    </th>
+                                    <th class="pointer" (click)="changeTransactionSort('type.value')" [ngClass]="transactionSort.column == 'officeName' ? 'f-ver-center' : ''">Transaction Type
+                                        <i class="ml-2 blueText" [ngClass]="transactionSort.descending ? 'fa fa-chevron-down' : 'fa fa-chevron-up'" *ngIf="transactionSort.column == 'type.value'"></i>
+                                    </th>
+                                    <th class="pointer" (click)="changeTransactionSort('amount')" [ngClass]="transactionSort.column == 'amount' ? 'f-ver-center' : ''">Amount
+                                        <i class="ml-2 blueText" [ngClass]="transactionSort.descending ? 'fa fa-chevron-down' : 'fa fa-chevron-up'" *ngIf="transactionSort.column == 'amount'"></i>
+                                    </th>
+                                    <th class="pointer" (click)="changeTransactionSort('advancepaid')" [ngClass]="transactionSort.column == 'advancepaid' ? 'f-ver-center' : ''">Advance Payment
+                                        <i class="ml-2 blueText" [ngClass]="transactionSort.descending ? 'fa fa-chevron-down' : 'fa fa-chevron-up'" *ngIf="transactionSort.column == 'advancepaid'"></i>
+                                    </th>
+                                    <th class="pointer" (click)="changeTransactionSort('totalamount')" [ngClass]="transactionSort.column == 'totalamount' ? 'f-ver-center' : ''">Total Amount
+                                        <i class="ml-2 blueText" [ngClass]="transactionSort.descending ? 'fa fa-chevron-down' : 'fa fa-chevron-up'" *ngIf="transactionSort.column == 'totalamount'"></i>
+                                    </th>
                                     <th class="pointer" colspan="4">Breakdown</th>
                                     <th class="pointer">Loan Balance</th>
                                     <th class="pointer">Reversed</th>
@@ -913,34 +933,68 @@
                                     <th></th>
                                     <th></th>
                                     <th></th>
-                                    <th class="pointer" (click)="changeTransactionSort('principalPortion')">Principal</th>
-                                    <th class="pointer" (click)="changeTransactionSort('interestPortion')">Interest</th>
-                                    <th class="pointer" (click)="changeTransactionSort('feeChargesPortion')">Fees</th>
-                                    <th class="pointer" (click)="changeTransactionSort('penaltyChargesPortion')">Penalities</th>
+                                    <th class="pointer" (click)="changeTransactionSort('principalPortion')" [ngClass]="transactionSort.column == 'principalPortion' ? 'f-ver-center' : ''">Principal
+                                        <i class="ml-2 blueText" [ngClass]="transactionSort.descending ? 'fa fa-chevron-down' : 'fa fa-chevron-up'" *ngIf="transactionSort.column == 'principalPortion'"></i>
+                                    </th>
+                                    <th class="pointer" (click)="changeTransactionSort('interestPortion')" [ngClass]="transactionSort.column == 'interestPortion' ? 'f-ver-center' : ''">Interest
+                                        <i class="ml-2 blueText" [ngClass]="transactionSort.descending ? 'fa fa-chevron-down' : 'fa fa-chevron-up'" *ngIf="transactionSort.column == 'interestPortion'"></i>
+                                    </th>
+                                    <th class="pointer" (click)="changeTransactionSort('feeChargesPortion')" [ngClass]="transactionSort.column == 'feeChargesPortion' ? 'f-ver-center' : ''">Fees
+                                        <i class="ml-2 blueText" [ngClass]="transactionSort.descending ? 'fa fa-chevron-down' : 'fa fa-chevron-up'" *ngIf="transactionSort.column == 'feeChargesPortion'"></i>
+                                    </th>
+                                    <th class="pointer" (click)="changeTransactionSort('penaltyChargesPortion')" [ngClass]="transactionSort.column == 'penaltyChargesPortion' ? 'f-ver-center' : ''">Penalities
+                                        <i class="ml-2 blueText" [ngClass]="transactionSort.descending ? 'fa fa-chevron-down' : 'fa fa-chevron-up'" *ngIf="transactionSort.column == 'penaltyChargesPortion'"></i>
+                                    </th>
+                                    <th></th>
                                     <th></th>
                                 </tr>
                             </thead>
-                            <!-- <tbody>
-                                <tr *ngFor="let transaction in loanDetails.transactions | filter:hideAccruals:transaction | orderBy:transactionSort.column:transactionSort.descending" ng-class="'loan-transaction-isreversed-'+transaction.isReversed">
-                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.id}} </td>
-                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.officeName}} </td>
-                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.date | DateFormat}} </td>
-                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.type.value}} </td>
-                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.amount | number}} </td>
-                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.advancePaymentPortion | number}} </td>
-                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.amount + transaction.advancePaymentPortion | number}} </td>
-                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.principalPortion | number}} </td>
-                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.interestPortion | number}} </td>
-                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.feeChargesPortion | number}} </td>
-                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.penaltyChargesPortion | number}} </td>
-                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.outstandingLoanBalance | number}} </td>
-                                    <td class="pointer" data-ng-click="routeTo(loandetails.id,transaction.id,transaction.type.id)"> {{transaction.isReversed == true ? "Yes" : "No"}} </td>
+                            <tbody>
+                                <tr *ngFor="let transaction of loanDetails.transactions | filter: hideAccrualsTransaction.bind(this) | orderBy : transactionSort.column : transactionSort.descending" class="pointer">
+                                    <!-- route -->
+                                    <td> {{transaction.id}}</td>
+                                    <td> {{transaction.officeName}}</td>
+                                    <td> {{transaction.date | date : dateFormat}}</td>
+                                    <td> {{transaction.type.value}}</td>
+                                    <td> {{transaction.amount | number}} </td>
+                                    <td> {{transaction.advancePaymentPortion | number}} </td>
+                                    <td> {{transaction.amount + transaction.advancePaymentPortion | number}} </td>
+                                    <td> {{transaction.principalPortion | number}} </td>
+                                    <td> {{transaction.interestPortion | number}}</td>
+                                    <td> {{transaction.feeChargesPortion | number}} </td>
+                                    <td> {{transaction.penaltyChargesPortion | number}} </td>
+                                    <td>{{transaction.outstandingLoanBalance | number}}</td>
+                                    <td> {{transaction.isReversed ? "Yes" : "No"}} </td>
                                 </tr>
-                            </tbody> -->
+                            </tbody>
                         </table>
                     </div>
                 </div>
-                <!--  -->
+            </div>
+            <div *ngSwitchCase="9">
+                <div class="card mt-4 mb-4">
+                    <div class="card-content">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Value</th>
+                                    <th>Description</th>
+                                    <th>Currency</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let collateral of loanDetails.collateral" class="pointer">
+                                    <!-- bind click event to route to diff page where edit and delete collateral can happen-->
+                                    <td>{{collateral.type.name}}</td>
+                                    <td><span class="mr-1">{{collateral.currency.displaySymbol}}</span>{{collateral.value | number}}</td>
+                                    <td>{{collateral.description}}</td>
+                                    <td>{{collateral.currency.name}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
