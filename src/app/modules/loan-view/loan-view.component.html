@@ -227,6 +227,12 @@
             <li class="nav-item " *ngIf="loanDetails.collateral">
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(9)">Loan Collateral</a>
             </li>
+            <li class="nav-item " *ngIf="loanDetails.multiDisburseLoan">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(10)">Loan Tranche Details</a>
+            </li>
+            <li class="nav-item " *ngIf="loanDetails.overdueCharges.length">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(11)">Overdue/Penalty Charges</a>
+            </li>
             <li class=" nav-item ">
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(8)">Charges</a>
             </li>
@@ -990,6 +996,33 @@
                                     <td><span class="mr-1">{{collateral.currency.displaySymbol}}</span>{{collateral.value | number}}</td>
                                     <td>{{collateral.description}}</td>
                                     <td>{{collateral.currency.name}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div *ngSwitchCase="10">
+                ten
+            </div>
+            <div *ngSwitchCase="11">
+                <div class="card mt-4 mb-4">
+                    <div class="card-content">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Collected On</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let charge of loanDetails.overdueCharges">
+                                    <td>{{charge.name}},{{charge.currency.displaySymbol}}</td>
+                                    <td>{{charge.chargeCalculationType.value}}</td>
+                                    <td>{{charge.amount | number}}</td>
+                                    <td>{{charge.chargeTimeType.value}}</td>
                                 </tr>
                             </tbody>
                         </table>
