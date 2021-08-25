@@ -39,13 +39,15 @@
                     </span>
                 </span>
                 <span>
-                    <button class="btn btn-primary dropdown-toggle mr-2 mb-2" *ngIf="buttons.options || isOverpaidExists || !hideButtonOptions" data-toggle="dropdown">More</button>
+                    <button class="btn btn-primary dropdown-toggle mr-2 mb-2" *ngIf="buttons.options.length || isOverpaidExists" data-toggle="dropdown">More</button>
                     <div class="dropdown-menu dropdown-menu">
                         <div *ngFor="let btn of buttons.options">
-                            <a class="dropdown-item" type="button" *hasPermission="btn.taskPermissionName">
-                                <!-- Add click event -->
-                                {{btn.name}}
-                            </a>
+                            <div *ngIf="!hideButtonOptions">
+                                <a class="dropdown-item" type="button" *hasPermission="btn.taskPermissionName">
+                                    <!-- Add click event -->
+                                    {{btn.name}}
+                                </a>
+                            </div>
                         </div>
                         <div *ngIf="loanDetails.status.active">
                             <!-- Add click event --> 
@@ -222,7 +224,7 @@
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(7)">Transactions</a>
             </li>
             <li class="nav-item " *ngIf="loanDetails.transactions">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(8)">Transactions</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(8)">Insurance Premium</a>
             </li>
             <li class="nav-item " *ngIf="loanDetails.collateral">
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(9)">Loan Collateral</a>
@@ -234,55 +236,55 @@
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(11)">Overdue/Penalty Charges</a>
             </li>
             <li class=" nav-item ">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(8)">Charges</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(12)">Charges</a>
             </li>
             <li class="nav-item ">
-                <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(9)">Loan Documents</a>
+                <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(12)">Loan Documents</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(10)">Assets</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(13)">Assets</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(10)">Bank Accounts</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(14)">Bank Accounts</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(11)">Business Expenses</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(15)">Business Expenses</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(12)">Cam Approver Details</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(16)">Cam Approver Details</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(13)">Change Log</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(17)">Change Log</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(14)">Deviation Rules</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(18)">Deviation Rules</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(15)">Eligibility Rules</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(19)">Eligibility Rules</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(16)">d_eligibility_rules_history</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(20)">d_eligibility_rules_history</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(17)">Existing Loan</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(21)">Existing Loan</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(18)">FATCA</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(22)">FATCA</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(19)">Household Expenses</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(23)">Household Expenses</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(20)">Household Income</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(24)">Household Income</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(21)">Nominee Details</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(25)">Nominee Details</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(22)">Personal Details</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(25)">Personal Details</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(23)">End Use Check</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(27)">End Use Check</a>
             </li>
 
         </ul>
@@ -759,7 +761,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let period in loandetails.originalSchedule.periods">
+                                <tr *ngFor="let period of loandetails.originalSchedule.periods">
                                     <td>{{period.dueDate | date : dateFormat}}</td>
                                     <td>{{period.principalDue | number}}</td>
                                     <td>{{period.principalLoanBalanceOutstanding | number}}</td>
@@ -881,7 +883,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let period in loanDetails.repaymentSchedule.futurePeriods">
+                                <tr *ngFor="let period of loanDetails.repaymentSchedule.futurePeriods">
                                     <td>{{period.dueDate | date : dateFormat}}</td>
                                     <td>{{period.principalDue | number}}</td>
                                     <td>{{period.principalLoanBalanceOutstanding | number}}</td>
@@ -971,6 +973,38 @@
                                     <td> {{transaction.penaltyChargesPortion | number}} </td>
                                     <td>{{transaction.outstandingLoanBalance | number}}</td>
                                     <td> {{transaction.isReversed ? "Yes" : "No"}} </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div *ngSwitchCase="8">
+                <div class="card mt-4 mb-4">
+                    <div class="card-content">
+                        <table class="table table-striped" *ngIf="loanDetails.insurancePolicies">
+                            <thead>
+                                <tr class="pointer">
+                                    <th>Certificate No.</th>
+                                    <th>Nominee Name</th>
+                                    <th>Relationship</th>
+                                    <th>Benefit Option</th>
+                                    <th>Policy Type Cover</th>
+                                    <th>Amount at Inception</th>
+                                    <th>Premium Amount Excluding Tax</th>
+                                    <th>Premium Amount Including Tax</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let insurancePolicy of loanDetails.insurancePolicies">
+                                    <td>{{insurancePolicy.certificateNo}}</td>
+                                    <td>{{insurancePolicy.nomineeName}}</td>
+                                    <td>{{insurancePolicy.nomineeRelationShip.label}}</td>
+                                    <td>{{insurancePolicy.benefitOption.value}}</td>
+                                    <td>{{insurancePolicy.policyType.code }}</td>
+                                    <td>{{insurancePolicy.coverAmountAtInception}}</td>
+                                    <td>{{insurancePolicy.premiumAmountExcludingServiceTax}}</td>
+                                    <td>{{insurancePolicy.premiumAmountIncludingServiceTax}}</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -50,7 +50,7 @@ export class LoanViewComponent implements OnInit {
       this.loanDetails = response;
       this.status = this.loanDetails.status.value;
 
-      if (this.closedOrObligationMetStatusIdList.indexOf(this.loanDetails.status.id) > -1 && (this.auth.userData.userRole.name == 'Transaction Officer' || this.auth.userData.userRole.name == 'Field Manager' || this.auth.userData.userRole.name == 'Account Manager')) {
+      if (this.closedOrObligationMetStatusIdList.indexOf(this.loanDetails.status.id) > -1 && (this.auth.userData.roles[0].name == 'Transaction Officer' || this.auth.userData.roles[0].name == 'Field Manager' || this.auth.userData.roles[0].name == 'Account Manager')) {
         this.showGenerateNocButton = true;
       }
 
