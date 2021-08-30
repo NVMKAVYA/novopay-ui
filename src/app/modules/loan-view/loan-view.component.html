@@ -239,13 +239,13 @@
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(12)">Charges</a>
             </li>
             <li class="nav-item ">
-                <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(12)">Loan Documents</a>
+                <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(13)">Loan Documents</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(13)">Assets</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(14)">Assets</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(14)">Bank Accounts</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(15)">Bank Accounts</a>
             </li>
             <li class="nav-item">
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(15)">Business Expenses</a>
@@ -581,10 +581,10 @@
                                         <td>{{guarantor.guarantorType.value}}</td>
                                         <td class="h5 mb-0">
                                             <!-- bind link  -->
-                                            <i class="fa fa-edit blueText mr-3 pointer" *ngIf="guarantor.guarantorType.id == 3"></i>
+                                            <i class="fa fa-edit blueText mr-3 pointer" *ngIf="guarantor.guarantorType.id == 3" [tooltip]="'Edit'" placement="top"></i>
                                             <!-- bind click and link  -->
-                                            <i class="fa fa-trash required mr-3 pointer" *ngIf="loanDetails.group?.status.value =='Active'"></i>
-                                            <i class="blueText pointer" (click)="showGurantorDetails(guarantor.id, i)" [ngClass]="guarantorDetailsTab[i] ? 'fa fa-chevron-circle-up' : 'fa fa-chevron-circle-down'"></i>
+                                            <i class="fa fa-trash required mr-3 pointer" *ngIf="loanDetails.group?.status.value =='Active'" [tooltip]="'Delete'" placement="top"></i>
+                                            <i class="blueText pointer" (click)="showGurantorDetails(guarantor.id, i)" [ngClass]="guarantorDetailsTab[i] ? 'fa fa-chevron-circle-up' : 'fa fa-chevron-circle-down'" [tooltip]="'Show Details'" placement="top"></i>
                                         </td>
                                     </tr>
                                     <tr *ngIf="guarantorDetails[i] && guarantorDetailsTab[i]">
@@ -1062,6 +1062,12 @@
                         </table>
                     </div>
                 </div>
+            </div>
+            <div *ngSwitchCase="12">
+                12
+            </div>
+            <div *ngSwitchCase="13">
+                <app-view-documents [type]="'loans'" [typeId]="[loanId,loanDetails.loanApplicationReferenceId]" [viewbuttons]="viewbuttons" [documents]="loanDocuments" *ngIf="tab == 13" (valuechange)="getDocumentsData($event)"></app-view-documents>
             </div>
         </div>
     </div>

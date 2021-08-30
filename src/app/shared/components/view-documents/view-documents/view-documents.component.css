@@ -1,0 +1,14 @@
+.table th {
+    border: none !important;
+}
+
+.table td,
+.table th {
+    border: none;
+}
+
+.card-header {
+    background-color: inherit;
+    border: none !important;
+    align-items: center;
+}

@@ -1,0 +1,42 @@
+<div class="card" [ngClass]="type == 'loans' ? 'mt-4 mb-4' : ''">
+    <div class="card-header d-flex ">
+        <i class="icon fa fa-file mr-2" *ngIf="type == 'clients'"></i>
+        <h5 class="mb-0 mr-auto" *ngIf="type == 'clients'">Documents</h5>
+        <div *ngIf="viewbuttons">
+            <a class="ml-auto btn btn-primary" *hasPermission="'CREATE_DOCUMENT'"><i class="fa fa-plus-circle mr-2"></i> Upload
+		</a>
+        </div>
+    </div>
+    <div class="card-content">
+        <table class="table table-striped" *ngIf=" documents?.length">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>File Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let document of documents" class="pointer">
+                    <td>{{document.name}}</td>
+                    <td>{{document.description}}</td>
+                    <td>{{document.fileName}}</td>
+                    <td>
+                        <span [entityType]="document.parentEntityType" [entityId]="typeId" [documentView]="(document.name == 'Aadhar' || (document.name | uppercase) == 'UID') ? 'view' : 'download'" [document]="document" class="blueText" [tooltip]="(document.name == 'Aadhar' || (document.name | uppercase) == 'UID') ? 'View' : 'Download'"
+                            placement="top">
+						   <i class="fa mr-2" [ngClass]="(document.name == 'Aadhar' || (document.name | uppercase) == 'UID') ? 'fa-eye' : 'fa-cloud-download' "></i>
+						</span>
+                        <a *ngIf="!document.hideEdit" class="ml-2" [tooltip]="'Edit'" placement="top">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <!-- bind link url -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!documents?.length">
+            No documents present
+        </div>
+    </div>
+</div>

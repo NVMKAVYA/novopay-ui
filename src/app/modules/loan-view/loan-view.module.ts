@@ -11,6 +11,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { FormsModule } from '@angular/forms';
 import { FilterModule } from 'src/app/shared/pipes/filter/filter.module';
 import { OrderModule } from 'ngx-order-pipe';
+import { ViewDocumentsModule } from 'src/app/shared/components/view-documents/view-documents.module';
 
 @NgModule({
   declarations: [LoanViewComponent],
@@ -22,7 +23,8 @@ import { OrderModule } from 'ngx-order-pipe';
     PerfectScrollbarModule,
     FormsModule,
     FilterModule,
-    OrderModule
+    OrderModule,
+    ViewDocumentsModule
   ],
   providers: [DatePipe]
 })
