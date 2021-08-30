@@ -1037,8 +1037,69 @@
                 </div>
             </div>
             <div *ngSwitchCase="10">
-                ten
-            </div>
+                <div class="card mt-4 mb-4">
+                   <div class="card-content">
+                      <table *ngIf="loanDetails.multiDisburseLoan">
+                         <tr>
+                            <td>
+                               Maximum Allowed Outstanding Balance :
+                               <!-- &nbsp;{{loandetails.maxOutstandingLoanBalance| number}}&nbsp; -->
+                            </td>
+                         </tr>
+                         <tr>
+                            <td>
+                               <b>Loan Tranche Details</b>
+                            </td>
+                         </tr>
+                      </table>
+                      <table class="table table-striped">
+                          <thead>
+                         <tr  *ngIf="loanDetails.disbursementDetails.length>0">
+                            <th>Expected disbursement on</th>
+                            <th>Disbursed on</th>
+                            <th>Approved Amount</th>
+                            <th>Principal</th>
+                            <th>&nbsp;</th>
+                         </tr>
+                        </thead>
+                         <tbody>
+                         <tr *ngFor="let disbursementDetail of loanDetails.disbursementDetails">
+                            <td>{{disbursementDetail.expectedDisbursementDate | date: DateFormat}}</td>
+                            <td>{{disbursementDetail.actualDisbursementDate | date: DateFormat}}</td>
+                            <td>{{disbursementDetail.approvedPrincipal | number}}</td>
+                            <td>{{disbursementDetail.principal | number}}</td>
+                            <td>
+                               <div *ngIf="disbursementDetail.actualDisbursementDate != null"><i
+                                  class="fa icon icon-white"></i>
+                               </div>
+                               <a title="Edit"
+                                  *ngIf="disbursementDetail.actualDisbursementDate == null && status =='Active' "
+                                  href="#/loandisbursedetail/{{loanDetails.id}}/editdisbursedate/{{disbursementDetail.id}}"><i
+                                  class="icon-pencil icon-white"></i></a>
+                            </td>
+                         </tr>
+                        </tbody>
+                      </table>
+                      <table>
+                         <tr>
+                            <td>
+                               Installment Amount Variations : &nbsp;&nbsp;
+                            </td>
+                         </tr>
+                      </table>
+                      <table>
+                         <tr  *ngIf="loanDetails.emiAmountVariations.length>0">
+                            <th>Applicable From Date</th>
+                            <th>Installment Amount</th>
+                         </tr>
+                         <tr *ngFor="let emiVariations of loanDetails.emiAmountVariations">
+                            <td>{{emiVariations.termVariationApplicableFrom | date: DateFormat}}</td>
+                            <td>{{emiVariations.termValue}}</td>
+                         </tr>
+                      </table>
+                   </div>
+                </div>
+             </div>
             <div *ngSwitchCase="11">
                 <div class="card mt-4 mb-4">
                     <div class="card-content">
