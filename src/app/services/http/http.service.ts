@@ -265,9 +265,25 @@ export class HttpService {
   }
 
   public guarantorResource(loanId, guarantorId): any {
-    let params = new HttpParams();
-    params = params.append('loanId', loanId);
     return this._http.get(`${this.baseUrl}/loans/${loanId}/guarantors/${guarantorId}`);
+  }
+
+  public dataTablesResource(apptable?, datatablename?, entityId?, genericResultSet?): any {
+    let params = new HttpParams();
+    params = apptable ? params.append('apptable', apptable) : params;
+    params = genericResultSet ? params.append('genericResultSet', genericResultSet) : params;
+    return this._http.get(`${this.baseUrl}/datatables${datatablename ? `/${datatablename}` : ''}${entityId ? `/${entityId}` : ''}`, { params: params });
+  }
+
+  public religionIdForLoanResource(loanId): any {
+    return this._http.get(`${this.baseUrl}/loans/${loanId}/religion`);
+  }
+
+  public readDataTableByType(type, apprefId?, clientId?): any {
+    let params = new HttpParams();
+    params = apprefId ? params.append('applicationRefId', apprefId) : params;
+    params = clientId ? params.append('clientId', clientId) : params;
+    return this._http.get(`${this.baseUrl}/readdatatable/${type}`, { params: params });
   }
 
 }

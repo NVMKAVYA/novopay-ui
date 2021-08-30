@@ -163,7 +163,7 @@
                     <a href="" class="nav-link " data-toggle="tab" *hasPermission="'READ_CLIENTIDENTIFIER'" (click)="setTab(5);getClientIdentityDocuments()">Identities</a>
                 </li>
                 <li class="nav-item ">
-                    <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(6);getClientDocuments()">Documents</a>
+                    <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(6);activateDocumentsTab = true;">Documents</a>
                 </li>
                 <li class="nav-item">
                     <a href="" class="nav-link " data-toggle="tab" *hasPermission="'READ_CLIENTNOTE'" (click)="setTab(7);getNotes()">Notes</a>
@@ -624,7 +624,7 @@
                                 <table class="table table-striped mb-1" *ngIf="addresses.length" style="width:1500px;">
                                     <thead>
                                         <tr>
-                                            <th></th>
+                                            <th>Action</th>
                                             <th>Address Type</th>
                                             <th>Address Line</th>
                                             <th>Street Name/Location</th>
@@ -717,7 +717,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <a *hasPermission="'CREATE_DOCUMENT'" (click)="showModal(document.id,'Client Document', document.documentType.name)">
+                                        <a *hasPermission="'CREATE_DOCUMENT'" (click)="showModal(document.id,'Client Document', document.documentType.name)" class="blueText">
                                             <i class="fa fa-cloud-upload mr-2"></i>
                                         </a>
                                     </td>
@@ -731,41 +731,7 @@
                 </div>
             </div>
             <div *ngSwitchCase="6">
-                <div class="card">
-                    <div class="card-header d-flex ">
-                        <i class="icon fa fa-file mr-2"></i>
-                        <h5 class="mb-0 mr-auto">Documents</h5>
-                        <a class="ml-auto btn btn-primary" *hasPermission="'CREATE_DOCUMENT'"><i class="fa fa-plus-circle mr-2"></i> Upload
-                        </a>
-                    </div>
-                    <div class="card-content">
-                        <table class="table table-striped" *ngIf=" clientDocuments?.length">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>File Name</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let clientdocument of clientDocuments" class="pointer">
-                                    <td>{{clientdocument.name}}</td>
-                                    <td>{{clientdocument.description}}</td>
-                                    <td>{{clientdocument.fileName}}</td>
-                                    <td>
-                                        <span entityType="clients" [entityId]="clientId" [documentView]="'download'" [document]="clientdocument">
-                                           <i class="fa fa-cloud-download mr-2"></i>
-                                        </span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="alert alert-warning m-4 text-center " role="alert " *ngIf="!clientDocuments?.length">
-                            No documents present
-                        </div>
-                    </div>
-                </div>
+                <app-view-documents [type]="'clients'" [typeId]="[clientId]" [documents]="clientDocuments" *ngIf="tab == 6" (valuechange)="getDocumentsData($event)" [viewbuttons]="'true'"></app-view-documents>
             </div>
             <div *ngSwitchCase="7">
                 <div class="card">

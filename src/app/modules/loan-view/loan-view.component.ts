@@ -35,6 +35,20 @@ export class LoanViewComponent implements OnInit {
   guarantorDetails: any = [];
   guarantorDetailsTab: any = [];
   hideAccruals: boolean = true;
+  viewbuttons: boolean = false;
+  loanDocuments: any;
+  loandatatables: any;
+  loanapprefdatatables: any;
+  datatabledetails: any;
+  singleRow: any[] = [];
+  religion: number;
+  hideTableArray = ['d_client_aadhaar_details', 'd_construction_details', 'd_cpv_business', 'd_cpv_detail', 'd_cpv_income', 'd_cpv_neighbour_reference_check', 'd_cpv_reference_checks',
+    'd_cpv_residential', 'd_cpv_residential_assets', 'd_cpv_trc_neighbour_reference_check',
+    'd_cpv_trc_other_reference_check', 'd_customer_reference_check', 'd_deviation_rules_history',
+    'd_ekyc_application_details', 'd_family', 'd_family_member', 'd_income_details', 'd_mel_cpv_office',
+    'd_personal_reference_check', 'd_si_details', 'd_si_history', 'd_supplier_reference_check',
+    'd_visiting_officer_check'
+  ];
   transactionSort = {
     column: 'date',
     descending: true
@@ -57,97 +71,12 @@ export class LoanViewComponent implements OnInit {
       if (this.loanDetails.loanApplicationReferenceId) {
         this.http.loanAppRefResource(this.loanDetails.loanApplicationReferenceId).subscribe(loanAppRefData => {
           this.loanAppRefData = loanAppRefData;
-          // resourceFactory.processesResource.getAllProcesses({
-          //   variableName: "applicationRefId",
-          //   variableValue: scope.loandetails.loanApplicationReferenceId
-          // }, function (data) {
-          //   scope.associatedWorkflows = data;
-          //   scope.associatedWorkflow = scope.associatedWorkflows[0];
-          //   $rootScope.currentProcessId = scope.associatedWorkflow.instanceId;
-          // });
-
           if (loanAppRefData.coApplicant1Id) {
             // Calling this API just for Lead is unnecessary- need to discuss
             this.http.getclientResource(loanAppRefData.coApplicant1Id).subscribe(data => {
               this.loanAppRefData.coapplicantLeadid = data.leadId;
             });
           }
-          // resourceFactory.RSDAccountResource.get({ loanAppRefId: scope.loandetails.loanApplicationReferenceId }, function (rsdAccountData) {
-          //   scope.rsdAccountData = rsdAccountData;
-          // });
-
-          // if (scope.siApplicable) {
-          //   scope.installmentAmount = scope.loandetails.repaymentSchedule.periods[1].interestDue + scope.loandetails.repaymentSchedule.periods[1].principalDue;
-          //   scope.formData.siDetails.max_amount = scope.loandetails.approvedPrincipal;
-          //   scope.loanType = scope.loandetails.loanProductName;
-
-          //   var periods = scope.loandetails.repaymentSchedule.periods;
-          //   var endDate = new Date(periods[periods.length - 1].dueDate);
-          //   scope.end_date = dateFilter(new Date(endDate.getFullYear() + 1, endDate.getMonth(), endDate.getDate(), 0, 0, 0), "dd/MM/yyyy");
-          //   scope.endDateOptions = ["Until Cancelled", scope.end_date.toString()];
-
-          //   resourceFactory.codeCodeValuesResources.getAllCodesValues({ codeName: 'AccountType', context: scope.loandetails.processDefKey }, function (bankAccountCodeValues) {
-          //     scope.bankAccountTypes = _.filter(bankAccountCodeValues, function (accountType) {
-          //       return accountType.context.indexOf("repaymentAccountType") > -1;
-          //     });
-          //   });
-
-          //   resourceFactory.codeCodeValuesResources.getAllCodesValues({ codeName: 'SIHoldReason' }, function (codeValues) {
-          //     scope.siHoldReasonDropDown = codeValues;
-          //   });
-
-          //   resourceFactory.taskRoleConfigResource.getAll(function (data) {
-          //     scope.allTasksData = data;
-          //     for (var i = 0; i < scope.allTasksData.length; i++) {
-          //       if (!scope.allTasksData[i].isWorkflowAvailable && scope.allTasksData[i].taskTypeName == "Standing Instruction") {
-          //         if (scope.allTasksData[i].subTaskTypeName == "Approve Standing Instruction") {
-          //           for (var j = 0; j < scope.allTasksData[i].taskRoleMapList[0].roles.length; j++)
-          //             scope.siApprovalRole.push(scope.allTasksData[i].taskRoleMapList[0].roles[j].name);
-          //         }
-          //       }
-          //     }
-          //   });
-
-          //   resourceFactory.codeCodeValuesResources.getAllCodesValues({ codeName: 'RepaymentMode', context: scope.loandetails.processDefKey }, function (repaymentModeDropDown) {
-          //     scope.modeOfRepaymentTypes = repaymentModeDropDown;
-          //     scope.defaultRepaymentMode = _.find(scope.modeOfRepaymentTypes, function (codevalue) { return codevalue.name == "Cash"; });
-          //     if (scope.loanAppRefData.repaymentTypeId) {
-          //       scope.formData.repaymentDetails.repaymentTypeId = scope.loanAppRefData.repaymentTypeId;
-          //       if (scope.formData.repaymentDetails.repaymentTypeId == scope.defaultRepaymentMode.id) {
-          //         scope.isNonCashRepaymentMode = false;
-          //       } else {
-          //         scope.isNonCashRepaymentMode = true;
-          //       }
-          //       scope.loadSIData(scope.loandetails.loanApplicationReferenceId);
-          //       if (scope.defaultRepaymentMode.id != scope.formData.repaymentDetails.repaymentTypeId) {
-          //         scope.repaymentModeFromAppRef = true;
-          //       }
-          //     } else {
-          //       scope.formData.repaymentDetails.repaymentTypeId = scope.defaultRepaymentMode.id;
-          //     }
-          //   });
-          // }
-
-          // resourceFactory.codeCodeValuesResources.getAllCodesValues({ codeName: 'SpdcStatusTypes', context: 'MELUnsecured' }, function (spdcTypeDropDowns) {
-          //   scope.spdcStatusDropDownTypes = spdcTypeDropDowns;
-          //   scope.spdcDataForReset = angular.copy(scope.loandetails.loanSpdcDatas);
-          //   for (var count = 0; count < scope.loandetails.loanSpdcDatas.length; count++) {
-          //     if (scope.loandetails.loanSpdcDatas[count].spdcChequeSrNumber == "" || scope.loandetails.loanSpdcDatas[count].spdcChequeSrNumber == undefined) {
-          //       scope.showSpdcTab = false;
-          //     }
-          //     console.log('scope.loandetails.loanSpdcDatas[count]', scope.loandetails.loanSpdcDatas[count]);
-          //     for (var innerCount = 0; innerCount < scope.spdcStatusDropDownTypes.length; innerCount++) {
-          //       if (scope.spdcStatusDropDownTypes[innerCount].id == scope.loandetails.loanSpdcDatas[count].spdcStatus &&
-          //         scope.spdcStatusDropDownTypes[innerCount].name == 'OUT') {
-          //         scope.loandetails.loanSpdcDatas[count].disabled = true;
-          //         break;
-          //       }
-          //     }
-          //     if (!scope.loandetails.loanSpdcDatas[count].hasOwnProperty('disabled')) {
-          //       scope.loandetails.loanSpdcDatas[count].disabled = false;
-          //     }
-          //   }
-          // });
         });
         this.http.getRSDAccountResource(this.loanDetails.loanApplicationReferenceId).subscribe(response => {
           this.rsdAccountData = response;
@@ -176,7 +105,7 @@ export class LoanViewComponent implements OnInit {
           // this.editSPDC = false
           break;
         case (this.status == "Submitted and pending approval"):
-          // this.choice = true;
+          this.viewbuttons = true;
           this.buttons.options = [{
             name: "Assign Loan Officer",
             taskPermissionName: 'UPDATELOANOFFICER_LOAN'
@@ -223,7 +152,7 @@ export class LoanViewComponent implements OnInit {
           };
           break;
         case (this.status == "Approved"):
-          // this.choice = true;
+          this.viewbuttons = true;
           // this.editSPDC = false
           this.buttons.singlebuttons = [
             {
@@ -366,6 +295,28 @@ export class LoanViewComponent implements OnInit {
       this.rsdTransactions = response;
     });
 
+    this.http.dataTablesResource('m_loan').subscribe(response => {
+      this.loandatatables = response;
+    })
+
+    this.http.dataTablesResource('m_loan_app_reference').subscribe(response => {
+      for (let i = 0; i < response.length; i++) {
+        if (response[i].registeredTableName == 'd_eligibility_rules') {
+          response.splice(i, 1);
+          // some code missing
+        }
+        for (let j = 0; j < this.hideTableArray.length; j++) {
+          if (this.hideTableArray[j] == response[i].registeredTableName) {
+            response.splice(i, 1);
+          }
+        }
+        if (response[i])
+          response[i].tableName = response[i]?.registeredTableName.replace('d_', '').split('_').join(' ');
+        // console.log(response[i].registeredTableName)
+      }
+      this.loanapprefdatatables = response;
+    })
+
   }
 
   isEligibleForLoanCancellation() {
@@ -436,4 +387,52 @@ export class LoanViewComponent implements OnInit {
     }
     return true;
   }
+
+  getDocumentsData(data) {
+    this.loanDocuments = data;
+  }
+
+  dataTableChange(datatable) {
+    if (datatable.registeredTableName != 'd_fatca') {
+      this.http.dataTablesResource(null, datatable.registeredTableName, this.loanDetails.loanApplicationReferenceId, 'true').subscribe(data => {
+        this.datatabledetails = data;
+        if (datatable.registeredTableName === 'd_personal_details') {
+          this.datatabledetails.data.forEach((data) => {
+            if (!data.row[6]) {
+              if (!this.religion) {
+                this.http.religionIdForLoanResource(this.loanId).subscribe(response => {
+                  this.religion = response.ReligionCvId;
+                  data.row[6] = response.ReligionCvId;
+                })
+              } else {
+                data.row[6] = this.religion;
+              }
+            }
+          });
+        }
+        if (this.datatabledetails.data.length) {
+          this.datatabledetails.columnHeaders.forEach((header, i) => {
+            if (!(this.datatabledetails.columnHeaders[0].columnName == "id")) {
+              let row: any;
+              row.key = header.columnName;
+              row.value = data.data[0].row[i];
+              this.singleRow.push(row);
+            }
+          })
+        }
+      });
+    } else {
+      this.http.readDataTableByType(this.loanDetails.loanApplicationReferenceId, this.loanDetails.clientId).subscribe(response => {
+        this.datatabledetails = {};
+        this.datatabledetails.columnHeaders = [
+          { "columnName": "id" }, { "columnName": "loan_app_reference_id" },
+          { "columnName": "client_id" }, { "columnName": "country_of_birth" }, { "columnName": "country_of_tax_residence" },
+          { "columnName": "place_of_birth" }, { "columnName": "foreign_tax_id" }, { "columnName": "TIN_issuing_country" }
+        ];
+        let row = [response.id, response.loanApplicationReferenceId, this.loanDetails.clientId, response.countryOfBirth.id ? response.countryOfBirth.name : null, response.countryOfTaxResidence.id ? response.countryOfTaxResidence.name : null, response.placeOfBirth ? response.placeOfBirth : null, response.foreignTaxID ? response.foreignTaxID : null, response.tinIssuingCountry.id ? response.tinIssuingCountry.name : null
+        ];
+        this.datatabledetails.data[0] = { "row": row };
+      })
+    }
+  };
 }

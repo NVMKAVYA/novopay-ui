@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpService } from 'src/app/services/http/http.service';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -9,6 +9,7 @@ import { FormService } from 'src/app/services/form/form.service';
 import { forkJoin } from 'rxjs';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { UploadModalComponent } from './upload-modal/upload-modal.component';
+import { ViewDocumentsComponent } from 'src/app/shared/components/view-documents/view-documents/view-documents.component'
 
 @Component({
   selector: 'app-view-client',
@@ -54,8 +55,11 @@ export class ViewClientComponent implements OnInit {
   gst: any = {};
   clientDocuments: any;
   stateOptions: any[] = [];
+  // activateDocumentsTab: boolean = false;
 
   constructor(private http: HttpService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private auth: AuthService, private form: FormService, private modal: SimpleModalService) { }
+
+  @ViewChild(ViewDocumentsComponent) child: ViewDocumentsComponent;
 
   ngOnInit(): void {
 
@@ -251,6 +255,11 @@ export class ViewClientComponent implements OnInit {
           case 'Client Image': this.getClientImage();
             break;
           case 'Client Signature': this.clientDocuments = null;
+            if (this.tab == 6) {
+              setTimeout(() => {
+                this.child.getDocuments();
+              }, 100);
+            }
             break;
           case 'Client Document': this.identitydocuments = null;
             this.getClientIdentityDocuments();
@@ -309,14 +318,6 @@ export class ViewClientComponent implements OnInit {
   getDocumentsData(data) {
     this.clientDocuments = data;
   }
-
-  getClientDocuments() {
-    if (!this.clientDocuments) {
-      this.http.getDocuments('clients', this.clientId).subscribe(data => {
-        this.clientDocuments = data;
-      })
-    }
-  };
 
   getNotes() {
     if (!this.clientNotes) {

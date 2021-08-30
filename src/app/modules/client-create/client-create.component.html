@@ -122,8 +122,8 @@
             <ng-wizard-step [title]="'Communication Address'" [canExit]="validateCanExit.bind(this,'staffDetails')" [canEnter]="actionOnEnter.bind(this)">
                 <div formGroupName="communicationAddressDetails" class="form-group row col-sm-12" [ngClass]="{'f-ver-center': qdeForm.controls.communicationAddressDetails.get('addressLine').valid}">
                     <label class="col-form-label col-sm-2" for="addressLine1">Address Line
-          <span class="required">*</span>
-      </label>
+                        <span class="required">*</span>
+                    </label>
                     <div class="col-sm-3">
                         <textarea rows="2" id="addressLine1" class="form-control" name="addressLine1" formControlName="addressLine"></textarea>
                         <small class="text-danger" *ngIf="qdeForm.controls.communicationAddressDetails.get('addressLine').hasError('required') && 
