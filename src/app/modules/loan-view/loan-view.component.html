@@ -1001,7 +1001,67 @@
                 </div>
             </div>
             <div *ngSwitchCase="10">
-                ten
+                <div class="card mt-4 mb-4">
+                    <div class="card-content">
+                        <table *ngIf="loanDetails.multiDisburseLoan">
+                            <tr>
+                                <td>
+                                    Maximum Allowed Outstanding Balance : {{loanDetails.maxOutstandingLoanBalance| number}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Loan Tranche Details</b>
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr *ngIf="loanDetails.disbursementDetails.length">
+                                    <th>Expected disbursement on</th>
+                                    <th>Disbursed on</th>
+                                    <th>Approved Amount</th>
+                                    <th>Principal</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let disbursementDetail of loanDetails.disbursementDetails">
+                                    <td>{{disbursementDetail.expectedDisbursementDate | date: dateFormat}}</td>
+                                    <td>{{disbursementDetail.actualDisbursementDate | date: dateFormat}}</td>
+                                    <td>{{disbursementDetail.approvedPrincipal | number}}</td>
+                                    <td>{{disbursementDetail.principal | number}}</td>
+                                    <td>
+                                        <a *ngIf="disbursementDetail.actualDisbursementDate">
+                                            <i class="fa fa-flag text-white"></i>
+                                        </a>
+                                        <!-- link action -->
+                                        <a *ngIf="!disbursementDetail.actualDisbursementDate && status =='Active' ">
+                                            <i class="fa fa-pencil text-white"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table>
+                            <tr>
+                                <td>
+                                    Installment Amount Variations
+                                </td>
+                            </tr>
+                        </table>
+                        <table>
+                            <tr *ngIf="loanDetails.emiAmountVariations.length">
+                                <th>Applicable From Date</th>
+                                <th>Installment Amount</th>
+                            </tr>
+                            <tr *ngFor="let emiVariations of loanDetails.emiAmountVariations">
+                                <td>{{emiVariations.termVariationApplicableFrom | date: dateFormat}}</td>
+                                <td>{{emiVariations.termValue}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
             <div *ngSwitchCase="11">
                 <div class="card mt-4 mb-4">
@@ -1032,9 +1092,6 @@
             </div>
             <div *ngSwitchCase="13">
                 <app-view-documents [type]="'loans'" [typeId]="[loanId,loanDetails.loanApplicationReferenceId]" [viewbuttons]="viewbuttons" [documents]="loanDocuments" *ngIf="tab == 13" (valuechange)="getDocumentsData($event)"></app-view-documents>
-            </div>
-            <div *ngSwitchCase="14">
-                ten
             </div>
             <div *ngSwitchCase="15">
                 <div class="card mt-4 mb-4">
