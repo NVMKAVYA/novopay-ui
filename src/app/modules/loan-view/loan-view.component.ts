@@ -37,6 +37,7 @@ export class LoanViewComponent implements OnInit {
   hideAccruals: boolean = true;
   viewbuttons: boolean = false;
   loanDocuments: any;
+<<<<<<< HEAD
   loandatatables: any;
   loanapprefdatatables: any;
   datatabledetails: any;
@@ -49,6 +50,11 @@ export class LoanViewComponent implements OnInit {
     'd_personal_reference_check', 'd_si_details', 'd_si_history', 'd_supplier_reference_check',
     'd_visiting_officer_check'
   ];
+=======
+  endusechecks  : any = [];
+  documentId : any;
+  endUseCheckExtData : any = [];
+>>>>>>> 4df31ad (end use check)
   transactionSort = {
     column: 'date',
     descending: true
@@ -392,6 +398,7 @@ export class LoanViewComponent implements OnInit {
     this.loanDocuments = data;
   }
 
+<<<<<<< HEAD
   dataTableChange(datatable) {
     if (datatable.registeredTableName != 'd_fatca') {
       this.http.dataTablesResource(null, datatable.registeredTableName, this.loanDetails.loanApplicationReferenceId, 'true').subscribe(data => {
@@ -435,4 +442,29 @@ export class LoanViewComponent implements OnInit {
       })
     }
   };
+=======
+  getEndUseChecks() {
+    this.http.LoanEndUseCheckResource(this.loanId).subscribe(data => {
+      this.endusechecks = data;
+      if(this.endusechecks.length){
+      this.endusechecks.forEach(e => {
+        if(e==0){
+          e.viewImage = true;
+        }else{
+          e.viewImage = false;
+      }
+      if(e.eucExtData){
+        var endUseCheckExtDataArr = e.eucExtData;
+        this.documentId = undefined;
+        this.endUseCheckExtData= endUseCheckExtDataArr[endUseCheckExtDataArr.length-1];
+        if(this.endUseCheckExtData && this.endUseCheckExtData.documentId){
+        this.documentId = this.endUseCheckExtData.documentId
+        }
+      }
+      })
+    }
+    });
+  };
+
+>>>>>>> 4df31ad (end use check)
 }
