@@ -296,6 +296,9 @@ export class LoanViewComponent implements OnInit {
     });
 
     this.http.dataTablesResource('m_loan').subscribe(response => {
+      for (let i = 0; i < response.length; i++) {
+        response[i].tableName = response[i]?.registeredTableName.replace('d_', '').split('_').join(' ');
+      }
       this.loandatatables = response;
     })
 
@@ -312,7 +315,6 @@ export class LoanViewComponent implements OnInit {
         }
         if (response[i])
           response[i].tableName = response[i]?.registeredTableName.replace('d_', '').split('_').join(' ');
-        // console.log(response[i].registeredTableName)
       }
       this.loanapprefdatatables = response;
     })
@@ -422,7 +424,7 @@ export class LoanViewComponent implements OnInit {
         }
       });
     } else {
-      this.http.readDataTableByType(this.loanDetails.loanApplicationReferenceId, this.loanDetails.clientId).subscribe(response => {
+      this.http.readDataTableByType('fatca', this.loanDetails.loanApplicationReferenceId, this.loanDetails.clientId).subscribe(response => {
         this.datatabledetails = {};
         this.datatabledetails.columnHeaders = [
           { "columnName": "id" }, { "columnName": "loan_app_reference_id" },

@@ -241,16 +241,18 @@
             <li class="nav-item ">
                 <a href=" " class="nav-link " data-toggle="tab" (click)="setTab(13)">Loan Documents</a>
             </li>
-            <!-- <li class="nav-item" *ngFor="let loandatatable of loandatatables" style="text-transform: capitalize;" >
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(14)" *hasPermission="'READ_{{loandatatable.registeredTableName}}'">{{loandatatable.registeredTableName}}</a>
-            </li> -->
+            <li class="nav-item" *ngFor="let loandatatable of loandatatables" style="text-transform: capitalize;">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(14);dataTableChange(loandatatable)" *hasPermission="'READ_{{loandatatable.registeredTableName}}'">{{loandatatable.tableName}}</a>
+            </li>
             <li class="nav-item" style="text-transform: capitalize;" *ngFor="let datatable of loanapprefdatatables">
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(15);dataTableChange(datatable)" *hasPermission="'READ_{{datatable.registeredTableName}}'">{{datatable.tableName}}</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(27)">End Use Check</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(16)">End Use Check</a>
             </li>
-
+            <li class="nav-item">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(17)">Repayment Mode</a>
+            </li>
         </ul>
     </div>
     <div class="card pr-4 pl-4" style="width:inherit;">
@@ -1093,6 +1095,37 @@
             <div *ngSwitchCase="13">
                 <app-view-documents [type]="'loans'" [typeId]="[loanId,loanDetails.loanApplicationReferenceId]" [viewbuttons]="viewbuttons" [documents]="loanDocuments" *ngIf="tab == 13" (valuechange)="getDocumentsData($event)"></app-view-documents>
             </div>
+            <div *ngSwitchCase="14">
+                <div class="card mt-4 mb-4">
+                    <div class="card-content">
+                        <div *ngIf="datatabledetails?.data.length">
+                            <perfect-scrollbar>
+                                <table class="table table-striped" *ngIf="datatabledetails.columnHeaders[0].columnName == 'id'">
+                                    <thead>
+                                        <th *ngFor="let column of datatabledetails.columnHeaders" style="text-transform: capitalize;">{{column.columnName | prettifyDataTableColumn}}</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let data of datatabledetails.data">
+                                            <td *ngFor="let row of data.row">{{row}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </perfect-scrollbar>
+                            <perfect-scrollbar>
+                                <table class="table table-striped" *ngIf="datatabledetails.columnHeaders[0].columnName != 'id'">
+                                    <tr *ngFor="let value of singleRow">
+                                        <td style="font-weight: bold">{{value.key | prettifyDataTableColumn}}</td>
+                                        <td>{{value.value}}</td>
+                                    </tr>
+                                </table>
+                            </perfect-scrollbar>
+                        </div>
+                        <div class="alert alert-warning m-4 text-center " role="alert" *ngIf="!(datatabledetails?.data.length)">
+                            Details are not present
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div *ngSwitchCase="15">
                 <div class="card mt-4 mb-4">
                     <div class="card-content">
@@ -1123,6 +1156,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div *ngSwitchCase="17">
+
             </div>
         </div>
     </div>
