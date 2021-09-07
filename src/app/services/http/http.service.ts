@@ -286,4 +286,10 @@ export class HttpService {
     return this._http.get(`${this.baseUrl}/readdatatable/${type}`, { params: params });
   }
 
+  public LoanEndUseCheckResource(loanId): any {
+    let params = new HttpParams();
+    params = params.append('loanId', loanId);
+    return this._http.get(`${this.baseUrl}/endusecheck/${loanId}`, { params: params });
+  }
+
 }

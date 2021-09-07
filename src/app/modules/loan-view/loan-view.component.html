@@ -248,7 +248,7 @@
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(15);dataTableChange(datatable)" *hasPermission="'READ_{{datatable.registeredTableName}}'">{{datatable.tableName}}</a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(16)">End Use Check</a>
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(16); getEndUseChecks()">End Use Check</a>
             </li>
             <li class="nav-item">
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(17)">Repayment Mode</a>
@@ -1154,6 +1154,47 @@
                         <div class="alert alert-warning m-4 text-center " role="alert" *ngIf="!(datatabledetails?.data.length)">
                             Details are not present
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngSwitchCase="16">
+                <div class="card mt-4 mb-4">
+                    <div class="card-content">
+                        <table class="table table-striped" *ngIf="endusechecks.length">
+                            <thead>
+                                <th>EUC Date</th>
+                                <th>Euc Done By</th>
+                                <th>Next Euc Date</th>
+                                <th>Status</th>
+                                <th>Loan Purpose</th>
+                                <th>Actual Usage</th>
+                                <th>Euc Reviewed By</th>
+                                <th>Reviewer Comments</th>
+                                <th *ngIf="endUseCheckExtData && endUseCheckExtData.eucExpiryReason">Expiry Reason</th>
+                                <th *ngIf="eucDocumentData">Uploaded Doc</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let endusecheck of endusechecks">
+                                    <td>{{endusecheck.createdDate | date: DateFormat}}</td>
+                                    <td>{{endusecheck.actualCompletionDate |date: DateFormat}}</td>
+                                    <td>{{endusecheck.staffName}}</td>
+                                    <td>{{endusecheck.nextEucDate| date: DateFormat}}</td>
+                                    <td>{{endusecheck.status}}</td>
+                                    <td>{{endusecheck.loanPurpose}}</td>
+                                    <td>{{endusecheck.actualUsage}}</td>
+                                    <td>{{endusecheck.reviewerName}}</td>
+                                    <td>{{endusecheck.reviewerRemarks}}</td>
+                                    <td *ngIf="endUseCheckExtData && endUseCheckExtData.eucExpiryReason">{{endUseCheckExtData.eucExpiryReason}}</td>
+                                    <td *ngIf="eucDocumentData && endusecheck.viewImage" style="vertical-align: middle;" rowspan="{{endusechecks.length}}">
+                                        <div class="col-sm-8">
+                                            <span class="btn btn-primary" actiontype="view">
+                                                View
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
