@@ -144,8 +144,8 @@ export class CreateClientComponent implements OnInit {
       this.http.getstateDetailResource(value).subscribe(data => {
         this.stateOptions = data;
         this.addressForm.get('stateId').reset();
-        this.addressForm.get('districtId').reset();
-        this.addressForm.get('vtcId').reset();
+        this.addressForm.get('districtId')?.reset();
+        this.addressForm.get('vtcId')?.reset();
       })
     };
   }
@@ -155,8 +155,8 @@ export class CreateClientComponent implements OnInit {
       this.http.getdistrictDetailResource(value,
         this.addressForm.get('countryId').value).subscribe(data => {
           this.districtOptions = data;
-          this.addressForm.get('districtId').reset();
-          this.addressForm.get('vtcId').reset();
+          this.addressForm.get('districtId')?.reset();
+          this.addressForm.get('vtcId')?.reset();
         })
     };
   }
@@ -165,7 +165,7 @@ export class CreateClientComponent implements OnInit {
     if (value) {
       this.http.getvillageTownCityDetailResource(value).subscribe(data => {
         this.vtcOptions = data.pageItems;
-        this.addressForm.get('vtcId').reset();
+        this.addressForm.get('vtcId')?.reset();
       })
     };
   }

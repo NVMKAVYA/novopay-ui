@@ -9,7 +9,7 @@
         <div class="card-header-banner">
             <h2 class="ml-5 mt-4 mb-4 text-white">
                 <i *ngIf="!loanDetails.inArrears" class="fa fa-stop {{loanDetails.status.code | StatusLookup}}"></i>
-                <i *ngIf="loanDetails.inArrears" class="icon-stop {{loanDetails.status.code | StatusLookup}}overdue"></i> {{loanDetails.loanProductName}}(#{{loanDetails.accountNo}})
+                <i *ngIf="loanDetails.inArrears" class="fa fa-stop {{loanDetails.status.code | StatusLookup}}overdue"></i> {{loanDetails.loanProductName}}(#{{loanDetails.accountNo}})
                 <span *ngIf="loanDetails.status.closed || loanDetails.status.deathOfApplicant">- {{loanDetails.status.value}}</span>
             </h2>
         </div>
@@ -250,8 +250,8 @@
             <li class="nav-item">
                 <a href="" class="nav-link " data-toggle="tab" (click)="setTab(16); getEndUseChecks()">End Use Check</a>
             </li>
-            <li class="nav-item">
-                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(17)">Repayment Mode</a>
+            <li class="nav-item" *ngIf="loanDetails.status.id == 300 && siApplicable">
+                <a href="" class="nav-link " data-toggle="tab" (click)="setTab(17);getRepaymentModes()">Repayment Mode</a>
             </li>
         </ul>
     </div>
@@ -1163,20 +1163,20 @@
                         <table class="table table-striped" *ngIf="endusechecks.length">
                             <thead>
                                 <th>EUC Date</th>
-                                <th>Euc Done By</th>
+                                <th>EUC Done By</th>
                                 <th>Next Euc Date</th>
                                 <th>Status</th>
                                 <th>Loan Purpose</th>
                                 <th>Actual Usage</th>
-                                <th>Euc Reviewed By</th>
+                                <th>EUC Reviewed By</th>
                                 <th>Reviewer Comments</th>
                                 <th *ngIf="endUseCheckExtData && endUseCheckExtData.eucExpiryReason">Expiry Reason</th>
-                                <th *ngIf="eucDocumentData">Uploaded Doc</th>
+                                <th *ngIf="eucDocumentData">Uploaded Document</th>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let endusecheck of endusechecks">
-                                    <td>{{endusecheck.createdDate | date: DateFormat}}</td>
-                                    <td>{{endusecheck.actualCompletionDate |date: DateFormat}}</td>
+                                    <td>{{endusecheck.createdDate | date: dateFormat}}</td>
+                                    <td>{{endusecheck.actualCompletionDate |date: dateFormat}}</td>
                                     <td>{{endusecheck.staffName}}</td>
                                     <td>{{endusecheck.nextEucDate| date: DateFormat}}</td>
                                     <td>{{endusecheck.status}}</td>
@@ -1199,7 +1199,17 @@
                 </div>
             </div>
             <div *ngSwitchCase="17">
-
+                <div style="text-align: right;" class="mt-4">
+                    <button class="btn btn-primary" (click)="export()">Edit</button>
+                </div>
+                <div class="card mt-4 mb-4">
+                    <div class="card-content p-5">
+                        <div class="form-group row col-sm-12">
+                            <app-dropdown [parentform]="repaymentModeForm" [name]="'repaymentTypeId'" [options]="modeOfRepaymentTypes" [optionvalue]="'id'" [labelname]="'Repayment Mode'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [elementClass]="'4'" [value]="loanAppRefData.repaymentTypeId || defaultRepaymentMode.id"
+                                [disabled]="true"></app-dropdown>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

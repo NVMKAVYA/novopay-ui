@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Constants } from 'src/app/models/Constants';
 import { DatePipe } from '@angular/common';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-loan-view',
@@ -42,6 +43,10 @@ export class LoanViewComponent implements OnInit {
   datatabledetails: any;
   singleRow: any[] = [];
   religion: number;
+  siApplicable: boolean = false;
+  repaymentModeForm: FormGroup;
+  modeOfRepaymentTypes: any;
+  defaultRepaymentMode: any;
   hideTableArray = ['d_client_aadhaar_details', 'd_construction_details', 'd_cpv_business', 'd_cpv_detail', 'd_cpv_income', 'd_cpv_neighbour_reference_check', 'd_cpv_reference_checks',
     'd_cpv_residential', 'd_cpv_residential_assets', 'd_cpv_trc_neighbour_reference_check',
     'd_cpv_trc_other_reference_check', 'd_customer_reference_check', 'd_deviation_rules_history',
@@ -49,7 +54,7 @@ export class LoanViewComponent implements OnInit {
     'd_personal_reference_check', 'd_si_details', 'd_si_history', 'd_supplier_reference_check',
     'd_visiting_officer_check'
   ];
-  endusechecks: any = [];
+  endusechecks: any;
   documentId: any;
   endUseCheckExtData: any = [];
   transactionSort = {
@@ -57,7 +62,7 @@ export class LoanViewComponent implements OnInit {
     descending: true
   };
 
-  constructor(private http: HttpService, private route: ActivatedRoute, private datePipe: DatePipe, private auth: AuthService) { }
+  constructor(private http: HttpService, private route: ActivatedRoute, private datePipe: DatePipe, private auth: AuthService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.loanId = parseInt(this.route.snapshot.paramMap.get('id'));
@@ -80,6 +85,7 @@ export class LoanViewComponent implements OnInit {
               this.loanAppRefData.coapplicantLeadid = data.leadId;
             });
           }
+          this.repaymentModeForm = this.fb.group({});
         });
         this.http.getRSDAccountResource(this.loanDetails.loanApplicationReferenceId).subscribe(response => {
           this.rsdAccountData = response;
@@ -195,7 +201,7 @@ export class LoanViewComponent implements OnInit {
               taskPermissionName: 'PART_PREPAYMENT_LOAN'
             },
             {
-              name: "button.moratorium",
+              name: "Perform moratorium",
               icon: "fa fa-dollar",
               taskPermissionName: 'MORATORIUM_LOAN'
             },
@@ -286,6 +292,14 @@ export class LoanViewComponent implements OnInit {
           break;
 
       }
+
+      this.http.loanProductResource(this.loanDetails.loanProductId).subscribe(response => {
+        this.siApplicable = response.siApplicable;
+        if (!response.isPartPaymentEnabled) {
+          let index = this.buttons.singlebuttons.findIndex(button => button.taskPermissionName === "PART_PREPAYMENT_LOAN");
+          this.buttons.singlebuttons.splice(index, 1);
+        }
+      });
     });
 
     this.http.getStatusOfMoratorium(this.loanId).subscribe(response => {
@@ -444,23 +458,39 @@ export class LoanViewComponent implements OnInit {
   getEndUseChecks() {
     this.http.LoanEndUseCheckResource(this.loanId).subscribe(data => {
       this.endusechecks = data;
-      if (this.endusechecks.length) {
-        this.endusechecks.forEach(e => {
-          if (e == 0) {
-            e.viewImage = true;
-          } else {
-            e.viewImage = false;
+      this.endusechecks.forEach(e => {
+        e.viewImage = e == 0 ? true : false;
+        if (e.eucExtData) {
+          var endUseCheckExtDataArr = e.eucExtData;
+          this.endUseCheckExtData = endUseCheckExtDataArr[endUseCheckExtDataArr.length - 1];
+          if (this.endUseCheckExtData && this.endUseCheckExtData.documentId) {
+            this.documentId = this.endUseCheckExtData.documentId
           }
-          if (e.eucExtData) {
-            var endUseCheckExtDataArr = e.eucExtData;
-            this.documentId = undefined;
-            this.endUseCheckExtData = endUseCheckExtDataArr[endUseCheckExtDataArr.length - 1];
-            if (this.endUseCheckExtData && this.endUseCheckExtData.documentId) {
-              this.documentId = this.endUseCheckExtData.documentId
-            }
-          }
-        })
-      }
+        }
+      })
     });
   };
+
+  getRepaymentModes() {
+    this.http.codeValuesResource('RepaymentMode', this.loanDetails.processDefKey).subscribe(response => {
+      this.modeOfRepaymentTypes = response;
+      this.defaultRepaymentMode = this.modeOfRepaymentTypes.find(type => {
+        type.name == "Cash";
+      });
+      // if (this.loanAppRefData.repaymentTypeId) {
+      //   scope.formData.repaymentDetails.repaymentTypeId = scope.loanAppRefData.repaymentTypeId;
+      // if (scope.formData.repaymentDetails.repaymentTypeId == scope.defaultRepaymentMode.id) {
+      //   scope.isNonCashRepaymentMode = false;
+      // } else {
+      //   scope.isNonCashRepaymentMode = true;
+      // }
+      // scope.loadSIData(scope.loandetails.loanApplicationReferenceId);
+      // if (scope.defaultRepaymentMode.id != scope.formData.repaymentDetails.repaymentTypeId) {
+      //   scope.repaymentModeFromAppRef = true;
+      // }
+      // } else {
+      //   scope.formData.repaymentDetails.repaymentTypeId = scope.defaultRepaymentMode.id;
+      // }
+    })
+  }
 }

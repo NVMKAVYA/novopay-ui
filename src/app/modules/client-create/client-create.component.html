@@ -89,7 +89,7 @@
                 <div class="form-group row col-sm-12">
                     <app-input-field [parentform]="qdeForm.controls.addressDetails" [name]="'landMark'" [labelname]="'Landmark'" [required]="true" [maxlength]="100" [submitted]="submitted" class="col-sm-6 nopadding">
                     </app-input-field>
-                    <app-input-field [parentform]="qdeForm.controls.addressDetails" [name]="'postalCode'" [labelname]="'Postal Code'" [required]="true" [maxlength]="6" [minlength]="6" [submitted]="submitted" class="col-sm-6 nopadding" [pattern]="numberPattern.regex" [patternerror]="numberPattern.error">
+                    <app-input-field [parentform]="qdeForm.controls.addressDetails" [name]="'postalCode'" [labelname]="'Postal Code'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [pattern]="numberPattern.regex" [patternerror]="numberPattern.error">
                     </app-input-field>
                 </div>
                 <div class="form-group row col-sm-12">
@@ -101,10 +101,10 @@
                     </app-dropdown>
                 </div>
                 <div class="form-group row col-sm-12">
-                    <app-dropdown [parentform]="qdeForm.controls.addressDetails" [name]="'districtId'" [options]="districtOptions" [optionvalue]="'id'" [labelname]="'District'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [showfield]="qdeForm.controls.addressDetails.get('stateId').value"
+                    <app-dropdown [parentform]="qdeForm.controls.addressDetails" [name]="'districtId'" [options]="districtOptions" [optionvalue]="'id'" [labelname]="'District'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [showfield]="qdeForm.controls.addressDetails.get('stateId')?.value"
                         (valuechange)="getVTCs($event)" [emitEvent]="true">
                     </app-dropdown>
-                    <app-dropdown [parentform]="qdeForm.controls.addressDetails" [name]="'vtcId'" [options]="vtcOptions" [optionvalue]="'id'" [labelname]="'Village /Town /City'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [showfield]="qdeForm.controls.addressDetails.get('districtId').value">
+                    <app-dropdown [parentform]="qdeForm.controls.addressDetails" [name]="'vtcId'" [options]="vtcOptions" [optionvalue]="'id'" [labelname]="'Village /Town /City'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [showfield]="qdeForm.controls.addressDetails.get('districtId')?.value">
                     </app-dropdown>
                 </div>
             </ng-wizard-step>

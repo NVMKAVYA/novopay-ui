@@ -1,14 +1,13 @@
 <div [formGroup]="parentform" class="row col-sm-12 nopadding nomargin f-ver-center" *ngIf="showfield">
-  <label class="col-form-label col-sm-{{elementClass}}" for="{{name}}" *ngIf="labelname" >{{labelname}}<span class="required" *ngIf="required">*</span>
+    <label class="col-form-label col-sm-{{elementClass}}" for="{{name}}" *ngIf="labelname">{{labelname}}<span class="required" *ngIf="required">*</span>
   </label>
-  <div class="col-sm-6">
-    <select formControlName="{{name}}" class="form-control">
+    <div class="col-sm-6">
+        <select formControlName="{{name}}" class="form-control" (change)="change()">
       <option [ngValue]="null" disabled>Select {{labelname}}</option>
       <option *ngFor="let option of options" [ngValue]="optionvalue ? option[optionvalue] : option">{{option[displayfield]}}</option>
     </select>
-    <small class="text-danger"
-        *ngIf="parentform.get(name).hasError('required') && ( parentform.get(name).touched || submitted)">
+        <small class="text-danger" *ngIf="parentform.get(name).hasError('required') && ( parentform.get(name).touched || submitted)">
         Required Field
     </small>
-  </div>
+    </div>
 </div>

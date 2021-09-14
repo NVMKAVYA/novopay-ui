@@ -10,71 +10,92 @@ import { Constants } from 'src/app/models/Constants';
 })
 export class InputFieldComponent implements OnInit {
 
-  @Input() parentform : FormGroup;
+  @Input() parentform: FormGroup;
   @Input() name: string;
   @Input() labelname: string;
-  @Input() required : boolean;
+  @Input() required: boolean;
   @Input() minlength: number;
   @Input() maxlength: number;
   @Input() mindate: number;
   @Input() submitted: boolean;
   @Input() pattern: string;
-  @Input() patternerror : string;
-  @Input() type : string;
-  @Input() date : boolean;
-  @Input() value : boolean;
-  @Input() maxdate : any;
-  @Input() labelclass : any;
-  @Input() inputclass : any;
-  @Input() placeholder : string;
+  @Input() patternerror: string;
+  @Input() type: string;
+  @Input() date: boolean;
+  @Input() value: boolean;
+  @Input() maxdate: any;
+  @Input() labelclass: any;
+  @Input() inputclass: any;
+  @Input() placeholder: string;
   @Output() valuechange = new EventEmitter();
-  @Input() emitEvent : boolean;
+  @Input() emitEvent: boolean;
   datePickerConfig = {
     format: Constants.datePickerFormat,
-    max : ''
+    max: ''
   }
   private _showfield: boolean;
-    
+
   @Input() set showfield(value: boolean) {
-       this._showfield = value !== undefined ? value : true;
-       if(value){
-         this.addField()
-       }else{
-        this.parentform.removeControl(this.name);
-       }
+    this._showfield = value !== undefined ? value : true;
+    if (value) {
+      this.addField()
+    } else {
+      this.parentform.removeControl(this.name);
+    }
   }
+
   get showfield() {
     return this._showfield;
   }
 
-  constructor(private fb: FormBuilder, private form : FormService) { }
+  private _disabled: boolean;
+
+  @Input() set disabled(value: boolean) {
+    this._disabled = value !== undefined ? value : false;
+    if (value) {
+      this.parentform.get(this.name)?.disable();
+    } else {
+      this.parentform.get(this.name)?.enable()
+    }
+  }
+
+  get disabled() {
+    return this._disabled;
+  }
+
+  constructor(private fb: FormBuilder, private form: FormService) { }
 
   ngOnInit(): void {
-    this._showfield = this._showfield  !== undefined ? this._showfield : true;
+    this._showfield = this._showfield !== undefined ? this._showfield : true;
+    this._disabled = this._disabled !== undefined ? this._disabled : false;
     this.labelclass = this.labelclass || 'col-sm-4';
     this.inputclass = this.inputclass || 'col-sm-6';
     this.type = this.type || 'text';
 
-    if(this.type == 'date'){
+    if (this.type == 'date') {
       this.datePickerConfig.max = this.maxdate;
     }
 
-    if(this._showfield){
+    if (this._showfield) {
       this.addField()
+    }
+
+    if (this._disabled) {
+      this.parentform.get(this.name).disable();
     }
   }
 
   addField() {
-    this.parentform.addControl(this.name ,this.fb.control(this.value, [ 
+    this.parentform.addControl(this.name, this.fb.control(this.value, [
       this.form.conditionalValidator(this.required, Validators.required),
       this.form.conditionalValidator(this.minlength, Validators.minLength(this.minlength)),
       this.form.conditionalValidator(this.maxlength, Validators.maxLength(this.maxlength)),
-      this.form.conditionalValidator(this.pattern, Validators.pattern(this.pattern)) ]));
+      this.form.conditionalValidator(this.pattern, Validators.pattern(this.pattern))]));
   }
 
-  change(){
-    if(this.emitEvent){
-     this.valuechange.emit(this.parentform.controls[this.name].value);
+  change() {
+    if (this.emitEvent) {
+      this.valuechange.emit(this.parentform.controls[this.name].value);
     }
   }
 

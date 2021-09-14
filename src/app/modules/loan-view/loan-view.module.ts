@@ -13,6 +13,8 @@ import { FilterModule } from 'src/app/shared/pipes/filter/filter.module';
 import { OrderModule } from 'ngx-order-pipe';
 import { ViewDocumentsModule } from 'src/app/shared/components/view-documents/view-documents.module';
 import { PrettifyDataTableColumnModule } from 'src/app/shared/pipes/prettify-data-table-column/prettify-data-table-column.module';
+import { InputFieldModule } from '../../shared/components/input-field/input-field.module';
+import { DropdownModule } from '../../shared/components/dropdown/dropdown.module';
 
 @NgModule({
   declarations: [LoanViewComponent],
@@ -26,7 +28,9 @@ import { PrettifyDataTableColumnModule } from 'src/app/shared/pipes/prettify-dat
     FilterModule,
     OrderModule,
     ViewDocumentsModule,
-    PrettifyDataTableColumnModule
+    PrettifyDataTableColumnModule,
+    InputFieldModule,
+    DropdownModule
   ],
   providers: [DatePipe]
 })
