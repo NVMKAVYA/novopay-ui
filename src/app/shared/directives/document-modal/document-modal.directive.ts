@@ -13,7 +13,7 @@ export class DocumentModalDirective {
 
   @Input() entityType: string;
   @Input() entityId: number;
-  @Input() document: any[];
+  @Input() document: any;
   @Input('documentView') action: string;
   @Output() valuechange = new EventEmitter();
   documentUrl: any;
@@ -37,7 +37,7 @@ export class DocumentModalDirective {
         this.findSignatureDocument(data);
       })
     } else {
-      this.analyzeDocument(this.document, this.entityType);
+      this.analyzeDocument(this.document, this.entityType || this.document.parentEntityType);
     }
   }
 
@@ -55,14 +55,14 @@ export class DocumentModalDirective {
     this.documentType = document.type;
     if (document.isFileExists) {
       if (document.type === 'application/pdf' && this.action == 'view') {
-        this.http.getPdf(type, this.entityId, document.id, this.auth.getOtp(), this.auth.userData.userId).subscribe(data => {
+        this.http.getPdf(type, this.entityId || this.document.parentEntityId, document.id, this.auth.getOtp(), this.auth.userData.userId).subscribe(data => {
           if (data) {
             this.documentUrl = this.base64ToArrayBuffer(data);
           }
           this.showModal();
         });
       } else {
-        this.documentUrl = this.http.getUrl(type, this.entityId, document.id, this.auth.getOtp(), this.auth.userData.userId);
+        this.documentUrl = this.http.getUrl(type, this.entityId ||this.document.parentEntityId, document.id, this.auth.getOtp(), this.auth.userData.userId);
         this.action == 'view' ? this.showModal() : window.open(this.documentUrl);
       }
     } else if (document.dmsUpload) {

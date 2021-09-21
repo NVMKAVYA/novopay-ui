@@ -133,8 +133,8 @@ export class HttpService {
     return this._http.post(`${this.baseUrl}/clients/${clientId}/images`, data);
   }
 
-  public getDocuments(entityType, entityId): any {
-    return this._http.get(`${this.baseUrl}/${entityType}/${entityId}/documents`);
+  public getDocuments(entityType, entityId, documentId?): any {
+    return this._http.get(`${this.baseUrl}/${entityType}/${entityId}/documents${documentId ? `/${documentId}` : ''}`);
   }
 
   public postDocuments(entityType, entityId, data): any {
