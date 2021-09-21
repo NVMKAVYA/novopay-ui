@@ -50,26 +50,26 @@
                             </div>
                         </div>
                         <div *ngIf="loanDetails.status.active">
-                            <!-- Add click event --> 
+                            <!-- Add click event -->
                             <a class="dropdown-item" type="button" *hasPermission="'CREATE_FORECLOSURE'">
-                            ForeClosure</a> 
+                            ForeClosure</a>
                         </div>
-                        <div *ngIf="loanDetails.status.active || loanDetails.status.freezedForForeClosure"> 
-                            <!-- Add click event --> 
+                        <div *ngIf="loanDetails.status.active || loanDetails.status.freezedForForeClosure">
+                            <!-- Add click event -->
                             <a class="dropdown-item" type="button" *hasPermission="'VIEW_FORECLOSURE_LOAN'"> Foreclosure(View Only)</a>
                         </div>
-                        <div *ngIf="(loanDetails.status.pendingApproval || loanDetails.status.waitingForDisbursal || loanDetails.status.active) && loanAppRefData?.coApplicant1Id"> 
-                            <!-- Add href link --> 
+                        <div *ngIf="(loanDetails.status.pendingApproval || loanDetails.status.waitingForDisbursal || loanDetails.status.active) && loanAppRefData?.coApplicant1Id">
+                            <!-- Add href link -->
                             <a class="dropdown-item" type="button" *hasPermission="'COAPPLICANTDEATH_CLIENT'">
-                            Close(Death Of Co-Applicant)</a> 
+                            Close(Death Of Co-Applicant)</a>
                         </div>
-                        <div *ngIf="showCaptureAccountGstExemption"> 
-                            <!-- Add href link --> 
-                            <a class="dropdown-item" type="button" *hasPermission="'UPDATE_GST_NUMBER'">Capture Account GST Details</a> 
+                        <div *ngIf="showCaptureAccountGstExemption">
+                            <!-- Add href link -->
+                            <a class="dropdown-item" type="button" *hasPermission="'UPDATE_GST_NUMBER'">Capture Account GST Details</a>
                         </div>
-                        <div *ngIf="isOverpaidExists"> 
-                            <!-- Add click event --> 
-                            <a class="dropdown-item" type="button" *hasPermission="'OVERPAIDLOANCLOSURE_LOAN'">Post maturity overpaid closure</a> 
+                        <div *ngIf="isOverpaidExists">
+                            <!-- Add click event -->
+                            <a class="dropdown-item" type="button" *hasPermission="'OVERPAIDLOANCLOSURE_LOAN'">Post maturity overpaid closure</a>
                         </div>
                     </div>
                 </span>
@@ -604,6 +604,45 @@
                         </table>
                     </div>
                 </div>
+            </div>
+            <div *ngSwitchCase="8">
+              <div class="card mt-4 mb-4">
+                <div class="card-content">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th id="name">Name</th>
+                        <th id="type">Fee/Penalty</th>
+                        <th>Payment due at</th>
+                        <th>Due as of</th>
+                        <th>Calculation type</th>
+                        <th>Due</th>
+                        <th>Paid</th>
+                        <th>Waived</th>
+                        <th>Exempted</th>
+                        <th>Outstanding</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!--Add click event (Charges details modal)-->
+                      <tr *ngFor="let charge of loanDetails.charges" (click)="chargesDetails()">
+                        <td>{{charge.name}}</td>
+                        <td></td>
+                        <td>{{charge.chargeTimeType.value}}</td>
+                        <td></td>
+                        <td>{{charge.chargeCalculationType.value}}</td>
+                        <td>{{charge.currency.displaySymbol}}{{charge.amount| number}}</td>
+                        <td>{{charge.currency.displaySymbol}}{{charge.amountPaid| number}}</td>
+                        <td>{{charge.currency.displaySymbol}}{{charge.amountWaived| number}}</td>
+                        <td>{{charge.currency.displaySymbol}}{{charge.amountExempted| number}}</td>
+                        <td>{{charge.currency.displaySymbol}}{{charge.amountOutstanding| number}}</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
             <div *ngSwitchCase="3">
                 <div class="card mt-4 mb-4">
