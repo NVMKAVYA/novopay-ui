@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpService } from 'src/app/services/http/http.service';
 import { ActivatedRoute } from '@angular/router';
 import { Constants } from 'src/app/models/Constants';
 import { DatePipe } from '@angular/common';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { ViewDocumentsComponent } from 'src/app/shared/components/view-documents/view-documents/view-documents.component';
 
 @Component({
   selector: 'app-loan-view',
@@ -37,7 +38,6 @@ export class LoanViewComponent implements OnInit {
   hideAccruals: boolean = true;
   viewbuttons: boolean = false;
   loanDocuments: any;
-<<<<<<< HEAD
   loandatatables: any;
   loanapprefdatatables: any;
   datatabledetails: any;
@@ -50,17 +50,20 @@ export class LoanViewComponent implements OnInit {
     'd_personal_reference_check', 'd_si_details', 'd_si_history', 'd_supplier_reference_check',
     'd_visiting_officer_check'
   ];
-=======
   endusechecks  : any = [];
   documentId : any;
   endUseCheckExtData : any = [];
->>>>>>> 4df31ad (end use check)
+  eucDocumentData : any;
+  isMelApplication : any;
   transactionSort = {
     column: 'date',
     descending: true
   };
 
   constructor(private http: HttpService, private route: ActivatedRoute, private datePipe: DatePipe, private auth: AuthService) { }
+
+  @ViewChild(ViewDocumentsComponent) child: ViewDocumentsComponent;
+
 
   ngOnInit(): void {
     this.loanId = parseInt(this.route.snapshot.paramMap.get('id'));
@@ -398,7 +401,6 @@ export class LoanViewComponent implements OnInit {
     this.loanDocuments = data;
   }
 
-<<<<<<< HEAD
   dataTableChange(datatable) {
     if (datatable.registeredTableName != 'd_fatca') {
       this.http.dataTablesResource(null, datatable.registeredTableName, this.loanDetails.loanApplicationReferenceId, 'true').subscribe(data => {
@@ -442,13 +444,12 @@ export class LoanViewComponent implements OnInit {
       })
     }
   };
-=======
   getEndUseChecks() {
     this.http.LoanEndUseCheckResource(this.loanId).subscribe(data => {
       this.endusechecks = data;
       if(this.endusechecks.length){
-      this.endusechecks.forEach(e => {
-        if(e==0){
+      this.endusechecks.forEach((e,i)=> {
+        if(i==0){
           e.viewImage = true;
         }else{
           e.viewImage = false;
@@ -463,8 +464,19 @@ export class LoanViewComponent implements OnInit {
       }
       })
     }
+    if(this.documentId){
+      var END_USECHECKDOC_API = "END_USECHECKDOC";
+      if(this.isMelApplication){
+          END_USECHECKDOC_API = "MEL_END_USECHECKDOC";
+      }
+      this.http.getDocuments(END_USECHECKDOC_API,this.loanId,this.documentId).subscribe(response => {
+        this.eucDocumentData = response;
+      //   (function (filedata) {
+      //     this.eucDocumentData = filedata.data;
+      // });
+      })    
+  }
     });
   };
 
->>>>>>> 4df31ad (end use check)
 }
