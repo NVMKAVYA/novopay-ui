@@ -8,6 +8,9 @@
     </select>
         <small class="text-danger" *ngIf="parentform.get(name).hasError('required') && ( parentform.get(name).touched || submitted)">
         Required Field
-    </small>
+        </small>
+        <small class="text-danger" *ngIf="errormessage">
+          {{errormessage}}
+        </small>
     </div>
 </div>

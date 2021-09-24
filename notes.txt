@@ -1,0 +1,4 @@
+** To avoid the error : Expression has changed after it was checked. Previous value: 'ng-valid: true'. Current value: 'ng-valid: false' 
+
+ Refer https://stackoverflow.com/questions/53901392/expression-has-changed-after-it-was-checked-previous-value-ng-valid-true-c
+**

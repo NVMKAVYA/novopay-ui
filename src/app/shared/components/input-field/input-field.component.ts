@@ -35,6 +35,7 @@ export class InputFieldComponent implements OnInit {
     min: '',
     max: ''
   }
+
   private _showfield: boolean;
 
   @Input() set showfield(value: boolean) {

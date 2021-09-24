@@ -12,10 +12,10 @@ import { ToastrService } from 'ngx-toastr';
 export class DocumentModalDirective {
 
   @Input() entityType: string;
-  @Input() entityId: number;
+  @Input() entityId: number;  /*Must for Client Image, Client Signature, optional for loan/loanappref/client documents*/
   @Input() document: any;
   @Input('documentView') action: string;
-  @Output() valuechange = new EventEmitter();
+  @Output() valuechange = new EventEmitter();  /*optional*/
   documentUrl: any;
   documentType: string;
 
@@ -62,7 +62,7 @@ export class DocumentModalDirective {
           this.showModal();
         });
       } else {
-        this.documentUrl = this.http.getUrl(type, this.entityId ||this.document.parentEntityId, document.id, this.auth.getOtp(), this.auth.userData.userId);
+        this.documentUrl = this.http.getUrl(type, this.entityId || this.document.parentEntityId, document.id, this.auth.getOtp(), this.auth.userData.userId);
         this.action == 'view' ? this.showModal() : window.open(this.documentUrl);
       }
     } else if (document.dmsUpload) {
@@ -100,8 +100,6 @@ export class DocumentModalDirective {
       documentUrl: this.documentUrl
     })
   }
-
-
 }
 
 

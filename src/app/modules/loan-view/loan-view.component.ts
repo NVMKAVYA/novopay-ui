@@ -27,6 +27,7 @@ export class LoanViewComponent implements OnInit {
     singlebuttons: []
   };;
   isRepaymentDone: boolean = false;
+  displayedTransactions: any;
   showGenerateNocButton: boolean = false;
   showCaptureAccountGstExemption: boolean = true;
   hideButtonOptions: boolean = false;
@@ -91,7 +92,12 @@ export class LoanViewComponent implements OnInit {
   submitted: boolean = false;
   formData: any;
   enableSave: boolean = false;
-  alphabetsPattern: any = Constants.pattern.alphabets;
+  enableSwap: boolean = false;
+  enableUnhold: boolean = false;
+  enableHold: boolean = false;
+  enableGenerate: boolean = false;
+  enableVerified: boolean = false;
+  alphabetsWithSpacePattern: any = Constants.pattern.alphabetsWithSpace;
 
   constructor(private http: HttpService, private route: ActivatedRoute, private datePipe: DatePipe, private auth: AuthService, private fb: FormBuilder, private toastr: ToastrService, private readonly changeDetectorRef: ChangeDetectorRef) { }
 
@@ -129,7 +135,7 @@ export class LoanViewComponent implements OnInit {
           this.rsdAccountData = response;
         })
       }
-
+      this.hideAccrualsTransaction();
       if (this.loanDetails.summary && (this.loanDetails.summary.totalRepayment -
         (this.loanDetails.summary.feeChargesPaid + this.loanDetails.summary.insuranceFeePaid) != 0)) {
         this.isRepaymentDone = true;
@@ -148,9 +154,6 @@ export class LoanViewComponent implements OnInit {
 
       switch (true) {
 
-        case (this.status == "Rejected" || this.status == "Cancel Sanction Pending" || this.status == "Cancel Sanction"):
-          // this.editSPDC = false
-          break;
         case (this.status == "Submitted and pending approval"):
           this.viewbuttons = true;
           this.buttons.options = [{
@@ -200,7 +203,6 @@ export class LoanViewComponent implements OnInit {
           break;
         case (this.status == "Approved"):
           this.viewbuttons = true;
-          // this.editSPDC = false
           this.buttons.singlebuttons = [
             {
               name: "Assign Loan Officer",
@@ -231,7 +233,7 @@ export class LoanViewComponent implements OnInit {
           };
           break;
         case (this.status == "Active"):
-          // this.choice = true;
+          this.viewbuttons = true;
           this.buttons.singlebuttons = [
             {
               name: "Make Part Prepayment",
@@ -333,20 +335,24 @@ export class LoanViewComponent implements OnInit {
 
       this.http.loanProductResource(this.loanDetails.loanProductId).subscribe(response => {
         this.siApplicable = response.siApplicable;
-        if (!response.isPartPaymentEnabled) {
+        let today = new Date();
+        today.setHours(0, 0, 0, 0);
+        let marurityDate = new Date(this.loanDetails.timeline.expectedMaturityDate[0], this.loanDetails.timeline.expectedMaturityDate[1] - 1, this.loanDetails.timeline.expectedMaturityDate[2]);
+        if (!response.isPartPaymentEnabled || this.loanDetails.isNPA || marurityDate.getTime() < today.getTime()) {
           let index = this.buttons.singlebuttons.findIndex(button => button.taskPermissionName === "PART_PREPAYMENT_LOAN");
-          this.buttons.singlebuttons.splice(index, 1);
+          if (index > -1)
+            this.buttons.singlebuttons.splice(index, 1);
         }
         if (this.siApplicable && this.loanDetails.status.id == 300) {
           this.installmentAmount = this.loanDetails.repaymentSchedule.periods[1].interestDue + this.loanDetails.repaymentSchedule.periods[1].principalDue;
           this.siDetails.max_amount = this.loanDetails.approvedPrincipal;
-          // this.loanType = scope.loandetails.loanProductName;
           var periods = this.loanDetails.repaymentSchedule.periods;
           var endDate = new Date(periods[periods.length - 1].dueDate);
           var end_date = this.datePipe.transform(new Date(endDate.getFullYear() + 1, endDate.getMonth(), endDate.getDate(), 0, 0, 0), Constants.dateFormat2)
           this.endDateOptions = ["Until Cancelled", end_date.toString()];
         }
       });
+
     });
 
     this.http.getStatusOfMoratorium(this.loanId).subscribe(response => {
@@ -370,7 +376,6 @@ export class LoanViewComponent implements OnInit {
       for (let i = 0; i < response.length; i++) {
         if (response[i].registeredTableName == 'd_eligibility_rules') {
           response.splice(i, 1);
-          // some code missing
         }
         for (let j = 0; j < this.hideTableArray.length; j++) {
           if (this.hideTableArray[j] == response[i].registeredTableName) {
@@ -445,12 +450,14 @@ export class LoanViewComponent implements OnInit {
     }
   };
 
-  hideAccrualsTransaction(transaction) {
-    if ((transaction.type.accrual || transaction.type.accrualSuspense || transaction.type.accrualWrittenOff || transaction.type.accrualSuspenseReverse || transaction.type.accrualReverse) &&
-      this.hideAccruals) {
-      return false;
-    }
-    return true;
+  hideAccrualsTransaction() {
+    this.displayedTransactions = this.loanDetails.transactions.filter(e => {
+      if ((e.type.accrual || e.type.accrualSuspense || e.type.accrualWrittenOff || e.type.accrualSuspenseReverse || e.type.accrualReverse) &&
+        this.hideAccruals) {
+        return false;
+      }
+      return true;
+    });
   }
 
   getDocumentsData(data) {
@@ -547,7 +554,7 @@ export class LoanViewComponent implements OnInit {
       this.repaymentModeForm.removeControl('repaymentAccountDetails');
       this.isNonCashRepaymentMode = false;
     } else {
-      this.enableSave = true;
+      this.enableSave = edit ? true : this.enableSave;
       this.repaymentModeForm.addControl('siDetails', this.fb.group({}));
       this.repaymentModeForm.addControl('repaymentAccountDetails', this.fb.group({}));
       this.loadSIData(edit);
@@ -615,17 +622,14 @@ export class LoanViewComponent implements OnInit {
             this.siDetails.end_date = sidata.row[8] ? this.datePipe.transform(sidata.row[8], Constants.dateFormat2) : this.endDateOptions[0];
             switch (true) {
 
-              case this.siDetails.si_status == "Inactive" && this.siDetails.si_mandate_status == "Pending For Confirmation":
-                // scope.enableVerified = true;
-                break;
-
               case this.siDetails.si_status == "Checker Task Initiated" && this.siDetails.si_mandate_status == "CBS Verified":
-                // scope.enableGenerate = true;
+                this.enableGenerate = true;
                 this.isSIAccounteditDisabled = true;
                 break;
 
               case this.siDetails.si_status == "Inactive":
                 this.enableSave = true;
+                this.enableVerified = this.siDetails.si_mandate_status == "Pending For Confirmation" ? true : false;
                 break;
 
               case this.siDetails.si_status == "Rejected":
@@ -634,22 +638,22 @@ export class LoanViewComponent implements OnInit {
 
               case this.siDetails.si_status == "Active":
                 this.disableFields = true;
-                // scope.enableHold = true;
-                // scope.enableGenerate = true;
+                this.enableHold = true;
+                this.enableGenerate = true;
                 this.disableEffectDate = true;
                 break;
 
               case this.siDetails.si_status == "Hold":
                 this.disableFields = true;
-                // scope.enableGenerate = true;
-                // scope.enableUnhold = true;
-                // scope.enableSwap = true;
+                this.enableGenerate = true;
+                this.enableUnhold = true;
+                this.enableSwap = true;
                 break;
 
               case this.siDetails.si_status == "Scheduled":
-                // scope.enableHold = true;
+                this.enableHold = true;
                 this.disableFields = true;
-                // scope.enableGenerate = true;
+                this.enableGenerate = true;
                 this.disableEffectDate = true;
                 break;
             }
@@ -677,7 +681,6 @@ export class LoanViewComponent implements OnInit {
         this.formData.siDetails.dateFormat = Constants.dateFormat2;
         this.formData.siDetails.client_id = this.loanAppRefData.clientId;
         this.formData.siDetails.loan_app_reference_id = this.loanAppRefData.id;
-        // this.formData.siDetails.start_date = this.datePipe.transform(this.formData.siDetails?.start_date, Constants.dateFormat2);
         if (this.formData.siDetails.end_date && this.formData.siDetails.end_date == "Until Cancelled") {
           this.formData.siDetails.end_date = null;
         }
@@ -692,6 +695,8 @@ export class LoanViewComponent implements OnInit {
       this.submitted = true;
     }
   }
+
+  swapRepaymentMode() { }
 
   loopThroughForms(form, data) {
     for (let key of Object.keys(form)) {

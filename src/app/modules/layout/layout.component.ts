@@ -64,6 +64,9 @@ export class LayoutComponent implements OnInit {
             if (data[0].entityType == "CLIENT") {
               this.router.navigate(['home/client/view', data[0].entityId]);
             }
+            if (data[0].entityType == "LOAN") {
+              this.router.navigate(['home/loan/view', data[0].entityId]);
+            }
           };
         })
     }

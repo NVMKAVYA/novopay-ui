@@ -183,35 +183,4 @@ export class AuthService {
         return parseInt(s, 16);
     }
 
-    // private traverse(o) {
-    //     for (var i in o) {
-    //         if (o.hasOwnProperty(i) && o[i] && i != 'this' && typeof o[i] != "function" && i.slice(0, 1) != '$' && i.slice(0, 1) != '_') {
-    //             if (typeof (o[i]) == "object" && !(o[i] instanceof Array)) {
-    //                 this.traverse(o[i]);
-    //             } else if (o[i] instanceof Array) {
-    //                 for (var j in o[i]) {
-    //                     if (typeof (o[i][j]) == "object")
-    //                         this.traverse(o[i][j])
-    //                     else {
-    //                         var value1 = this.parseDate(j, o[i][j]);
-    //                         if (value1)
-    //                             o[i][j] = value1;
-    //                     }
-    //                 }
-    //             } else {
-    //                 var value2 = this.parseDate(i, o[i]);
-    //                 if (value2)
-    //                     o[i] = value2;
-    //             }
-    //         }
-    //     }
-    //     return o;
-    // };
-
-    // private parseDate(key: string, value: moment.MomentInput) {
-    //     if (typeof (value) == 'string' && moment(value, moment.ISO_8601, true).isValid()) {
-    //         return new Date(value);
-    //     } else
-    //         return false;
-    // };
 }

@@ -90,7 +90,7 @@ export class DocumentUploadComponent implements OnInit {
       Validators.pattern('^[A-Za-z]{1}\d{7}$')])
         break;
       case "PAN": key.setValidators([Validators.required,
-      Validators.pattern('^((([a-zA-Z]{5})\d{4})[a-zA-Z]{1})$')])
+      Validators.pattern('^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}$')])
         break;
       case "Voter Id": key.setValidators([Validators.required,
       Validators.pattern('^([a-zA-Z0-9\\\/]{1,' +

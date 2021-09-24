@@ -19,6 +19,7 @@ export class DropdownComponent implements OnInit {
   @Input() displayfield: any;
   @Input() elementClass: any;
   @Input() value: any;
+  @Input() errormessage: string;
   @Output() valuechange = new EventEmitter();
   @Input() emitEvent: boolean;
 

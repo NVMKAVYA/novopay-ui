@@ -2,9 +2,8 @@
     <div class="card-header d-flex ">
         <i class="icon fa fa-file mr-2" *ngIf="type == 'clients'"></i>
         <h5 class="mb-0 mr-auto" *ngIf="type == 'clients'">Documents</h5>
-        <div *ngIf="viewbuttons">
-            <a class="ml-auto btn btn-primary" *hasPermission="'CREATE_DOCUMENT'"><i class="fa fa-plus-circle mr-2"></i> Upload
-		</a>
+        <div *ngIf="viewbuttons" class="ml-auto">
+            <a class="ml-auto btn btn-primary" *hasPermission="'CREATE_DOCUMENT'"><i class="fa fa-plus-circle mr-2"></i> Upload</a>
         </div>
     </div>
     <div class="card-content">

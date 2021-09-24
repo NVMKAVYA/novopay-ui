@@ -51,6 +51,21 @@ export class DualEntryComponent implements OnInit {
     return this._showfield;
   }
 
+  private _disabled: boolean;
+
+  @Input() set disabled(value: boolean) {
+    this._disabled = value !== undefined ? value : false;
+    if (value) {
+      this.parentform.get(this.name)?.disable();
+    } else {
+      this.parentform.get(this.name)?.enable()
+    }
+  }
+
+  get disabled() {
+    return this._disabled;
+  }
+
 
   constructor(private fb: FormBuilder, private form: FormService) { }
 
@@ -70,6 +85,9 @@ export class DualEntryComponent implements OnInit {
       this.form.conditionalValidator(this.pattern, Validators.pattern(this.pattern)),
       this.form.conditionalValidator((this.mininput || this.maxinput) && this.labelname == 'Date of Birth', this.ageLimit()),
       this.form.conditionalValidator(this.labelname == 'Mobile Number', this.validatePhoneNumber())]));
+    if (this._disabled) {
+      this.parentform.get(this.name)?.disable();
+    }
 
     this.dualForm = this.fb.group({});
 

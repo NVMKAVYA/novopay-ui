@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 export class ActualAadhaarNumberDirective {
 
   @Input() document: any;
-  @Input() clientId: number;
+  @Input() clientId: number;   /*optional*/
   actualAadhaarNumber: string;
 
   constructor(private http: HttpService, private modal: SimpleModalService, private toastr: ToastrService) { }

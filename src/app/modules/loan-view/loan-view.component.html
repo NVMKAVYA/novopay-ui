@@ -865,7 +865,7 @@
             </div>
             <div *ngSwitchCase="7">
                 <div style="text-align: right;" class="mt-4">
-                    <input type="checkbox" [(ngModel)]="hideAccruals" class="mr-1 pointer">
+                    <input type="checkbox" [(ngModel)]="hideAccruals" class="mr-1 pointer" (change)="hideAccrualsTransaction()">
                     <label class="control-label mr-4">Hide accruals</label>
                     <button class="btn btn-primary" (click)="export()">Export</button>
                 </div>
@@ -924,7 +924,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let transaction of loanDetails.transactions | filter: hideAccrualsTransaction.bind(this) | orderBy : transactionSort.column : transactionSort.descending" class="pointer">
+                                <tr *ngFor="let transaction of displayedTransactions  | orderBy : transactionSort.column : transactionSort.descending" class="pointer">
                                     <!-- route -->
                                     <td> {{transaction.id}}</td>
                                     <td> {{transaction.officeName}}</td>
@@ -994,6 +994,7 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let collateral of loanDetails.collateral" class="pointer">
+                                    <!--bind click event to route to diff page to view collateral details-->
                                     <!-- bind click event to route to diff page where edit and delete collateral can happen-->
                                     <td>{{collateral.type.name}}</td>
                                     <td><span class="mr-1">{{collateral.currency.displaySymbol}}</span>{{collateral.value | number}}</td>
@@ -1242,7 +1243,7 @@
                 </div>
             </div>
             <div *ngSwitchCase="17">
-                <div style="text-align: right;" class="mt-4">
+                <div style="text-align: right;" class="mt-4" *ngIf="!editRepaymentMode">
                     <button class="btn btn-primary" (click)="editRepaymentMode = !editRepaymentMode">Edit</button>
                 </div>
                 <div class="card mt-4 mb-4">
@@ -1350,7 +1351,7 @@
                         <div *ngIf="editRepaymentMode">
                             <div class="form-group row col-sm-12">
                                 <app-dropdown [parentform]="repaymentModeForm.controls.repaymentDetails" [name]="'repaymentTypeId'" [options]="modeOfRepaymentTypes" [optionvalue]="'id'" [labelname]="'Repayment Mode'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding"
-                                    [displayfield]="'label'" [emitEvent]="true" (valuechange)="changeRepaymentMode($event,true)" [value]="loanAppRefData.repaymentTypeId || defaultRepaymentMode.id">
+                                    [disabled]="isSIAccounteditDisabled || !siApplicable || disableFields" [displayfield]="'label'" [emitEvent]="true" (valuechange)="changeRepaymentMode($event,true)" [value]="loanAppRefData.repaymentTypeId || defaultRepaymentMode.id">
                                 </app-dropdown>
                             </div>
                             <div class="form-group row col-sm-12" *ngIf="isNonCashRepaymentMode">
@@ -1360,19 +1361,19 @@
                                 </app-input-field>
                             </div>
                             <dual-entry [parentform]="repaymentModeForm.controls.repaymentAccountDetails" [elementclass]="'2'" [type]="'text'" [name]="'beneficiary_name'" [labelname]="'Account Holder Name'" [required]="true" [value]="repaymentAccountDetails.beneficiary_name" [maxlength]="50"
-                                [pattern]="alphabetsPattern.regex" [patternerror]="alphabetsPattern.error" [submitted]="submitted" [disabled]="isSIAccounteditDisabled || disableFields" *ngIf="isNonCashRepaymentMode">
+                                [pattern]="alphabetsWithSpacePattern.regex" [patternerror]="alphabetsWithSpacePattern.error" [submitted]="submitted" [disabled]="isSIAccounteditDisabled || disableFields" *ngIf="isNonCashRepaymentMode">
                             </dual-entry>
                             <dual-entry [parentform]="repaymentModeForm.controls.repaymentAccountDetails" [elementclass]="'2'" [type]="'dropdown'" [name]="'AccountType_cd_AccountType'" [labelname]="'Account Type'" [required]="true" [submitted]="submitted" [optionvalue]="'id'" [options]="bankAccountTypes"
                                 [emitEvent]="true" [placeholder]="'Select Account Type'" [value]="repaymentAccountDetails.AccountType_cd_AccountType" [disabled]="isSIAccounteditDisabled || disableFields" *ngIf="isNonCashRepaymentMode">
                             </dual-entry>
                             <dual-entry [parentform]="repaymentModeForm.controls.repaymentAccountDetails" [elementclass]="'2'" [type]="'text'" [name]="'account_number'" [labelname]="'Bank Account Number'" [required]="true" [submitted]="submitted" [pattern]="numberPattern.regex"
-                                [patternerror]="numberPattern.error" [maxlength]="32" [minlength]="9" [value]="repaymentAccountDetails.account_number" [[disabled]="isSIAccounteditDisabled || disableFields" *ngIf="isNonCashRepaymentMode">
+                                [patternerror]="numberPattern.error" [maxlength]="32" [minlength]="9" [value]="repaymentAccountDetails.account_number" [disabled]="isSIAccounteditDisabled || disableFields" *ngIf="isNonCashRepaymentMode">
                             </dual-entry>
                             <div class="form-group row col-sm-12" *ngIf="isNonCashRepaymentMode">
                                 <app-input-field [parentform]="repaymentModeForm.controls.siDetails" [date]="true" [mindate]="restrictDate" [name]="'start_date'" [labelname]="'Effect Date/Unhold From Date'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [value]="siDetails.start_date"
                                     [disabled]="isSIAccounteditDisabled || disableEffectDate">
                                 </app-input-field>
-                                <app-dropdown [parentform]="repaymentModeForm.controls.siDetails" [name]="'end_date'" [options]="endDateOptions" [labelname]="'Valid Upto'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [value]="siDetails.end_date">
+                                <app-dropdown [parentform]="repaymentModeForm.controls.siDetails" [name]="'end_date'" [options]="endDateOptions" [labelname]="'Valid Upto'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [value]="siDetails.end_date" [disabled]="isSIAccounteditDisabled || disableEffectDate">
                                 </app-dropdown>
                             </div>
                             <div class="form-group row col-sm-12" *ngIf="isNonCashRepaymentMode">
@@ -1387,8 +1388,22 @@
                                 <app-input-field [parentform]="repaymentModeForm" [name]="'loanType'" [labelname]="'Loan Type'" [required]="true" [value]="loanDetails.loanProductName" [submitted]="submitted" class="col-sm-6 nopadding" [disabled]="true">
                                 </app-input-field>
                             </div>
-                            <div style="text-align: right;">
-                                <button class="btn btn-primary" (click)="saveRepaymentAccountDetails()" *ngIf="enableSave">Submit</button>
+                            <div style="text-align: right;" class="mt-5">
+                                <button (click)="editRepaymentMode = !editRepaymentMode;" class="btn btn-warning mr-2">Cancel
+                                </button>
+                                <button class="btn btn-primary mr-2" (click)="saveRepaymentAccountDetails()" *ngIf="enableSave">Submit</button>
+                                <!-- TODO Click method -->
+                                <button *ngIf="enableSwap" (click)="swapRepaymentMode()" class="btn btn-primary mr-2">Swap</button>
+                                <!-- TODO Click method -->
+                                <button *ngIf="enableUnhold" (click)="unholdSI()" class="btn btn-primary mr-2">Unhold
+                                </button>
+                                <!-- TODO Click method -->
+                                <button *ngIf="enableHold" (click)="showHoldSIModal()" class="btn btn-primary mr-2">Hold</button>
+                                <!-- TODO Click method -->
+                                <button (click)="generateSIForm('Direct Debit Mandate Form')" *ngIf="enableGenerate" class="btn btn-primary mr-2">Generate SI FORM</button>
+                                <!-- TODO Click method -->
+                                <button *ngIf="enableVerified" (click)="verifyCBS()" class="btn btn-primary mr-2">Verify CBS
+                                </button>
                             </div>
                         </div>
                     </div>

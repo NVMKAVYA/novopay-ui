@@ -13,6 +13,10 @@ export class Constants {
             regex: '^[a-zA-Z]+$',
             error: 'Must be alphabetic'
         },
+        alphabetsWithSpace: {
+            regex: '^[a-zA-Z ]+$',
+            error: 'Must be alphabetic'
+        },
         postalcode: {
             regex: '^[0-9]{6}$',
             error: 'Must be 6 digit numeric'

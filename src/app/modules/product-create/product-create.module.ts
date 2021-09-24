@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { CreateProductRoutingModule } from './create-product-routing.module';
-import { CreateProductComponent } from './create-product.component';
+import { CreateProductRoutingModule } from './product-create-routing.module';
+import { CreateProductComponent } from './product-create.component';
 
 import { NgWizardModule } from 'ng-wizard';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';

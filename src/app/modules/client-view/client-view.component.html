@@ -701,8 +701,8 @@
                                     <td>{{document.identifierType.label}}</td>
                                     <td>{{document.documentType.name}}</td>
                                     <td>
-                                        <span *ngFor="let file of document.documents" [documentView]="(document.documentType.name == 'Aadhar' || (document.documentType.name | uppercase) == 'UID') ? 'view' : 'download'"  [document]="file"
-                                            [tooltip]="(document.documentType.name == 'Aadhar' || (document.documentType.name | uppercase) == 'UID') ? 'View' : 'Download'" placement="top" class="mr-1 tag">{{file.fileName}} 
+                                        <span *ngFor="let file of document.documents" [documentView]="(document.documentType.name == 'Aadhar' || (document.documentType.name | uppercase) == 'UID') ? 'view' : 'download'" [document]="file" [tooltip]="(document.documentType.name == 'Aadhar' || (document.documentType.name | uppercase) == 'UID') ? 'View' : 'Download'"
+                                            placement="top" class="mr-1 tag">{{file.fileName}} 
                                         </span>
                                     </td>
                                     <td>
@@ -713,7 +713,7 @@
                                         <span *ngIf="document.documentType.name == 'Aadhar'">
                                             <button class="btn btn-primary"
                                             *hasPermission="'VIEW_ACTUAL_AADHAAR_NUMBER'" actualAadhaar
-                                            [document]="document" [clientId]="clientId">View</button>
+                                            [document]="document">View</button>
                                         </span>
                                     </td>
                                     <td>

@@ -10,8 +10,8 @@ import { FormService } from 'src/app/services/form/form.service';
 
 @Component({
   selector: 'app-create-product',
-  templateUrl: './create-product.component.html',
-  styleUrls: ['./create-product.component.css']
+  templateUrl: './product-create.component.html',
+  styleUrls: ['./product-create.component.css']
 })
 export class CreateProductComponent implements OnInit {
 
