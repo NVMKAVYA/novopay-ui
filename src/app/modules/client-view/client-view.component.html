@@ -701,7 +701,7 @@
                                     <td>{{document.identifierType.label}}</td>
                                     <td>{{document.documentType.name}}</td>
                                     <td>
-                                        <span *ngFor="let file of document.documents" [documentView]="(document.documentType.name == 'Aadhar' || (document.documentType.name | uppercase) == 'UID') ? 'view' : 'download'" [entityType]="file.parentEntityType" [entityId]="file.parentEntityId" [document]="file"
+                                        <span *ngFor="let file of document.documents" [documentView]="(document.documentType.name == 'Aadhar' || (document.documentType.name | uppercase) == 'UID') ? 'view' : 'download'"  [document]="file"
                                             [tooltip]="(document.documentType.name == 'Aadhar' || (document.documentType.name | uppercase) == 'UID') ? 'View' : 'Download'" placement="top" class="mr-1 tag">{{file.fileName}} 
                                         </span>
                                     </td>

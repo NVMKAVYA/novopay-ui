@@ -50,26 +50,26 @@
                             </div>
                         </div>
                         <div *ngIf="loanDetails.status.active">
-                            <!-- Add click event --> 
+                            <!-- Add click event -->
                             <a class="dropdown-item" type="button" *hasPermission="'CREATE_FORECLOSURE'">
-                            ForeClosure</a> 
+                            ForeClosure</a>
                         </div>
-                        <div *ngIf="loanDetails.status.active || loanDetails.status.freezedForForeClosure"> 
-                            <!-- Add click event --> 
+                        <div *ngIf="loanDetails.status.active || loanDetails.status.freezedForForeClosure">
+                            <!-- Add click event -->
                             <a class="dropdown-item" type="button" *hasPermission="'VIEW_FORECLOSURE_LOAN'"> Foreclosure(View Only)</a>
                         </div>
-                        <div *ngIf="(loanDetails.status.pendingApproval || loanDetails.status.waitingForDisbursal || loanDetails.status.active) && loanAppRefData?.coApplicant1Id"> 
-                            <!-- Add href link --> 
+                        <div *ngIf="(loanDetails.status.pendingApproval || loanDetails.status.waitingForDisbursal || loanDetails.status.active) && loanAppRefData?.coApplicant1Id">
+                            <!-- Add href link -->
                             <a class="dropdown-item" type="button" *hasPermission="'COAPPLICANTDEATH_CLIENT'">
-                            Close(Death Of Co-Applicant)</a> 
+                            Close(Death Of Co-Applicant)</a>
                         </div>
-                        <div *ngIf="showCaptureAccountGstExemption"> 
-                            <!-- Add href link --> 
-                            <a class="dropdown-item" type="button" *hasPermission="'UPDATE_GST_NUMBER'">Capture Account GST Details</a> 
+                        <div *ngIf="showCaptureAccountGstExemption">
+                            <!-- Add href link -->
+                            <a class="dropdown-item" type="button" *hasPermission="'UPDATE_GST_NUMBER'">Capture Account GST Details</a>
                         </div>
-                        <div *ngIf="isOverpaidExists"> 
-                            <!-- Add click event --> 
-                            <a class="dropdown-item" type="button" *hasPermission="'OVERPAIDLOANCLOSURE_LOAN'">Post maturity overpaid closure</a> 
+                        <div *ngIf="isOverpaidExists">
+                            <!-- Add click event -->
+                            <a class="dropdown-item" type="button" *hasPermission="'OVERPAIDLOANCLOSURE_LOAN'">Post maturity overpaid closure</a>
                         </div>
                     </div>
                 </span>
@@ -1093,7 +1093,43 @@
                 </div>
             </div>
             <div *ngSwitchCase="12">
-                charges
+                <div class="card mt-4 mb-4">
+                    <div class="card-content">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="name">Name</th>
+                                    <th id="type">Fee/Penalty</th>
+                                    <th>Payment due at</th>
+                                    <th>Due as of</th>
+                                    <th>Calculation type</th>
+                                    <th>Due</th>
+                                    <th>Paid</th>
+                                    <th>Waived</th>
+                                    <th>Exempted</th>
+                                    <th>Outstanding</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--Add click event (Charges details modal)-->
+                                <tr *ngFor="let charge of loanDetails.charges" (click)="chargesDetails()">
+                                    <td>{{charge.name}}</td>
+                                    <td></td>
+                                    <td>{{charge.chargeTimeType.value}}</td>
+                                    <td></td>
+                                    <td>{{charge.chargeCalculationType.value}}</td>
+                                    <td>{{charge.currency.displaySymbol}}{{charge.amount| number}}</td>
+                                    <td>{{charge.currency.displaySymbol}}{{charge.amountPaid| number}}</td>
+                                    <td>{{charge.currency.displaySymbol}}{{charge.amountWaived| number}}</td>
+                                    <td>{{charge.currency.displaySymbol}}{{charge.amountExempted| number}}</td>
+                                    <td>{{charge.currency.displaySymbol}}{{charge.amountOutstanding| number}}</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
             <div *ngSwitchCase="13">
                 <app-view-documents [type]="'loans'" [typeId]="[loanId,loanDetails.loanApplicationReferenceId]" [viewbuttons]="viewbuttons" [documents]="loanDocuments" *ngIf="tab == 13" (valuechange)="getDocumentsData($event)"></app-view-documents>
@@ -1132,7 +1168,7 @@
             <div *ngSwitchCase="15">
                 <div class="card mt-4 mb-4">
                     <div class="card-content">
-                        <div *ngIf="datatabledetails?.data.length">
+                        <div *ngIf="datatabledetails?.data?.length">
                             <perfect-scrollbar>
                                 <table class="table table-striped" *ngIf="datatabledetails.columnHeaders[0].columnName == 'id'">
                                     <thead>
@@ -1156,7 +1192,7 @@
                                 </table>
                             </perfect-scrollbar>
                         </div>
-                        <div class="alert alert-warning m-4 text-center " role="alert" *ngIf="!(datatabledetails?.data.length)">
+                        <div class="alert alert-warning m-4 text-center " role="alert" *ngIf="!(datatabledetails?.data?.length)">
                             Details are not present
                         </div>
                     </div>
@@ -1180,8 +1216,7 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let endusecheck of endusechecks">
-                                    <td>{{endusecheck.createdDate | date: dateFormat}}</td>
-                                    <td>{{endusecheck.actualCompletionDate |date: dateFormat}}</td>
+                                    <td>{{(this.loanDetails.processDefKey == "MELUnsecured" ? endusecheck.actualCompletionDate : endusecheck.createdDate) | date: dateFormat}}</td>
                                     <td>{{endusecheck.staffName}}</td>
                                     <td>{{endusecheck.nextEucDate| date: DateFormat}}</td>
                                     <td>{{endusecheck.status}}</td>
@@ -1190,12 +1225,12 @@
                                     <td>{{endusecheck.reviewerName}}</td>
                                     <td>{{endusecheck.reviewerRemarks}}</td>
                                     <td *ngIf="endUseCheckExtData && endUseCheckExtData.eucExpiryReason">{{endUseCheckExtData.eucExpiryReason}}</td>
-                                    <td *ngIf="eucDocumentData && endusecheck.viewImage" style="vertical-align: middle;" rowspan="{{endusechecks.length}}">
-                                        <div class="col-sm-8">
-                                            <span class="btn btn-primary" actiontype="view">
+                                    <td>
+                                        <span class="col-sm-8" *ngIf="eucDocumentData && endusecheck.viewImage">
+                                            <span class="btn btn-primary" [document]="eucDocumentData" [documentView]="'view'">
                                                 View
                                             </span>
-                                        </div>
+                                        </span>
                                     </td>
                                 </tr>
                             </tbody>

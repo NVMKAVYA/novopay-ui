@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { HttpService } from 'src/app/services/http/http.service';
 import { ActivatedRoute } from '@angular/router';
 import { Constants } from 'src/app/models/Constants';
@@ -6,7 +6,6 @@ import { DatePipe } from '@angular/common';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { AfterViewChecked, ChangeDetectorRef } from '@angular/core'
 
 @Component({
   selector: 'app-loan-view',
@@ -77,7 +76,7 @@ export class LoanViewComponent implements OnInit {
   };
   endusechecks: any;
   documentId: any;
-  endUseCheckExtData: any = [];
+  eucDocumentData: any;
   transactionSort = {
     column: 'date',
     descending: true
@@ -383,7 +382,6 @@ export class LoanViewComponent implements OnInit {
       }
       this.loanapprefdatatables = response;
     })
-
   }
 
   isEligibleForLoanCancellation() {
@@ -478,6 +476,7 @@ export class LoanViewComponent implements OnInit {
           });
         }
         if (this.datatabledetails.data.length) {
+          this.singleRow = [];
           this.datatabledetails.columnHeaders.forEach((header, i) => {
             if (!(this.datatabledetails.columnHeaders[0].columnName == "id")) {
               let row: any = {};
@@ -498,7 +497,8 @@ export class LoanViewComponent implements OnInit {
         ];
         let row = [response.id, response.loanApplicationReferenceId, this.loanDetails.clientId, response.countryOfBirth.id ? response.countryOfBirth.name : null, response.countryOfTaxResidence.id ? response.countryOfTaxResidence.name : null, response.placeOfBirth ? response.placeOfBirth : null, response.foreignTaxID ? response.foreignTaxID : null, response.tinIssuingCountry.id ? response.tinIssuingCountry.name : null
         ];
-        this.datatabledetails.data[0] = { "row": row };
+        this.datatabledetails.data = [];
+        this.datatabledetails.data.push({ "row": row });
       })
     }
   };
@@ -506,16 +506,22 @@ export class LoanViewComponent implements OnInit {
   getEndUseChecks() {
     this.http.LoanEndUseCheckResource(this.loanId).subscribe(data => {
       this.endusechecks = data;
-      this.endusechecks.forEach(e => {
-        e.viewImage = e == 0 ? true : false;
+      this.endusechecks.forEach((e, i) => {
+        e.viewImage = i == 0 ? true : false;
+        this.documentId = null;
         if (e.eucExtData) {
-          var endUseCheckExtDataArr = e.eucExtData;
-          this.endUseCheckExtData = endUseCheckExtDataArr[endUseCheckExtDataArr.length - 1];
-          if (this.endUseCheckExtData && this.endUseCheckExtData.documentId) {
-            this.documentId = this.endUseCheckExtData.documentId
+          if (e.eucExtData[e.eucExtData.length - 1]?.documentId) {
+            this.documentId = e.eucExtData[e.eucExtData.length - 1].documentId
           }
         }
-      })
+      });
+      if (this.documentId) {
+        let END_USECHECKDOC_API = this.loanDetails.processDefKey == "MELUnsecured" ? "MEL_END_USECHECKDOC" : "END_USECHECKDOC";
+
+        this.http.getDocuments(END_USECHECKDOC_API, this.loanId, this.documentId).subscribe(response => {
+          this.eucDocumentData = response;
+        })
+      }
     });
   };
 
@@ -697,8 +703,5 @@ export class LoanViewComponent implements OnInit {
       }
     }
   }
-
-
-
 }
 
