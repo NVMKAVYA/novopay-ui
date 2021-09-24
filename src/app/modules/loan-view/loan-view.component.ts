@@ -4,7 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Constants } from 'src/app/models/Constants';
 import { DatePipe } from '@angular/common';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { AfterViewChecked, ChangeDetectorRef } from '@angular/core'
 
 @Component({
   selector: 'app-loan-view',
@@ -47,6 +49,12 @@ export class LoanViewComponent implements OnInit {
   repaymentModeForm: FormGroup;
   modeOfRepaymentTypes: any;
   defaultRepaymentMode: any;
+  editRepaymentMode: boolean = false;
+  repaymentAccountDetails: any = {};
+  siDetails: any = {};
+  installmentAmount: any;
+  endDateOptions: any;
+  bankAccountTypes: any;
   hideTableArray = ['d_client_aadhaar_details', 'd_construction_details', 'd_cpv_business', 'd_cpv_detail', 'd_cpv_income', 'd_cpv_neighbour_reference_check', 'd_cpv_reference_checks',
     'd_cpv_residential', 'd_cpv_residential_assets', 'd_cpv_trc_neighbour_reference_check',
     'd_cpv_trc_other_reference_check', 'd_customer_reference_check', 'd_deviation_rules_history',
@@ -54,6 +62,19 @@ export class LoanViewComponent implements OnInit {
     'd_personal_reference_check', 'd_si_details', 'd_si_history', 'd_supplier_reference_check',
     'd_visiting_officer_check'
   ];
+  siMandateStatusArray = {
+    "100": "Pending For Confirmation",
+    "500": "CBS Rejected",
+    "400": "CBS Verified"
+  };
+  siStatusArray = {
+    "100": "Inactive",
+    "200": "Checker Task Initiated",
+    "400": "Rejected",
+    "500": "Active",
+    "600": "Hold",
+    "700": "Scheduled"
+  };
   endusechecks: any;
   documentId: any;
   endUseCheckExtData: any = [];
@@ -61,8 +82,24 @@ export class LoanViewComponent implements OnInit {
     column: 'date',
     descending: true
   };
+  isNonCashRepaymentMode: boolean = false;
+  isSIAccounteditDisabled: boolean = false;
+  disableFields: boolean = false;
+  disableEffectDate: boolean = false;
+  numberPattern: any = Constants.pattern.numbers;
+  restrictDate: any;
+  periodicity: string = "As and When Presented";
+  submitted: boolean = false;
+  formData: any;
+  enableSave: boolean = false;
+  alphabetsPattern: any = Constants.pattern.alphabets;
 
-  constructor(private http: HttpService, private route: ActivatedRoute, private datePipe: DatePipe, private auth: AuthService, private fb: FormBuilder) { }
+  constructor(private http: HttpService, private route: ActivatedRoute, private datePipe: DatePipe, private auth: AuthService, private fb: FormBuilder, private toastr: ToastrService, private readonly changeDetectorRef: ChangeDetectorRef) { }
+
+  // To avoid the error : Expression has changed after it was checked. Previous value: 'ng-valid: true'. Current value: 'ng-valid: false'
+  ngAfterViewChecked(): void {
+    this.changeDetectorRef.detectChanges();
+  }
 
   ngOnInit(): void {
     this.loanId = parseInt(this.route.snapshot.paramMap.get('id'));
@@ -85,7 +122,9 @@ export class LoanViewComponent implements OnInit {
               this.loanAppRefData.coapplicantLeadid = data.leadId;
             });
           }
-          this.repaymentModeForm = this.fb.group({});
+          this.repaymentModeForm = this.fb.group({
+            repaymentDetails: this.fb.group({})
+          });
         });
         this.http.getRSDAccountResource(this.loanDetails.loanApplicationReferenceId).subscribe(response => {
           this.rsdAccountData = response;
@@ -299,6 +338,15 @@ export class LoanViewComponent implements OnInit {
           let index = this.buttons.singlebuttons.findIndex(button => button.taskPermissionName === "PART_PREPAYMENT_LOAN");
           this.buttons.singlebuttons.splice(index, 1);
         }
+        if (this.siApplicable && this.loanDetails.status.id == 300) {
+          this.installmentAmount = this.loanDetails.repaymentSchedule.periods[1].interestDue + this.loanDetails.repaymentSchedule.periods[1].principalDue;
+          this.siDetails.max_amount = this.loanDetails.approvedPrincipal;
+          // this.loanType = scope.loandetails.loanProductName;
+          var periods = this.loanDetails.repaymentSchedule.periods;
+          var endDate = new Date(periods[periods.length - 1].dueDate);
+          var end_date = this.datePipe.transform(new Date(endDate.getFullYear() + 1, endDate.getMonth(), endDate.getDate(), 0, 0, 0), Constants.dateFormat2)
+          this.endDateOptions = ["Until Cancelled", end_date.toString()];
+        }
       });
     });
 
@@ -432,7 +480,7 @@ export class LoanViewComponent implements OnInit {
         if (this.datatabledetails.data.length) {
           this.datatabledetails.columnHeaders.forEach((header, i) => {
             if (!(this.datatabledetails.columnHeaders[0].columnName == "id")) {
-              let row: any;
+              let row: any = {};
               row.key = header.columnName;
               row.value = data.data[0].row[i];
               this.singleRow.push(row);
@@ -472,25 +520,185 @@ export class LoanViewComponent implements OnInit {
   };
 
   getRepaymentModes() {
-    this.http.codeValuesResource('RepaymentMode', this.loanDetails.processDefKey).subscribe(response => {
-      this.modeOfRepaymentTypes = response;
-      this.defaultRepaymentMode = this.modeOfRepaymentTypes.find(type => {
-        type.name == "Cash";
-      });
-      // if (this.loanAppRefData.repaymentTypeId) {
-      //   scope.formData.repaymentDetails.repaymentTypeId = scope.loanAppRefData.repaymentTypeId;
-      // if (scope.formData.repaymentDetails.repaymentTypeId == scope.defaultRepaymentMode.id) {
-      //   scope.isNonCashRepaymentMode = false;
-      // } else {
-      //   scope.isNonCashRepaymentMode = true;
-      // }
-      // scope.loadSIData(scope.loandetails.loanApplicationReferenceId);
-      // if (scope.defaultRepaymentMode.id != scope.formData.repaymentDetails.repaymentTypeId) {
-      //   scope.repaymentModeFromAppRef = true;
-      // }
-      // } else {
-      //   scope.formData.repaymentDetails.repaymentTypeId = scope.defaultRepaymentMode.id;
-      // }
-    })
+    this.siDetails.si_mandate_status = this.siMandateStatusArray[100];
+    this.siDetails.si_status = this.siStatusArray[100];
+    this.editRepaymentMode = false;
+
+    if (!this.modeOfRepaymentTypes) {
+      this.http.codeValuesResource('RepaymentMode', this.loanDetails.processDefKey).subscribe(response => {
+        this.modeOfRepaymentTypes = response;
+        this.defaultRepaymentMode = this.modeOfRepaymentTypes.find(type =>
+          type.name == "Cash"
+        );
+        this.changeRepaymentMode(this.loanAppRefData.repaymentTypeId, false);
+      })
+    }
   }
+
+  changeRepaymentMode(value, edit) {
+    if (value == this.defaultRepaymentMode.id) {
+      this.repaymentModeForm.removeControl('siDetails');
+      this.repaymentModeForm.removeControl('repaymentAccountDetails');
+      this.isNonCashRepaymentMode = false;
+    } else {
+      this.enableSave = true;
+      this.repaymentModeForm.addControl('siDetails', this.fb.group({}));
+      this.repaymentModeForm.addControl('repaymentAccountDetails', this.fb.group({}));
+      this.loadSIData(edit);
+    }
+  }
+
+  loadSIData(edit) {
+    let today = new Date();
+    this.restrictDate = today.setDate(today.getDate() + 1);
+
+    let promise = new Promise(resolve => {
+      if (!this.bankAccountTypes) {
+        this.http.codeValuesResource('AccountType', this.loanDetails.processDefKey).subscribe(response => {
+          this.bankAccountTypes = response.filter(function (accountType) {
+            return accountType.context.indexOf("repaymentAccountType") > -1;
+          });
+          this.isNonCashRepaymentMode = true;
+          resolve(this.bankAccountTypes);
+        });
+      } else {
+        this.isNonCashRepaymentMode = true;
+        resolve(this.bankAccountTypes);
+      }
+    });
+
+    if (!edit) {
+      let reqParam = "?genericResultSet=true&context=MELUnsecured";
+      let datatablesTemplate = [{
+        "requestId": 1,
+        "relativeUrl": "datatables/d_bank_accounts/" + this.loanDetails.loanApplicationReferenceId + reqParam,
+        "method": "GET"
+      }, {
+        "requestId": 2,
+        "relativeUrl": "datatables/d_si_details/" + this.loanDetails.loanApplicationReferenceId + reqParam,
+        "method": "GET"
+      }];
+
+      this.http.batchResource(datatablesTemplate).subscribe(data => {
+        let parsedBankAccounts = JSON.parse(data[0].body).data;
+        parsedBankAccounts.forEach(account => {
+          if (account && account.row && account.row[2] && account.row[10] && account.row[10] == "siAccount") {
+            this.repaymentAccountDetails.id = account.row[0];
+            this.repaymentAccountDetails.beneficiary_name = account.row[7];
+            this.repaymentAccountDetails.account_number = account.row[5];
+            this.repaymentAccountDetails.AccountType_cd_AccountType = parseInt(account.row[4]);
+            promise.then((data: any) => {
+              this.repaymentAccountDetails.accounttype = data.find(e =>
+                e.id == this.repaymentAccountDetails.AccountType_cd_AccountType
+              )
+            })
+          }
+        })
+        let parsedSIData = JSON.parse(data[1].body).data;
+        this.siDetails.periodicity = "0";
+        parsedSIData.forEach(sidata => {
+          if (sidata && sidata.row) {
+            this.siDetails.id = sidata.row[0];
+            if (sidata.row[4]) {
+              this.siDetails.si_mandate_status = this.siMandateStatusArray[sidata.row[4]];
+            }
+            if (sidata.row[5]) {
+              this.siDetails.si_status = this.siStatusArray[sidata.row[5]];
+            }
+            this.siDetails.start_date = sidata.row[7] ? this.datePipe.transform(new Date(sidata.row[7]), Constants.dateFormat2) : null;
+            this.siDetails.end_date = sidata.row[8] ? this.datePipe.transform(sidata.row[8], Constants.dateFormat2) : this.endDateOptions[0];
+            switch (true) {
+
+              case this.siDetails.si_status == "Inactive" && this.siDetails.si_mandate_status == "Pending For Confirmation":
+                // scope.enableVerified = true;
+                break;
+
+              case this.siDetails.si_status == "Checker Task Initiated" && this.siDetails.si_mandate_status == "CBS Verified":
+                // scope.enableGenerate = true;
+                this.isSIAccounteditDisabled = true;
+                break;
+
+              case this.siDetails.si_status == "Inactive":
+                this.enableSave = true;
+                break;
+
+              case this.siDetails.si_status == "Rejected":
+                this.enableSave = true;
+                break;
+
+              case this.siDetails.si_status == "Active":
+                this.disableFields = true;
+                // scope.enableHold = true;
+                // scope.enableGenerate = true;
+                this.disableEffectDate = true;
+                break;
+
+              case this.siDetails.si_status == "Hold":
+                this.disableFields = true;
+                // scope.enableGenerate = true;
+                // scope.enableUnhold = true;
+                // scope.enableSwap = true;
+                break;
+
+              case this.siDetails.si_status == "Scheduled":
+                // scope.enableHold = true;
+                this.disableFields = true;
+                // scope.enableGenerate = true;
+                this.disableEffectDate = true;
+                break;
+            }
+          }
+        })
+        this.isNonCashRepaymentMode = true;
+      })
+    }
+  }
+
+  saveRepaymentAccountDetails() {
+    if (this.repaymentModeForm.valid && this.repaymentModeForm.dirty) {
+      this.formData = {};
+      this.loopThroughForms(this.repaymentModeForm.controls, this.formData);
+      if (this.isNonCashRepaymentMode) {
+        this.formData.repaymentAccountDetails.id = this.repaymentAccountDetails?.id;
+        this.formData.repaymentDetails.loan_app_reference_id = this.loanAppRefData.id;
+        this.formData.repaymentAccountDetails.locale = Constants.optlang.code;
+        this.formData.repaymentAccountDetails.isRefToTransfer = "siAccount";
+        this.formData.repaymentAccountDetails.client_id = this.loanAppRefData.clientId;
+        this.formData.repaymentAccountDetails.loan_app_reference_id = this.loanAppRefData.id;
+        this.formData.siDetails.id = this.siDetails?.id
+        this.formData.siDetails.periodicity = "0";
+        this.formData.siDetails.locale = Constants.optlang.code;
+        this.formData.siDetails.dateFormat = Constants.dateFormat2;
+        this.formData.siDetails.client_id = this.loanAppRefData.clientId;
+        this.formData.siDetails.loan_app_reference_id = this.loanAppRefData.id;
+        // this.formData.siDetails.start_date = this.datePipe.transform(this.formData.siDetails?.start_date, Constants.dateFormat2);
+        if (this.formData.siDetails.end_date && this.formData.siDetails.end_date == "Until Cancelled") {
+          this.formData.siDetails.end_date = null;
+        }
+      }
+      this.http.assetStandingInstructionResource(this.formData, 'saveSIDetails').subscribe(() => {
+        this.toastr.success("Successfully saved SI details", 'Success');
+        this.editRepaymentMode = false;
+        this.loanAppRefData.repaymentTypeId = this.formData.repaymentDetails.repaymentTypeId
+        this.changeRepaymentMode(this.loanAppRefData.repaymentTypeId, false);
+      })
+    } else {
+      this.submitted = true;
+    }
+  }
+
+  loopThroughForms(form, data) {
+    for (let key of Object.keys(form)) {
+      if (form[key].hasOwnProperty('controls')) {
+        data[key] = {};
+        this.loopThroughForms(form[key].controls, data[key])
+      } else {
+        data[key] = form[key].value;
+      }
+    }
+  }
+
+
+
 }
+

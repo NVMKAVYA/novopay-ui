@@ -10,8 +10,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { TooltipModule } from '../../shared/directives/tooltip/tooltip.module';
 import { InputFieldModule } from '../../shared/components/input-field/input-field.module';
 import { DropdownModule } from '../../shared/components/dropdown/dropdown.module';
-
-import { DualEntryComponent } from '../../shared/components/dual-entry/dual-entry.component';
+import { DualEntryModule } from '../../shared/components/dual-entry/dual-entry.module';
 import { DocumentUploadComponent } from '../../shared/components/add-document/add-document.component';
 
 const ngWizardConfig: NgWizardConfig = {};
@@ -19,7 +18,6 @@ const ngWizardConfig: NgWizardConfig = {};
 @NgModule({
   declarations: [
     CreateClientComponent,
-    DualEntryComponent,
     DocumentUploadComponent
   ],
   imports: [
@@ -29,7 +27,8 @@ const ngWizardConfig: NgWizardConfig = {};
     PerfectScrollbarModule,
     InputFieldModule,
     DropdownModule,
-    TooltipModule
+    TooltipModule,
+    DualEntryModule
   ],
   providers: [DatePipe]
 })

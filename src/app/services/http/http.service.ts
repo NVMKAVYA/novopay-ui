@@ -292,4 +292,12 @@ export class HttpService {
     return this._http.get(`${this.baseUrl}/endusecheck/${loanId}`, { params: params });
   }
 
+  public batchResource(data): any {
+    return this._http.post(`${this.baseUrl}/batches`, data);
+  }
+
+
+  public assetStandingInstructionResource(data, resource): any {
+    return this._http.post(`${this.baseUrl}/assetStandingInstruction/${resource}`, data);
+  }
 }

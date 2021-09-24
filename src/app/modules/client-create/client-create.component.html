@@ -54,7 +54,7 @@
 
             <ng-wizard-step [title]="'Spouse Details'" [canExit]="validateCanExit.bind(this,'spouseDetails')" [canEnter]="actionOnEnter.bind(this)" [state]="enableSpouseDetailsTab">
                 <div class="form-group row col-sm-12" *ngIf="isSpouseMandatory">
-                    <app-dropdown [parentform]="qdeForm.controls.spouseDetails" [name]="'spouseTitleId'" [options]="dropdownOptions.spouseFatherTitleOptions" [optionvalue]="'id'" [labelname]="'Title'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding">
+                    <app-dropdown [parentform]="qdeForm.controls.spouseDetails" [name]="'spouseTitleId'" [options]="dropdownOptions.spouseFatherTitleOptions" [optionvalue]="'id'" [labelname]="'Title'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [showfield]="isSpouseMandatory">
                     </app-dropdown>
                 </div>
                 <dual-entry [parentform]="qdeForm.controls.spouseDetails" [elementclass]="'2'" [type]="'text'" [name]="'spouse_first_name'" [labelname]="'First Name'" [required]="true" [maxlength]="50" [pattern]="alphabetsPattern.regex" [patternerror]="alphabetsPattern.error"
@@ -71,19 +71,16 @@
             <ng-wizard-step [title]="'Permanent Address'" [canExit]="validateCanExit.bind(this,'addressDetails')" [canEnter]="actionOnEnter.bind(this,'addressDetails')">
                 <div formGroupName="addressDetails" class="form-group row col-sm-12" [ngClass]="{'f-ver-center': qdeForm.controls.addressDetails.get('addressLine').valid}">
                     <label class="col-form-label col-sm-2" for="addressLine">Address Line
-          <span class="required">*</span>
-      </label>
+                        <span class="required">*</span>
+                    </label>
                     <div class="col-sm-3">
                         <textarea rows="2" id="addressLine" class="form-control" name="addressLine" formControlName="addressLine"></textarea>
-                        <small class="text-danger" *ngIf="qdeForm.controls.addressDetails.get('addressLine').hasError('required') && qdeForm.controls.addressDetails.get('addressLine').touched">
-            Required Field
-        </small>
-                        <small class="text-danger" *ngIf="qdeForm.controls.addressDetails.get('addressLine').hasError('minlength')">
-          The minimum length for this field is {{qdeForm.controls.addressDetails.get('addressLine').errors.minlength.requiredLength}} characters
-      </small>
-                        <small class="text-danger" *ngIf="qdeForm.controls.addressDetails.get('addressLine').hasError('maxlength')">
-          The maximum length for this field is {{qdeForm.controls.addressDetails.get('addressLine').errors.maxlength.requiredLength}} characters
-      </small>
+                        <small class="text-danger" *ngIf="qdeForm.controls.addressDetails.get('addressLine').hasError('required') && qdeForm.controls.addressDetails.get('addressLine').touched">Required Field
+                        </small>
+                        <small class="text-danger" *ngIf="qdeForm.controls.addressDetails.get('addressLine').hasError('minlength')"> The minimum length for this field is {{qdeForm.controls.addressDetails.get('addressLine').errors.minlength.requiredLength}} characters
+                        </small>
+                        <small class="text-danger" *ngIf="qdeForm.controls.addressDetails.get('addressLine').hasError('maxlength')">The maximum length for this field is {{qdeForm.controls.addressDetails.get('addressLine').errors.maxlength.requiredLength}} characters
+                        </small>
                     </div>
                 </div>
                 <div class="form-group row col-sm-12">

@@ -56,22 +56,21 @@ export class DropdownComponent implements OnInit {
 
   ngOnInit(): void {
     this.displayfield = this.displayfield ? this.displayfield : 'name';
-    this._showfield = this._showfield !== undefined ? this._showfield : true;
     this._disabled = this._disabled !== undefined ? this._disabled : false;
     this.elementClass = this.elementClass ? parseInt(this.elementClass) : 4;
 
-    if (this._showfield) {
+    if (this._showfield == undefined) {
+      this._showfield = this._showfield !== undefined ? this._showfield : true;
       this.addField()
-    }
-
-    if (this._disabled) {
-      this.parentform.get(this.name).disable();
     }
   }
 
   addField() {
     this.parentform.addControl(this.name, this.fb.control(this.value, [
       this.form.conditionalValidator(this.required, Validators.required)]));
+    if (this._disabled) {
+      this.parentform.get(this.name).disable();
+    }
   }
 
   change() {

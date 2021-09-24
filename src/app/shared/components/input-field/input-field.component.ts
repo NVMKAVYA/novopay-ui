@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormService } from 'src/app/services/form/form.service';
 import { Constants } from 'src/app/models/Constants';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-input-field',
@@ -22,7 +23,7 @@ export class InputFieldComponent implements OnInit {
   @Input() patternerror: string;
   @Input() type: string;
   @Input() date: boolean;
-  @Input() value: boolean;
+  @Input() value: any;
   @Input() maxdate: any;
   @Input() labelclass: any;
   @Input() inputclass: any;
@@ -31,6 +32,7 @@ export class InputFieldComponent implements OnInit {
   @Input() emitEvent: boolean;
   datePickerConfig = {
     format: Constants.datePickerFormat,
+    min: '',
     max: ''
   }
   private _showfield: boolean;
@@ -63,26 +65,24 @@ export class InputFieldComponent implements OnInit {
     return this._disabled;
   }
 
-  constructor(private fb: FormBuilder, private form: FormService) { }
+  constructor(private fb: FormBuilder, private form: FormService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
-    this._showfield = this._showfield !== undefined ? this._showfield : true;
     this._disabled = this._disabled !== undefined ? this._disabled : false;
     this.labelclass = this.labelclass || 'col-sm-4';
     this.inputclass = this.inputclass || 'col-sm-6';
     this.type = this.type || 'text';
 
-    if (this.type == 'date') {
+    if (this.date) {
       this.datePickerConfig.max = this.maxdate;
+      this.datePickerConfig.min = this.datePipe.transform(this.mindate, Constants.dateFormat2);
     }
 
-    if (this._showfield) {
+    if (this._showfield == undefined) {
+      this._showfield = this._showfield !== undefined ? this._showfield : true;
       this.addField()
     }
 
-    if (this._disabled) {
-      this.parentform.get(this.name).disable();
-    }
   }
 
   addField() {
@@ -91,6 +91,9 @@ export class InputFieldComponent implements OnInit {
       this.form.conditionalValidator(this.minlength, Validators.minLength(this.minlength)),
       this.form.conditionalValidator(this.maxlength, Validators.maxLength(this.maxlength)),
       this.form.conditionalValidator(this.pattern, Validators.pattern(this.pattern))]));
+    if (this._disabled) {
+      this.parentform.get(this.name)?.disable();
+    }
   }
 
   change() {

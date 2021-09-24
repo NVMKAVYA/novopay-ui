@@ -5,18 +5,18 @@
     <div [ngClass]="type == 'text' ? inputclass : 'col-sm-1'">
         <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control" name="{{name}}" formControlName="{{name}}" placeholder="{{placeholder}}" *ngIf="!date && type == 'text'" (change)="change()">
         <input type="checkbox" class="form-control" (change)="change()" formControlName="{{name}}" *ngIf="!date && type == 'checkbox'">
-        <dp-date-picker [config]="datePickerConfig" (change)="change()" name="{{name}}" theme="dp-material" formControlName="{{name}}" *ngIf="date">
+        <dp-date-picker [config]="datePickerConfig" (change)="change()" name="{{name}}" theme="dp-material" formControlName="{{name}}" *ngIf="date" style="width: 100%;">
         </dp-date-picker>
-        <p class="text-danger error" *ngIf="parentform.get(name).hasError('required') && ( parentform.get(name).touched || submitted)">
+        <p class="text-danger error" *ngIf="parentform.get(name)?.hasError('required') && ( parentform.get(name)?.touched || submitted)">
             Required Field
         </p>
-        <p class="text-danger error" *ngIf="parentform.get(name).hasError('minlength')">
+        <p class="text-danger error" *ngIf="parentform.get(name)?.hasError('minlength')">
             The minimum length for this field is {{parentform.get(name).errors.minlength.requiredLength}} characters
         </p>
-        <p class="text-danger error" *ngIf="parentform.get(name).hasError('maxlength')">
+        <p class="text-danger error" *ngIf="parentform.get(name)?.hasError('maxlength')">
             The maximum length for this field is {{parentform.get(name).errors.maxlength.requiredLength}} characters
         </p>
-        <p class="text-danger error" *ngIf="parentform.get(name).hasError('pattern')">
+        <p class="text-danger error" *ngIf="parentform.get(name)?.hasError('pattern')">
             {{patternerror}}
         </p>
     </div>

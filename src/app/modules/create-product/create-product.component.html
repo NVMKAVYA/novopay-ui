@@ -1,531 +1,439 @@
 <div class="pt-3 pb-2 mb-3">
-  <h1 class="h2">Create Loan Product</h1>
+    <h1 class="h2">Create Loan Product</h1>
 </div>
 <!-- <p  *ngIf="parentFormError" class="required">**Fill all the required details to submit</p> -->
 <div class="card" *ngIf="productTemplate">
-  <form [formGroup]="createProductForm">
-    <ng-wizard [config]="config">
-      <ng-wizard-step [title]="'Product Details'" [canExit]="validateCanExit.bind(this,'productDetails')"
-        [canEnter]="actionOnEnter.bind(this)">
-        <div class="form-group row col-sm-12">
-          <app-input-field [parentform]="createProductForm.controls.productDetails" [name]="'name'"
-            [labelname]="'Product Name'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding"
-            [pattern]="alphaNumericPattern.regex" [patternerror]="alphaNumericPattern.error">
-          </app-input-field>
-          <app-input-field [parentform]="createProductForm.controls.productDetails" [name]="'shortName'"
-            [labelname]="'Short Name'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding"
-            [pattern]="alphaNumericPattern.regex" [patternerror]="alphaNumericPattern.error">
-          </app-input-field>
-        </div>
-        <div class="form-group row col-sm-12">
-          <app-dropdown [parentform]="createProductForm.controls.productDetails" [name]="'productTypeId'"
-            [options]="productTemplate.productTypeOptions" [labelname]="'Product Type'" [required]="true"
-            [submitted]="submitted" class="col-sm-6 nopadding" (valuechange)="updateFields($event)" [emitEvent]="true">
-          </app-dropdown>
-          <!-- event change -->
-          <app-input-field [parentform]="createProductForm.controls.productDetails" [name]="'productCode'"
-            [labelname]="'Product Code'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding"
-            [pattern]="alphaNumericPattern.regex" [patternerror]="alphaNumericPattern.error">
-          </app-input-field>
-        </div>
-        <div class="form-group row col-sm-12">
-          <div class="col-sm-6 nopadding">
-            <div formGroupName="productDetails" class="row col-sm-12 nomargin nopadding f-ver-center">
-              <label class="col-form-label col-sm-4" for="description">Description
+    <form [formGroup]="createProductForm">
+        <ng-wizard [config]="config">
+            <ng-wizard-step [title]="'Product Details'" [canExit]="validateCanExit.bind(this,'productDetails')" [canEnter]="actionOnEnter.bind(this)">
+                <div class="form-group row col-sm-12">
+                    <app-input-field [parentform]="createProductForm.controls.productDetails" [name]="'name'" [labelname]="'Product Name'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [pattern]="alphaNumericPattern.regex" [patternerror]="alphaNumericPattern.error">
+                    </app-input-field>
+                    <app-input-field [parentform]="createProductForm.controls.productDetails" [name]="'shortName'" [labelname]="'Short Name'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [pattern]="alphaNumericPattern.regex" [patternerror]="alphaNumericPattern.error">
+                    </app-input-field>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <app-dropdown [parentform]="createProductForm.controls.productDetails" [name]="'productTypeId'" [options]="productTemplate.productTypeOptions" [labelname]="'Product Type'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" (valuechange)="updateFields($event)"
+                        [emitEvent]="true">
+                    </app-dropdown>
+                    <!-- event change -->
+                    <app-input-field [parentform]="createProductForm.controls.productDetails" [name]="'productCode'" [labelname]="'Product Code'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [pattern]="alphaNumericPattern.regex" [patternerror]="alphaNumericPattern.error">
+                    </app-input-field>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="col-sm-6 nopadding">
+                        <div formGroupName="productDetails" class="row col-sm-12 nomargin nopadding f-ver-center">
+                            <label class="col-form-label col-sm-4" for="description">Description
               </label>
-              <div class="col-sm-6">
-                <textarea rows="2" id="description" class="form-control" name="description"
-                  formControlName="description"></textarea>
-              </div>
-            </div>
-          </div>
-          <app-dropdown [parentform]="createProductForm.controls.productDetails" [name]="'fundId'"
-            [options]="productTemplate.fundOptions" [optionvalue]="'id'" [labelname]="'Fund'" [required]="false"
-            [submitted]="submitted" class="col-sm-6 nopadding" (valuechange)="null" [emitEvent]="false">
-          </app-dropdown>
-          <!-- event change -->
-        </div>
-        <div class="form-group row col-sm-12">
-          <app-input-field [parentform]="createProductForm.controls.productDetails" [date]="true" [mindate]="minDate"
-            [name]="'startDate'" [labelname]="'Start Date'" [required]="false" [submitted]="submitted"
-            class="col-sm-6 nopadding">
-          </app-input-field>
-          <!-- event change -->
-          <app-input-field [parentform]="createProductForm.controls.productDetails" [date]="true" [mindate]="minDate"
-            [name]="'closeDate'" [labelname]="'Close Date'" [required]="false" [submitted]="submitted"
-            class="col-sm-6 nopadding">
-          </app-input-field>
-        </div>
-        <div class="form-group row col-sm-12">
-          <app-input-field [parentform]="createProductForm.controls.productDetails" [type]="'checkbox'"
-            [name]="'includeInBorrowerCycle'" [labelname]="'Include Borrower Loan Counter'" [required]="false"
-            [submitted]="submitted" class="col-sm-6 nopadding">
-          </app-input-field>
-          <app-dropdown [parentform]="createProductForm.controls.productDetails" [name]="'processDefKey'"
-            [options]="workflows" [optionvalue]="'key'" [labelname]="'Work Flows'" [required]="false"
-            [submitted]="submitted" class="col-sm-6 nopadding" (valuechange)="showInsuranceProduct()" [emitEvent]="true">
-          </app-dropdown>
-          <!-- event change -->
-        </div>
-        <div class="form-group row col-sm-12">
-          <app-dropdown [parentform]="createProductForm.controls.productDetails" [name]="'loanClassificationType'"
-            [options]="productTemplate.loanClassificationTypeOptions" [optionvalue]="'id'" [displayfield]="'value'"
-            [labelname]="'Loan Classification Type'" [required]="false" [submitted]="submitted"
-            class="col-sm-6 nopadding" (valuechange)="showInsuranceProduct()" [emitEvent]="true">
-          </app-dropdown>
-          <!-- event change -->
-          <app-input-field [parentform]="createProductForm.controls.productDetails" [name]="'ftp'" [labelname]="'F T P'"
-            [required]="showLoanDocumentList" [maxlength]="9" [pattern]="numberPattern.regex"
-            [patternerror]="numberPattern.error" [submitted]="submitted" class="col-sm-6 nopadding">
-          </app-input-field>
-        </div>
-        <div class="form-group row col-sm-12">
-          <app-dropdown [parentform]="createProductForm.controls.productDetails" [name]="'insuranceProductId'"
-            [options]="insuranceProducts" [optionvalue]="'id'" [labelname]="'Insurance Product'" [required]="false"
-            [submitted]="submitted" class="col-sm-6 nopadding">
-          </app-dropdown>
-          <app-input-field [parentform]="createProductForm.controls.productDetails"
-            [name]="'insuranceSumAssuredPercentage'" [labelname]="'Insurance Sum Assured Percentage'" [required]="false"
-            [maxlength]="4" [pattern]="numberPattern.regex" [patternerror]="numberPattern.error" [submitted]="submitted"
-            class="col-sm-6 nopadding">
-          </app-input-field>
-        </div>
-        <div class="form-group row col-sm-12">
-          <app-input-field [parentform]="createProductForm.controls.productDetails" [type]="'checkbox'"
-            [name]="'siApplicable'" [labelname]="'SI Applicable'" [required]="false" [submitted]="submitted"
-            class="col-sm-6 nopadding">
-          </app-input-field>
-          <app-input-field [parentform]="createProductForm.controls.productDetails" [type]="'checkbox'"
-            [name]="'isSubsidiary'" [labelname]="'Is Subsidiary'" [required]="false" [submitted]="submitted"
-            class="col-sm-6 nopadding">
-          </app-input-field>
-        </div>
-        <div class="form-group row col-sm-12">
-          <app-input-field [parentform]="createProductForm.controls.productDetails" [type]="'checkbox'"
-            [name]="'specialisedRepaymentSchedule'" [labelname]="'Specialised Repayment Schedule'" [required]="false"
-            [submitted]="submitted" class="col-sm-6 nopadding">
-          </app-input-field>
-          <app-input-field [parentform]="createProductForm.controls.productDetails" [name]="'collectionCurrentAccNo'"
-            [labelname]="'Collection Current Account Number'" [required]="false" [submitted]="submitted"
-            class="col-sm-6 nopadding" [minlength]="9" [maxlength]="18" [pattern]="numberPattern.regex"
-            [patternerror]="numberPattern.error">
-          </app-input-field>
-        </div>
-        <div class="form-group row col-sm-12">
-          <app-input-field [parentform]="createProductForm.controls.productDetails" [type]="'checkbox'"
-            [name]="'moratoriumRepaymentSchedule'" [labelname]="'Moratorium Repayment Schedule'" [required]="false"
-            [submitted]="submitted" class="col-sm-6 nopadding">
-          </app-input-field>
-        </div>
-        <div class="form-group row col-sm-12">
-          <app-input-field [parentform]="createProductForm.controls.productDetails" [date]="true"
-            [name]="'moratoriumStartDate'" [labelname]="'Moratorium Start Date'" [mindate]="minDate"
-            [required]="createProductForm.controls.productDetails.get('moratoriumRepaymentSchedule').value"
-            [submitted]="submitted" class="col-sm-6 nopadding"
-            [showfield]="createProductForm.controls.productDetails.get('moratoriumRepaymentSchedule').value">
-          </app-input-field>
-          <app-input-field [parentform]="createProductForm.controls.productDetails" [date]="true"
-            [name]="'moratoriumEndDate'" [labelname]="'Moratorium End Date'" [mindate]="minDate"
-            [required]="createProductForm.controls.productDetails.get('moratoriumRepaymentSchedule').value"
-            [submitted]="submitted" class="col-sm-6 nopadding"
-            [showfield]="createProductForm.controls.productDetails.get('moratoriumRepaymentSchedule').value">
-          </app-input-field>
-        </div>
-      </ng-wizard-step>
+                            <div class="col-sm-6">
+                                <textarea rows="2" id="description" class="form-control" name="description" formControlName="description"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <app-dropdown [parentform]="createProductForm.controls.productDetails" [name]="'fundId'" [options]="productTemplate.fundOptions" [optionvalue]="'id'" [labelname]="'Fund'" [required]="false" [submitted]="submitted" class="col-sm-6 nopadding" (valuechange)="null"
+                        [emitEvent]="false">
+                    </app-dropdown>
+                    <!-- event change -->
+                </div>
+                <div class="form-group row col-sm-12">
+                    <app-input-field [parentform]="createProductForm.controls.productDetails" [date]="true" [mindate]="minDate" [name]="'startDate'" [labelname]="'Start Date'" [required]="false" [submitted]="submitted" class="col-sm-6 nopadding">
+                    </app-input-field>
+                    <!-- event change -->
+                    <app-input-field [parentform]="createProductForm.controls.productDetails" [date]="true" [mindate]="minDate" [name]="'closeDate'" [labelname]="'Close Date'" [required]="false" [submitted]="submitted" class="col-sm-6 nopadding">
+                    </app-input-field>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <app-input-field [parentform]="createProductForm.controls.productDetails" [type]="'checkbox'" [name]="'includeInBorrowerCycle'" [labelname]="'Include Borrower Loan Counter'" [required]="false" [submitted]="submitted" class="col-sm-6 nopadding">
+                    </app-input-field>
+                    <app-dropdown [parentform]="createProductForm.controls.productDetails" [name]="'processDefKey'" [options]="workflows" [optionvalue]="'key'" [labelname]="'Work Flows'" [required]="false" [submitted]="submitted" class="col-sm-6 nopadding" (valuechange)="showInsuranceProduct()"
+                        [emitEvent]="true">
+                    </app-dropdown>
+                    <!-- event change -->
+                </div>
+                <div class="form-group row col-sm-12">
+                    <app-dropdown [parentform]="createProductForm.controls.productDetails" [name]="'loanClassificationType'" [options]="productTemplate.loanClassificationTypeOptions" [optionvalue]="'id'" [displayfield]="'value'" [labelname]="'Loan Classification Type'" [required]="false"
+                        [submitted]="submitted" class="col-sm-6 nopadding" (valuechange)="showInsuranceProduct()" [emitEvent]="true">
+                    </app-dropdown>
+                    <!-- event change -->
+                    <app-input-field [parentform]="createProductForm.controls.productDetails" [name]="'ftp'" [labelname]="'F T P'" [required]="showLoanDocumentList" [maxlength]="9" [pattern]="numberPattern.regex" [patternerror]="numberPattern.error" [submitted]="submitted"
+                        class="col-sm-6 nopadding">
+                    </app-input-field>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <app-dropdown [parentform]="createProductForm.controls.productDetails" [name]="'insuranceProductId'" [options]="insuranceProducts" [optionvalue]="'id'" [labelname]="'Insurance Product'" [required]="false" [submitted]="submitted" class="col-sm-6 nopadding">
+                    </app-dropdown>
+                    <app-input-field [parentform]="createProductForm.controls.productDetails" [name]="'insuranceSumAssuredPercentage'" [labelname]="'Insurance Sum Assured Percentage'" [required]="false" [maxlength]="4" [pattern]="numberPattern.regex" [patternerror]="numberPattern.error"
+                        [submitted]="submitted" class="col-sm-6 nopadding">
+                    </app-input-field>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <app-input-field [parentform]="createProductForm.controls.productDetails" [type]="'checkbox'" [name]="'siApplicable'" [labelname]="'SI Applicable'" [required]="false" [submitted]="submitted" class="col-sm-6 nopadding">
+                    </app-input-field>
+                    <app-input-field [parentform]="createProductForm.controls.productDetails" [type]="'checkbox'" [name]="'isSubsidiary'" [labelname]="'Is Subsidiary'" [required]="false" [submitted]="submitted" class="col-sm-6 nopadding">
+                    </app-input-field>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <app-input-field [parentform]="createProductForm.controls.productDetails" [type]="'checkbox'" [name]="'specialisedRepaymentSchedule'" [labelname]="'Specialised Repayment Schedule'" [required]="false" [submitted]="submitted" class="col-sm-6 nopadding">
+                    </app-input-field>
+                    <app-input-field [parentform]="createProductForm.controls.productDetails" [name]="'collectionCurrentAccNo'" [labelname]="'Collection Current Account Number'" [required]="false" [submitted]="submitted" class="col-sm-6 nopadding" [minlength]="9" [maxlength]="18"
+                        [pattern]="numberPattern.regex" [patternerror]="numberPattern.error">
+                    </app-input-field>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <app-input-field [parentform]="createProductForm.controls.productDetails" [type]="'checkbox'" [name]="'moratoriumRepaymentSchedule'" [labelname]="'Moratorium Repayment Schedule'" [required]="false" [submitted]="submitted" class="col-sm-6 nopadding">
+                    </app-input-field>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <app-input-field [parentform]="createProductForm.controls.productDetails" [date]="true" [name]="'moratoriumStartDate'" [labelname]="'Moratorium Start Date'" [mindate]="minDate" [required]="createProductForm.controls.productDetails.get('moratoriumRepaymentSchedule').value"
+                        [submitted]="submitted" class="col-sm-6 nopadding" [showfield]="createProductForm.controls.productDetails.get('moratoriumRepaymentSchedule').value">
+                    </app-input-field>
+                    <app-input-field [parentform]="createProductForm.controls.productDetails" [date]="true" [name]="'moratoriumEndDate'" [labelname]="'Moratorium End Date'" [mindate]="minDate" [required]="createProductForm.controls.productDetails.get('moratoriumRepaymentSchedule').value"
+                        [submitted]="submitted" class="col-sm-6 nopadding" [showfield]="createProductForm.controls.productDetails.get('moratoriumRepaymentSchedule').value">
+                    </app-input-field>
+                </div>
+            </ng-wizard-step>
 
-      <ng-wizard-step [title]="'Currency'" [canExit]="validateCanExit.bind(this,'currencyDetails')"
-        [canEnter]="actionOnEnter.bind(this)">
-        <div class="form-group row col-sm-12">
-          <app-dropdown [parentform]="createProductForm.controls.currencyDetails" [name]="'currencyCode'"
-            [options]="productTemplate.currencyOptions" [optionvalue]="'code'" [labelname]="'Currency'"
-            [required]="true" [submitted]="submitted" class="col-sm-6 nopadding">
-          </app-dropdown>
-          <app-input-field [parentform]="createProductForm.controls.currencyDetails" [name]="'digitsAfterDecimal'"
-            [labelname]="'Decimal places'" [required]="true" [pattern]="numberPattern.regex"
-            [patternerror]="numberPattern.error" [submitted]="submitted" class="col-sm-6 nopadding">
-          </app-input-field>
-        </div>
-        <div class="form-group row col-sm-12">
-          <app-input-field [parentform]="createProductForm.controls.currencyDetails" [name]="'inMultiplesOf'"
-            [labelname]="'Installment in Multiples of'" [required]="true" [pattern]="numberPattern.regex"
-            [patternerror]="numberPattern.error" [submitted]="submitted" class="col-sm-6 nopadding">
-          </app-input-field>
-        </div>
-      </ng-wizard-step>
-      <ng-wizard-step [title]="'Terms'" [canExit]="validateCanExit.bind(this,'termsDetails')"
-        [canEnter]="actionOnEnter.bind(this)">
-        <div class="form-group row col-sm-12">
-          <app-input-field [parentform]="termForm" [type]="'checkbox'" [name]="'useBorrowerCycle'"
-            [labelname]="'Terms Vary Based on Loan Cycle'" [required]="false" [submitted]="submitted"
-            class="col-sm-6 nopadding" (valuechange)="toggleUsePacksFlag($event)" [emitEvent]="true">
-          </app-input-field>
-          <app-input-field [parentform]="termForm" [type]="'checkbox'" [name]="'usePacks'" [labelname]="'Use Packs'"
-            [required]="false" [value]="true" [submitted]="submitted" class="col-sm-6 nopadding"
-            (valuechange)="toggleUseBorrowerCycleFlag($event)" [emitEvent]="true">
-          </app-input-field>
-        </div>
-        <div class="form-group row col-sm-12" *ngIf="!termForm.get('usePacks').value" formGroupName="termsDetails">
-          <label class="col-form-label col-sm-2">Principal
+            <ng-wizard-step [title]="'Currency'" [canExit]="validateCanExit.bind(this,'currencyDetails')" [canEnter]="actionOnEnter.bind(this)">
+                <div class="form-group row col-sm-12">
+                    <app-dropdown [parentform]="createProductForm.controls.currencyDetails" [name]="'currencyCode'" [options]="productTemplate.currencyOptions" [optionvalue]="'code'" [labelname]="'Currency'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding">
+                    </app-dropdown>
+                    <app-input-field [parentform]="createProductForm.controls.currencyDetails" [name]="'digitsAfterDecimal'" [labelname]="'Decimal places'" [required]="true" [pattern]="numberPattern.regex" [patternerror]="numberPattern.error" [submitted]="submitted" class="col-sm-6 nopadding">
+                    </app-input-field>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <app-input-field [parentform]="createProductForm.controls.currencyDetails" [name]="'inMultiplesOf'" [labelname]="'Installment in Multiples of'" [required]="true" [pattern]="numberPattern.regex" [patternerror]="numberPattern.error" [submitted]="submitted"
+                        class="col-sm-6 nopadding">
+                    </app-input-field>
+                </div>
+            </ng-wizard-step>
+            <ng-wizard-step [title]="'Terms'" [canExit]="validateCanExit.bind(this,'termsDetails')" [canEnter]="actionOnEnter.bind(this)">
+                <div class="form-group row col-sm-12">
+                    <app-input-field [parentform]="termForm" [type]="'checkbox'" [name]="'useBorrowerCycle'" [labelname]="'Terms Vary Based on Loan Cycle'" [required]="false" [submitted]="submitted" class="col-sm-6 nopadding" (valuechange)="toggleUsePacksFlag($event)" [emitEvent]="true">
+                    </app-input-field>
+                    <app-input-field [parentform]="termForm" [type]="'checkbox'" [name]="'usePacks'" [labelname]="'Use Packs'" [required]="false" [value]="true" [submitted]="submitted" class="col-sm-6 nopadding" (valuechange)="toggleUseBorrowerCycleFlag($event)" [emitEvent]="true">
+                    </app-input-field>
+                </div>
+                <div class="form-group row col-sm-12" *ngIf="!termForm.get('usePacks').value" formGroupName="termsDetails">
+                    <label class="col-form-label col-sm-2">Principal
+                    </label>
+                    <div class="col-sm-2">
+                        <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control" name="minPrincipal" formControlName="minPrincipal" placeholder="Minimum">
+                        <p class="text-danger error" *ngIf="createProductForm.controls.termsDetails.get('minPrincipal')?.hasError('pattern')">
+                            {{numberPattern.error}}
+                        </p>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control" name="principal" formControlName="principal" placeholder="Default">
+                        <p class="text-danger error" *ngIf="createProductForm.controls.termsDetails.get('principal').hasError('pattern')">
+                            {{numberPattern.error}}
+                        </p>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control" name="maxPrincipal" formControlName="maxPrincipal" placeholder="Maximum">
+                        <p class="text-danger error" *ngIf="createProductForm.controls.termsDetails.get('maxPrincipal').hasError('pattern')">
+                            {{numberPattern.error}}
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12 f-ver-center" *ngIf="termForm.get('useBorrowerCycle').value" formGroupName="termsDetails">
+                    <label class="col-form-label col-sm-2">Principal Variations for Borrower Cycle
           </label>
-          <div class="col-sm-2">
-            <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control" name="minPrincipal"
-              formControlName="minPrincipal" placeholder="Minimum">
-            <p class="text-danger error"
-              *ngIf="createProductForm.controls.termsDetails.get('minPrincipal').hasError('pattern')">
-              {{numberPattern.error}}
-            </p>
-          </div>
-          <div class="col-sm-2">
-            <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control" name="principal"
-              formControlName="principal" placeholder="Default">
-            <p class="text-danger error"
-              *ngIf="createProductForm.controls.termsDetails.get('principal').hasError('pattern')">
-              {{numberPattern.error}}
-            </p>
-          </div>
-          <div class="col-sm-2">
-            <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control" name="maxPrincipal"
-              formControlName="maxPrincipal" placeholder="Maximum">
-            <p class="text-danger error"
-              *ngIf="createProductForm.controls.termsDetails.get('maxPrincipal').hasError('pattern')">
-              {{numberPattern.error}}
-            </p>
-          </div>
-        </div>
-        <div class="form-group row col-sm-12 f-ver-center" *ngIf="termForm.get('useBorrowerCycle').value"
-          formGroupName="termsDetails">
-          <label class="col-form-label col-sm-2">Principal Variations for Borrower Cycle
-          </label>
-          <div class="col-sm-2">
-            <button class="btn btn-primary" (click)="addVariation('principalVariationsForBorrowerCycle')">Add</button>
-          </div>
-          <div class="col-md-9 offset-md-2" *ngIf="termForm.get('principalVariationsForBorrowerCycle')
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary" (click)="addVariation('principalVariationsForBorrowerCycle')">Add</button>
+                    </div>
+                    <div class="col-md-9 offset-md-2" *ngIf="termForm.get('principalVariationsForBorrowerCycle')
         && termForm.get('principalVariationsForBorrowerCycle').controls.length">
-            <table class="table table-bordered">
-              <thead class="thead-light">
-                <tr>
-                  <th style="width: 220px;">Condition</th>
-                  <th style="width: 220px;">Borrower cycle</th>
-                  <th style="width: 220px;">Minimum</th>
-                  <th style="width: 220px;">Default</th>
-                  <th style="width: 220px;">Maximum</th>
-                  <th style="width: 75px;">Action</th>
-                </tr>
-              </thead>
-              <tbody formArrayName="principalVariationsForBorrowerCycle">
-                <tr *ngFor="let row of termForm.controls.principalVariationsForBorrowerCycle.controls; let i=index"
-                  [formGroupName]="i">
-                  <td>
-                    <select class="form-control" formControlName="valueConditionType">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="width: 220px;">Condition</th>
+                                    <th style="width: 220px;">Borrower cycle</th>
+                                    <th style="width: 220px;">Minimum</th>
+                                    <th style="width: 220px;">Default</th>
+                                    <th style="width: 220px;">Maximum</th>
+                                    <th style="width: 75px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody formArrayName="principalVariationsForBorrowerCycle">
+                                <tr *ngFor="let row of termForm.controls.principalVariationsForBorrowerCycle.controls; let i=index" [formGroupName]="i">
+                                    <td>
+                                        <select class="form-control" formControlName="valueConditionType">
                       <option *ngFor="let option of productTemplate.valueConditionTypeOptions" [ngValue]="option.id">
                         {{option.value}}</option>
                     </select>
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" formControlName="borrowerCycleNumber">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" formControlName="minValue">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" formControlName="defaultValue">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" formControlName="maxValue">
-                  </td>
-                  <td class="text-center h5 vertical-center">
-                    <a class="mr-3 required" type="button" 
-                    (click)="deleteVariation(i, 'principalVariationsForBorrowerCycle')">
-                      <i class="fa fa-times-circle-o"></i>
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="form-group row col-sm-12" *ngIf="!termForm.get('usePacks').value" formGroupName="termsDetails">
-          <label class="col-form-label col-sm-2" for="minNumberOfRepayments">Number of Repayments
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" formControlName="borrowerCycleNumber">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" formControlName="minValue">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" formControlName="defaultValue">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" formControlName="maxValue">
+                                    </td>
+                                    <td class="text-center h5 vertical-center">
+                                        <a class="mr-3 required" type="button" (click)="deleteVariation(i, 'principalVariationsForBorrowerCycle')">
+                                            <i class="fa fa-times-circle-o"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12" *ngIf="!termForm.get('usePacks').value" formGroupName="termsDetails">
+                    <label class="col-form-label col-sm-2" for="minNumberOfRepayments">Number of Repayments
           </label>
-          <div class="col-sm-2">
-            <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control"
-              name="minNumberOfRepayments" formControlName="minNumberOfRepayments" placeholder="Minimum">
-            <p class="text-danger error"
-              *ngIf="createProductForm.controls.termsDetails.get('minNumberOfRepayments').hasError('pattern')">
-              {{numberPattern.error}}
-            </p>
-          </div>
-          <div class="col-sm-2">
-            <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control"
-              name="numberOfRepayments" formControlName="numberOfRepayments" placeholder="Default">
-            <p class="text-danger error"
-              *ngIf="createProductForm.controls.termsDetails.get('numberOfRepayments').hasError('pattern')">
-              {{numberPattern.error}}
-            </p>
-          </div>
-          <div class="col-sm-2">
-            <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control"
-              name="maxNumberOfRepayments" formControlName="maxNumberOfRepayments" placeholder="Maximum">
-            <p class="text-danger error"
-              *ngIf="createProductForm.controls.termsDetails.get('maxNumberOfRepayments').hasError('pattern')">
-              {{numberPattern.error}}
-            </p>
-          </div>
-        </div>
-        <div class="form-group row col-sm-12 f-ver-center" *ngIf="termForm.get('useBorrowerCycle').value"
-          formGroupName="termsDetails">
-          <label class="col-form-label col-sm-2">No of Repayments for Borrower Cycle
+                    <div class="col-sm-2">
+                        <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control" name="minNumberOfRepayments" formControlName="minNumberOfRepayments" placeholder="Minimum">
+                        <p class="text-danger error" *ngIf="createProductForm.controls.termsDetails.get('minNumberOfRepayments').hasError('pattern')">
+                            {{numberPattern.error}}
+                        </p>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control" name="numberOfRepayments" formControlName="numberOfRepayments" placeholder="Default">
+                        <p class="text-danger error" *ngIf="createProductForm.controls.termsDetails.get('numberOfRepayments').hasError('pattern')">
+                            {{numberPattern.error}}
+                        </p>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control" name="maxNumberOfRepayments" formControlName="maxNumberOfRepayments" placeholder="Maximum">
+                        <p class="text-danger error" *ngIf="createProductForm.controls.termsDetails.get('maxNumberOfRepayments').hasError('pattern')">
+                            {{numberPattern.error}}
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12 f-ver-center" *ngIf="termForm.get('useBorrowerCycle').value" formGroupName="termsDetails">
+                    <label class="col-form-label col-sm-2">No of Repayments for Borrower Cycle
           </label>
-          <div class="col-sm-2">
-            <button class="btn btn-primary" 
-            (click)="addVariation('numberOfRepaymentVariationsForBorrowerCycle')">Add</button>
-          </div>
-          <div class="col-md-9 offset-md-2" *ngIf="termForm.get('numberOfRepaymentVariationsForBorrowerCycle')
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary" (click)="addVariation('numberOfRepaymentVariationsForBorrowerCycle')">Add</button>
+                    </div>
+                    <div class="col-md-9 offset-md-2" *ngIf="termForm.get('numberOfRepaymentVariationsForBorrowerCycle')
         && termForm.get('numberOfRepaymentVariationsForBorrowerCycle').controls.length">
-            <table class="table table-bordered">
-              <thead class="thead-light">
-                <tr>
-                  <th style="width: 220px;">Condition</th>
-                  <th style="width: 220px;">Borrower cycle</th>
-                  <th style="width: 220px;">Minimum</th>
-                  <th style="width: 220px;">Default</th>
-                  <th style="width: 220px;">Maximum</th>
-                  <th style="width: 75px;">Action</th>
-                </tr>
-              </thead>
-              <tbody formArrayName="numberOfRepaymentVariationsForBorrowerCycle">
-                <tr
-                  *ngFor="let row of termForm.controls.numberOfRepaymentVariationsForBorrowerCycle.controls; let i=index"
-                  [formGroupName]="i">
-                  <td>
-                    <select class="form-control" formControlName="valueConditionType">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="width: 220px;">Condition</th>
+                                    <th style="width: 220px;">Borrower cycle</th>
+                                    <th style="width: 220px;">Minimum</th>
+                                    <th style="width: 220px;">Default</th>
+                                    <th style="width: 220px;">Maximum</th>
+                                    <th style="width: 75px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody formArrayName="numberOfRepaymentVariationsForBorrowerCycle">
+                                <tr *ngFor="let row of termForm.controls.numberOfRepaymentVariationsForBorrowerCycle.controls; let i=index" [formGroupName]="i">
+                                    <td>
+                                        <select class="form-control" formControlName="valueConditionType">
                       <option *ngFor="let option of productTemplate.valueConditionTypeOptions" [ngValue]="option.id">
                         {{option.value}}</option>
                     </select>
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" formControlName="borrowerCycleNumber">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" formControlName="minValue">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" formControlName="defaultValue">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" formControlName="maxValue">
-                  </td>
-                  <td class="text-center h5 vertical-center">
-                    <a class="mr-3 required" type="button" 
-                    (click)="deleteVariation(i,'numberOfRepaymentVariationsForBorrowerCycle')">
-                      <i class="fa fa-times-circle-o"></i>
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="form-group row col-sm-12" *ngIf="!termForm.get('usePacks').value" formGroupName="termsDetails">
-          <label class="col-form-label col-sm-2">Nominal Interest Rate
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" formControlName="borrowerCycleNumber">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" formControlName="minValue">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" formControlName="defaultValue">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" formControlName="maxValue">
+                                    </td>
+                                    <td class="text-center h5 vertical-center">
+                                        <a class="mr-3 required" type="button" (click)="deleteVariation(i,'numberOfRepaymentVariationsForBorrowerCycle')">
+                                            <i class="fa fa-times-circle-o"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12" *ngIf="!termForm.get('usePacks').value" formGroupName="termsDetails">
+                    <label class="col-form-label col-sm-2">Nominal Interest Rate
           </label>
-          <div class="col-sm-2">
-            <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control"
-              name="minInterestRatePerPeriod" formControlName="minInterestRatePerPeriod" placeholder="Minimum">
-            <p class="text-danger error"
-              *ngIf="createProductForm.controls.termsDetails.get('minInterestRatePerPeriod').hasError('pattern')">
-              {{numberPattern.error}}
-            </p>
-          </div>
-          <div class="col-sm-2">
-            <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control"
-              name="interestRatePerPeriod" formControlName="interestRatePerPeriod" placeholder="Default">
-            <p class="text-danger error"
-              *ngIf="createProductForm.controls.termsDetails.get('interestRatePerPeriod').hasError('pattern')">
-              {{numberPattern.error}}
-            </p>
-          </div>
-          <div class="col-sm-2">
-            <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control"
-              name="maxInterestRatePerPeriod" formControlName="maxInterestRatePerPeriod" placeholder="Default">
-            <p class="text-danger error"
-              *ngIf="createProductForm.controls.termsDetails.get('maxInterestRatePerPeriod').hasError('pattern')">
-              {{numberPattern.error}}
-            </p>
-          </div>
-          <div class="col-sm-2">
-            <select class="form-control" formControlName="interestRateFrequencyType">
+                    <div class="col-sm-2">
+                        <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control" name="minInterestRatePerPeriod" formControlName="minInterestRatePerPeriod" placeholder="Minimum">
+                        <p class="text-danger error" *ngIf="createProductForm.controls.termsDetails.get('minInterestRatePerPeriod').hasError('pattern')">
+                            {{numberPattern.error}}
+                        </p>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control" name="interestRatePerPeriod" formControlName="interestRatePerPeriod" placeholder="Default">
+                        <p class="text-danger error" *ngIf="createProductForm.controls.termsDetails.get('interestRatePerPeriod').hasError('pattern')">
+                            {{numberPattern.error}}
+                        </p>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" (cut)="false" (copy)="false" (paste)="false" class="form-control" name="maxInterestRatePerPeriod" formControlName="maxInterestRatePerPeriod" placeholder="Default">
+                        <p class="text-danger error" *ngIf="createProductForm.controls.termsDetails.get('maxInterestRatePerPeriod').hasError('pattern')">
+                            {{numberPattern.error}}
+                        </p>
+                    </div>
+                    <div class="col-sm-2">
+                        <select class="form-control" formControlName="interestRateFrequencyType">
               <option *ngFor="let option of productTemplate.interestRateFrequencyTypeOptions" [ngValue]="option.id">
                 {{option.value}}</option>
             </select>
-          </div>
-        </div>
-        <div class="form-group row col-sm-12 f-ver-center" *ngIf="termForm.get('useBorrowerCycle').value"
-          formGroupName="termsDetails">
-          <label class="col-form-label col-sm-2">Interest Rate for Borrower Cycle
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12 f-ver-center" *ngIf="termForm.get('useBorrowerCycle').value" formGroupName="termsDetails">
+                    <label class="col-form-label col-sm-2">Interest Rate for Borrower Cycle
           </label>
-          <div class="col-sm-2">
-            <button class="btn btn-primary" 
-            (click)="addVariation('interestRateVariationsForBorrowerCycle')">Add</button>
-          </div>
-          <div class="col-md-9 offset-md-2" *ngIf="termForm.get('interestRateVariationsForBorrowerCycle')
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary" (click)="addVariation('interestRateVariationsForBorrowerCycle')">Add</button>
+                    </div>
+                    <div class="col-md-9 offset-md-2" *ngIf="termForm.get('interestRateVariationsForBorrowerCycle')
       && termForm.get('interestRateVariationsForBorrowerCycle').controls.length">
-            <table class="table table-bordered">
-              <thead class="thead-light">
-                <tr>
-                  <th style="width: 220px;">Condition</th>
-                  <th style="width: 220px;">Borrower cycle</th>
-                  <th style="width: 220px;">Minimum</th>
-                  <th style="width: 220px;">Default</th>
-                  <th style="width: 220px;">Maximum</th>
-                  <th style="width: 75px;">Action</th>
-                </tr>
-              </thead>
-              <tbody formArrayName="interestRateVariationsForBorrowerCycle">
-                <tr *ngFor="let row of termForm.controls.interestRateVariationsForBorrowerCycle.controls; let i=index"
-                  [formGroupName]="i">
-                  <td>
-                    <select class="form-control" formControlName="valueConditionType">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="width: 220px;">Condition</th>
+                                    <th style="width: 220px;">Borrower cycle</th>
+                                    <th style="width: 220px;">Minimum</th>
+                                    <th style="width: 220px;">Default</th>
+                                    <th style="width: 220px;">Maximum</th>
+                                    <th style="width: 75px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody formArrayName="interestRateVariationsForBorrowerCycle">
+                                <tr *ngFor="let row of termForm.controls.interestRateVariationsForBorrowerCycle.controls; let i=index" [formGroupName]="i">
+                                    <td>
+                                        <select class="form-control" formControlName="valueConditionType">
                       <option *ngFor="let option of productTemplate.valueConditionTypeOptions" [ngValue]="option.id">
                         {{option.value}}</option>
                     </select>
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" formControlName="borrowerCycleNumber">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" formControlName="minValue">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" formControlName="defaultValue">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" formControlName="maxValue">
-                  </td>
-                  <td class="text-center h5 vertical-center">
-                    <a class="mr-3 required" type="button" 
-                    (click)="deleteVariation(i,'interestRateVariationsForBorrowerCycle')">
-                      <i class="fa fa-times-circle-o"></i>
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="form-group row col-sm-12">
-          <app-input-field [parentform]="termForm" [name]="'repaymentEvery'"
-            [labelname]="'Repaid Every'" [required]="true" [submitted]="submitted"
-            class="col-sm-6 nopadding" [pattern]="numberPattern.regex"
-            [patternerror]="numberPattern.error">
-          </app-input-field>
-          <app-dropdown [parentform]="termForm" [name]="'repaymentFrequencyType'"
-            [options]="productTemplate.repaymentFrequencyTypeOptions" [optionvalue]="'id'"
-            [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" 
-            [displayfield]="'value'" [value]="productTemplate.repaymentFrequencyType.id"
-            *ngIf="productTemplate.repaymentFrequencyType">
-          </app-dropdown>
-        </div>
-        <div class="form-group row col-sm-12">
-          <app-input-field [parentform]="termForm" [name]="'loanToValue'"
-            [labelname]="'Loan To Value (LTV)'" [required]="false" [submitted]="submitted"
-            class="col-sm-6 nopadding" [showfield]="showLoanDocumentList" [pattern]="numberPattern.regex"
-            [patternerror]="numberPattern.error" [maxlength]="3">
-          </app-input-field>
-        </div>
-        <perfect-scrollbar>
-        <div style="width: 1350px;" *ngIf="termForm.get('usePacks').value" formGroupName="termsDetails">
-            <table class="table table-bordered">
-              <thead class="thead-light">
-                <tr>
-                  <th>Pack Number</th>
-                  <th>Pack Short Name</th>
-                  <th>Principal</th>
-                  <th>Interest Rate {{interestRateFrequencyType}}</th>
-                  <th>Number of Repayments</th>
-                  <th *ngIf="packInsurance">Insured Amount</th>
-                  <th>Insurance Product
-                    <span class="required" *ngIf="packInsurance">*</span></th>
-                  <th *ngIf="showLoanCycle">Loan Cycle</th>
-                  <th>Eligibility (No RTR)</th>
-                  <th><button class="btn btn-primary" (click)="addPack()">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" formControlName="borrowerCycleNumber">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" formControlName="minValue">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" formControlName="defaultValue">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" formControlName="maxValue">
+                                    </td>
+                                    <td class="text-center h5 vertical-center">
+                                        <a class="mr-3 required" type="button" (click)="deleteVariation(i,'interestRateVariationsForBorrowerCycle')">
+                                            <i class="fa fa-times-circle-o"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <app-input-field [parentform]="termForm" [name]="'repaymentEvery'" [labelname]="'Repaid Every'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [pattern]="numberPattern.regex" [patternerror]="numberPattern.error">
+                    </app-input-field>
+                    <app-dropdown [parentform]="termForm" [name]="'repaymentFrequencyType'" [options]="productTemplate.repaymentFrequencyTypeOptions" [optionvalue]="'id'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [displayfield]="'value'" [value]="productTemplate.repaymentFrequencyType.id"
+                        *ngIf="productTemplate.repaymentFrequencyType">
+                    </app-dropdown>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <app-input-field [parentform]="termForm" [name]="'loanToValue'" [labelname]="'Loan To Value (LTV)'" [required]="false" [submitted]="submitted" class="col-sm-6 nopadding" [showfield]="showLoanDocumentList" [pattern]="numberPattern.regex" [patternerror]="numberPattern.error"
+                        [maxlength]="3">
+                    </app-input-field>
+                </div>
+                <perfect-scrollbar>
+                    <div style="width: 1350px;" *ngIf="termForm.get('usePacks').value" formGroupName="termsDetails">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Pack Number</th>
+                                    <th>Pack Short Name</th>
+                                    <th>Principal</th>
+                                    <th>Interest Rate {{interestRateFrequencyType}}</th>
+                                    <th>Number of Repayments</th>
+                                    <th *ngIf="packInsurance">Insured Amount</th>
+                                    <th>Insurance Product
+                                        <span class="required" *ngIf="packInsurance">*</span></th>
+                                    <th *ngIf="showLoanCycle">Loan Cycle</th>
+                                    <th>Eligibility (No RTR)</th>
+                                    <th><button class="btn btn-primary" (click)="addPack()">
                    Add</button>
-                  </th>
-                </tr>
-              </thead>
-              <tbody formArrayName="packs">
-                <tr *ngFor="let pack of termForm.controls.packs.controls; let i=index" [formGroupName]="i">
-                  <td>{{ i + 1 }}</td>
-                  <td>
-                    <input type="text" class="form-control" formControlName="packShortName">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" formControlName="principal">
-                    <small class="text-danger" *ngIf="pack.get('principal').hasError('pattern')">
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody formArrayName="packs">
+                                <tr *ngFor="let pack of termForm.controls.packs.controls; let i=index" [formGroupName]="i">
+                                    <td>{{ i + 1 }}</td>
+                                    <td>
+                                        <input type="text" class="form-control" formControlName="packShortName">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" formControlName="principal">
+                                        <small class="text-danger" *ngIf="pack.get('principal').hasError('pattern')">
                     {{numberPattern.error}}
                     </small>
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" formControlName="interestRate">
-                    <small class="text-danger" *ngIf="pack.get('interestRate').hasError('pattern')">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" formControlName="interestRate">
+                                        <small class="text-danger" *ngIf="pack.get('interestRate').hasError('pattern')">
                       {{numberDecimalPattern.error}}
                     </small>
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" formControlName="numberOfRepayments">
-                    <small class="text-danger" *ngIf="pack.get('numberOfRepayments').hasError('pattern')">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" formControlName="numberOfRepayments">
+                                        <small class="text-danger" *ngIf="pack.get('numberOfRepayments').hasError('pattern')">
                       {{numberPattern.error}}
                     </small>
-                  </td>
-                  <td *ngIf="packInsurance">
-                    <input type="text" class="form-control" formControlName="insuranceAmount" readonly>
-                  </td>
-                  <td>
-                     <select class="form-control" formControlName="packInsuranceProductid">
+                                    </td>
+                                    <td *ngIf="packInsurance">
+                                        <input type="text" class="form-control" formControlName="insuranceAmount" readonly>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" formControlName="packInsuranceProductid">
                       <option [ngValue]="null">Select Insurance Products</option>
                       <option *ngFor="let option of insuranceProducts" [ngValue]="option.id">
                         {{option.name}}</option>
                     </select>
-                    <small class="text-danger" *ngIf="pack.get('packInsuranceProductid').hasError('required') && ( pack.get('packInsuranceProductid').touched || submitted)">
+                                        <small class="text-danger" *ngIf="pack.get('packInsuranceProductid').hasError('required') && ( pack.get('packInsuranceProductid').touched || submitted)">
                       Required Field
                     </small>
-                  </td>
-                  <td *ngIf="showLoanCycle">
-                    <select class="form-control" formControlName="pkLoanCycleId">
+                                    </td>
+                                    <td *ngIf="showLoanCycle">
+                                        <select class="form-control" formControlName="pkLoanCycleId">
                       <option [ngValue]="null">Select Loan Cycle</option>
                       <option *ngFor="let option of loanCycleTypes" [ngValue]="option.id">
                        {{option.label}}</option>
                    </select>
-                 </td>
-                 <td><input type="checkbox" formControlName="isEligibilityNoRTR"></td>
-                  <td class="text-center h5 vertical-center">
-                    <a class="mr-3 required" type="button" (click)="deletePack(i)">
-                      <i class="fa fa-times-circle-o"></i>
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-        </div>
-        </perfect-scrollbar>
-      </ng-wizard-step>
-      <ng-wizard-step [title]="'Tenor Grace Period Details'" [canExit]="validateCanExit.bind(this,'tenorGracePeriodDetails')"
-        [canEnter]="actionOnEnter.bind(this)">
-        <div class="form-group row col-sm-12">
-          <app-input-field [parentform]="createProductForm.controls.tenorGracePeriodDetails" 
-          [type]="'checkbox'" [name]="'isGracePeriodApplicable'" [labelname]="'Grace Period Applicable'"
-          [required]="false" [submitted]="submitted" class="col-sm-6 nopadding"
-          (valuechange)="null" [emitEvent]="false">
-          </app-input-field>
-        </div>
-        <div class="form-group row col-sm-12">
-          <!-- <app-input-field [parentform]="createProductForm.controls.currencyDetails" [name]="'inMultiplesOf'"
+                                    </td>
+                                    <td><input type="checkbox" formControlName="isEligibilityNoRTR"></td>
+                                    <td class="text-center h5 vertical-center">
+                                        <a class="mr-3 required" type="button" (click)="deletePack(i)">
+                                            <i class="fa fa-times-circle-o"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </perfect-scrollbar>
+            </ng-wizard-step>
+            <ng-wizard-step [title]="'Tenor Grace Period Details'" [canExit]="validateCanExit.bind(this,'tenorGracePeriodDetails')" [canEnter]="actionOnEnter.bind(this)">
+                <div class="form-group row col-sm-12">
+                    <app-input-field [parentform]="createProductForm.controls.tenorGracePeriodDetails" [type]="'checkbox'" [name]="'isGracePeriodApplicable'" [labelname]="'Grace Period Applicable'" [required]="false" [submitted]="submitted" class="col-sm-6 nopadding" (valuechange)="null"
+                        [emitEvent]="false">
+                    </app-input-field>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <!-- <app-input-field [parentform]="createProductForm.controls.currencyDetails" [name]="'inMultiplesOf'"
             [labelname]="'Installment in Multiples of'" [required]="true" [pattern]="numberPattern.regex"
             [patternerror]="numberPattern.error" [submitted]="submitted" class="col-sm-6 nopadding">
           </app-input-field> -->
-        </div>
-      </ng-wizard-step>
-    </ng-wizard>
-  </form>
+                </div>
+            </ng-wizard-step>
+        </ng-wizard>
+    </form>
 </div>
 <br>

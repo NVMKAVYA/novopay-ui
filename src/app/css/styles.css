@@ -158,7 +158,7 @@ dp-date-picker.dp-material .dp-picker-input {
     height: calc(1.5em + .75rem + 2px) !important;
     font-size: 14px!important;
     padding: .375rem .75rem;
-    width: 221px !important;
+    width: 100% !important;
 }
 
 .ng-wizard-theme-arrows>ul.step-anchor {

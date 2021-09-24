@@ -4,7 +4,7 @@
     <div class="col-sm-6">
         <select formControlName="{{name}}" class="form-control" (change)="change()">
       <option [ngValue]="null" disabled>Select {{labelname}}</option>
-      <option *ngFor="let option of options" [ngValue]="optionvalue ? option[optionvalue] : option">{{option[displayfield]}}</option>
+      <option *ngFor="let option of options" [ngValue]="optionvalue ? option[optionvalue] : option">{{option[displayfield] || option}}</option>
     </select>
         <small class="text-danger" *ngIf="parentform.get(name).hasError('required') && ( parentform.get(name).touched || submitted)">
         Required Field

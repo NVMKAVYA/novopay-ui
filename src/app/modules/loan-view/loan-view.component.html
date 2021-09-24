@@ -948,7 +948,7 @@
             <div *ngSwitchCase="8">
                 <div class="card mt-4 mb-4">
                     <div class="card-content">
-                        <table class="table table-striped" *ngIf="loanDetails.insurancePolicies">
+                        <table class="table table-striped" *ngIf="loanDetails.insurancePolicies?.length">
                             <thead>
                                 <tr class="pointer">
                                     <th>Certificate No.</th>
@@ -974,6 +974,9 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="alert alert-warning m-4 text-center " role="alert" *ngIf="!loanDetails.insurancePolicies?.length">
+                            Details are not present
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1144,10 +1147,12 @@
                             </perfect-scrollbar>
                             <perfect-scrollbar>
                                 <table class="table table-striped" *ngIf="datatabledetails.columnHeaders[0].columnName != 'id'">
-                                    <tr *ngFor="let value of singleRow">
-                                        <td style="font-weight: bold">{{value.key | prettifyDataTableColumn}}</td>
-                                        <td>{{value.value}}</td>
-                                    </tr>
+                                    <tbody>
+                                        <tr *ngFor="let value of singleRow">
+                                            <td style="font-weight: bold">{{value.key | prettifyDataTableColumn}}</td>
+                                            <td>{{value.value}}</td>
+                                        </tr>
+                                    </tbody>
                                 </table>
                             </perfect-scrollbar>
                         </div>
@@ -1160,7 +1165,7 @@
             <div *ngSwitchCase="16">
                 <div class="card mt-4 mb-4">
                     <div class="card-content">
-                        <table class="table table-striped" *ngIf="endusechecks.length">
+                        <table class="table table-striped" *ngIf="endusechecks?.length">
                             <thead>
                                 <th>EUC Date</th>
                                 <th>EUC Done By</th>
@@ -1195,18 +1200,161 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="alert alert-warning m-4 text-center " role="alert" *ngIf="!endusechecks?.length">
+                            Details are not present
+                        </div>
                     </div>
                 </div>
             </div>
             <div *ngSwitchCase="17">
                 <div style="text-align: right;" class="mt-4">
-                    <button class="btn btn-primary" (click)="export()">Edit</button>
+                    <button class="btn btn-primary" (click)="editRepaymentMode = !editRepaymentMode">Edit</button>
                 </div>
                 <div class="card mt-4 mb-4">
                     <div class="card-content p-5">
-                        <div class="form-group row col-sm-12">
-                            <app-dropdown [parentform]="repaymentModeForm" [name]="'repaymentTypeId'" [options]="modeOfRepaymentTypes" [optionvalue]="'id'" [labelname]="'Repayment Mode'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [elementClass]="'4'" [value]="loanAppRefData.repaymentTypeId || defaultRepaymentMode.id"
-                                [disabled]="true"></app-dropdown>
+                        <div *ngIf="!editRepaymentMode" id="border">
+                            <div>
+                                <div class="row col-sm-12 pt-3 pb-3">
+                                    <div class="col-sm-4 p-0">
+                                        <h6 class="mb-0">Repayment Mode</h6>
+                                    </div>
+                                    <div class="col-sm-8 text-secondary">
+                                        {{isNonCashRepaymentMode ? 'Standing Instruction' : 'Cash'}}
+                                    </div>
+                                </div>
+                                <div class="row col-sm-12 pt-3 pb-3" *ngIf="isNonCashRepaymentMode">
+                                    <div class="col-sm-4 p-0">
+                                        <h6 class="mb-0">Loan Type</h6>
+                                    </div>
+                                    <div class="col-sm-8 text-secondary">
+                                        {{loanDetails.loanProductName}}
+                                    </div>
+                                </div>
+                                <div class="row col-sm-12 pt-3 pb-3" *ngIf="isNonCashRepaymentMode">
+                                    <div class="col-sm-4 p-0">
+                                        <h6 class="mb-0">SI Status</h6>
+                                    </div>
+                                    <div class="col-sm-8 text-secondary">
+                                        {{siDetails.si_status}}
+                                    </div>
+                                </div>
+                                <div class="row col-sm-12 pt-3 pb-3" *ngIf="isNonCashRepaymentMode">
+                                    <div class="col-sm-4 p-0">
+                                        <h6 class="mb-0">SI Mandate Status</h6>
+                                    </div>
+                                    <div class="col-sm-8 text-secondary">
+                                        {{siDetails.si_mandate_status}}
+                                    </div>
+                                </div>
+                                <div class="row col-sm-12 pt-3 pb-3" *ngIf="isNonCashRepaymentMode">
+                                    <div class="col-sm-4 p-0">
+                                        <h6 class="mb-0">Account Holder Name</h6>
+                                    </div>
+                                    <div class="col-sm-8 text-secondary">
+                                        {{repaymentAccountDetails.beneficiary_name}}
+                                    </div>
+                                </div>
+                                <div class="row col-sm-12 pt-3 pb-3" *ngIf="isNonCashRepaymentMode">
+                                    <div class="col-sm-4 p-0">
+                                        <h6 class="mb-0">Bank Account Number</h6>
+                                    </div>
+                                    <div class="col-sm-8 text-secondary">
+                                        {{repaymentAccountDetails.account_number}}
+                                    </div>
+                                </div>
+                                <div class="row col-sm-12 pt-3 pb-3" *ngIf="isNonCashRepaymentMode">
+                                    <div class="col-sm-4 p-0">
+                                        <h6 class="mb-0">Account Type</h6>
+                                    </div>
+                                    <div class="col-sm-8 text-secondary">
+                                        {{repaymentAccountDetails.accounttype?.name}}
+                                    </div>
+                                </div>
+                                <div class="row col-sm-12 pt-3 pb-3" *ngIf="isNonCashRepaymentMode">
+                                    <div class="col-sm-4 p-0">
+                                        <h6 class="mb-0">Effect Date</h6>
+                                    </div>
+                                    <div class="col-sm-8 text-secondary">
+                                        {{siDetails.start_date}}
+                                    </div>
+                                </div>
+                                <div class="row col-sm-12 pt-3 pb-3" *ngIf="isNonCashRepaymentMode">
+                                    <div class="col-sm-4 p-0">
+                                        <h6 class="mb-0">Valid Upto</h6>
+                                    </div>
+                                    <div class="col-sm-8 text-secondary">
+                                        {{siDetails.end_date}}
+                                    </div>
+                                </div>
+                                <div class="row col-sm-12 pt-3 pb-3" *ngIf="isNonCashRepaymentMode">
+                                    <div class="col-sm-4 p-0">
+                                        <h6 class="mb-0">Installment Amount</h6>
+                                    </div>
+                                    <div class="col-sm-8 text-secondary">
+                                        {{installmentAmount}}
+                                    </div>
+                                </div>
+                                <div class="row col-sm-12 pt-3 pb-3" *ngIf="isNonCashRepaymentMode">
+                                    <div class="col-sm-4 p-0">
+                                        <h6 class="mb-0">Amount Of Upper Limit</h6>
+                                    </div>
+                                    <div class="col-sm-8 text-secondary">
+                                        {{siDetails.max_amount}}
+                                    </div>
+                                </div>
+                                <div class="row col-sm-12 pt-3 pb-3" *ngIf="isNonCashRepaymentMode">
+                                    <div class="col-sm-4 p-0">
+                                        <h6 class="mb-0">Periodicity</h6>
+                                    </div>
+                                    <div class="col-sm-8 text-secondary">
+                                        {{periodicity}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="editRepaymentMode">
+                            <div class="form-group row col-sm-12">
+                                <app-dropdown [parentform]="repaymentModeForm.controls.repaymentDetails" [name]="'repaymentTypeId'" [options]="modeOfRepaymentTypes" [optionvalue]="'id'" [labelname]="'Repayment Mode'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding"
+                                    [displayfield]="'label'" [emitEvent]="true" (valuechange)="changeRepaymentMode($event,true)" [value]="loanAppRefData.repaymentTypeId || defaultRepaymentMode.id">
+                                </app-dropdown>
+                            </div>
+                            <div class="form-group row col-sm-12" *ngIf="isNonCashRepaymentMode">
+                                <app-input-field [parentform]="repaymentModeForm.controls.siDetails" [name]="'si_status'" [labelname]="'SI Status'" [required]="true" [value]="siDetails.si_status" [submitted]="submitted" class="col-sm-6 nopadding" [disabled]="true">
+                                </app-input-field>
+                                <app-input-field [parentform]="repaymentModeForm.controls.siDetails" [name]="'si_mandate_status'" [labelname]="'SI Mandate Status'" [required]="true" [value]="siDetails.si_mandate_status" [submitted]="submitted" class="col-sm-6 nopadding" [disabled]="true">
+                                </app-input-field>
+                            </div>
+                            <dual-entry [parentform]="repaymentModeForm.controls.repaymentAccountDetails" [elementclass]="'2'" [type]="'text'" [name]="'beneficiary_name'" [labelname]="'Account Holder Name'" [required]="true" [value]="repaymentAccountDetails.beneficiary_name" [maxlength]="50"
+                                [pattern]="alphabetsPattern.regex" [patternerror]="alphabetsPattern.error" [submitted]="submitted" [disabled]="isSIAccounteditDisabled || disableFields" *ngIf="isNonCashRepaymentMode">
+                            </dual-entry>
+                            <dual-entry [parentform]="repaymentModeForm.controls.repaymentAccountDetails" [elementclass]="'2'" [type]="'dropdown'" [name]="'AccountType_cd_AccountType'" [labelname]="'Account Type'" [required]="true" [submitted]="submitted" [optionvalue]="'id'" [options]="bankAccountTypes"
+                                [emitEvent]="true" [placeholder]="'Select Account Type'" [value]="repaymentAccountDetails.AccountType_cd_AccountType" [disabled]="isSIAccounteditDisabled || disableFields" *ngIf="isNonCashRepaymentMode">
+                            </dual-entry>
+                            <dual-entry [parentform]="repaymentModeForm.controls.repaymentAccountDetails" [elementclass]="'2'" [type]="'text'" [name]="'account_number'" [labelname]="'Bank Account Number'" [required]="true" [submitted]="submitted" [pattern]="numberPattern.regex"
+                                [patternerror]="numberPattern.error" [maxlength]="32" [minlength]="9" [value]="repaymentAccountDetails.account_number" [[disabled]="isSIAccounteditDisabled || disableFields" *ngIf="isNonCashRepaymentMode">
+                            </dual-entry>
+                            <div class="form-group row col-sm-12" *ngIf="isNonCashRepaymentMode">
+                                <app-input-field [parentform]="repaymentModeForm.controls.siDetails" [date]="true" [mindate]="restrictDate" [name]="'start_date'" [labelname]="'Effect Date/Unhold From Date'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [value]="siDetails.start_date"
+                                    [disabled]="isSIAccounteditDisabled || disableEffectDate">
+                                </app-input-field>
+                                <app-dropdown [parentform]="repaymentModeForm.controls.siDetails" [name]="'end_date'" [options]="endDateOptions" [labelname]="'Valid Upto'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [value]="siDetails.end_date">
+                                </app-dropdown>
+                            </div>
+                            <div class="form-group row col-sm-12" *ngIf="isNonCashRepaymentMode">
+                                <app-input-field [parentform]="repaymentModeForm" [name]="'installmentAmount'" [labelname]="'Installment Amount'" [required]="true" [value]="installmentAmount" [submitted]="submitted" class="col-sm-6 nopadding" [disabled]="true">
+                                </app-input-field>
+                                <app-input-field [parentform]="repaymentModeForm.controls.siDetails" [name]="'max_amount'" [labelname]="'Amount Of Upper Limit'" [required]="true" [value]="siDetails.max_amount" [submitted]="submitted" class="col-sm-6 nopadding" [disabled]="true">
+                                </app-input-field>
+                            </div>
+                            <div class="form-group row col-sm-12" *ngIf="isNonCashRepaymentMode">
+                                <app-input-field [parentform]="repaymentModeForm" [name]="'periodicity'" [labelname]="'Periodicity'" [required]="true" [value]="periodicity" [submitted]="submitted" class="col-sm-6 nopadding" [disabled]="true">
+                                </app-input-field>
+                                <app-input-field [parentform]="repaymentModeForm" [name]="'loanType'" [labelname]="'Loan Type'" [required]="true" [value]="loanDetails.loanProductName" [submitted]="submitted" class="col-sm-6 nopadding" [disabled]="true">
+                                </app-input-field>
+                            </div>
+                            <div style="text-align: right;">
+                                <button class="btn btn-primary" (click)="saveRepaymentAccountDetails()" *ngIf="enableSave">Submit</button>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -15,6 +15,7 @@ import { ViewDocumentsModule } from 'src/app/shared/components/view-documents/vi
 import { PrettifyDataTableColumnModule } from 'src/app/shared/pipes/prettify-data-table-column/prettify-data-table-column.module';
 import { InputFieldModule } from '../../shared/components/input-field/input-field.module';
 import { DropdownModule } from '../../shared/components/dropdown/dropdown.module';
+import { DualEntryModule } from '../../shared/components/dual-entry/dual-entry.module';
 
 @NgModule({
   declarations: [LoanViewComponent],
@@ -30,7 +31,8 @@ import { DropdownModule } from '../../shared/components/dropdown/dropdown.module
     ViewDocumentsModule,
     PrettifyDataTableColumnModule,
     InputFieldModule,
-    DropdownModule
+    DropdownModule,
+    DualEntryModule
   ],
   providers: [DatePipe]
 })

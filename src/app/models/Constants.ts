@@ -7,6 +7,7 @@ export class Constants {
     public static timeoutForWarningMessage: number = 5000;
     public static supportedMimeTypesForClientImage: string = "image/jpeg,image/jpg,image/png";
     public static supportedMimeTypes: string = "image/jpeg,image/jpg,image/png,application/pdf";
+    public static optlang: any = { code: 'en' };
     public static pattern = {
         alphabets: {
             regex: '^[a-zA-Z]+$',
