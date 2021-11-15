@@ -1,0 +1,69 @@
+<div class="pt-3 pb-2 mb-3">
+    <h1 class="h2">Credit Bureau Details</h1>
+    <nav aria-label="breadcrumb" >
+        <ol class="breadcrumb pl-0">
+            <li class="breadcrumb-item"><a [routerLink]="['/home/creditbureau/32790']" [routerLinkActive]="['active']">Loan Application Reference</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Credit Bureau Details</li>
+        </ol>
+    </nav>
+</div>
+<!-- <tabset role="alert"> -->
+<div class="card pr-4 pl-4" style="width:inherit;">
+    <div class="card-header d-flex">
+        <i class="icon fa fa-money mr-2 mt-1"></i>
+        <h5 class="mb-0 mr-auto">Credit Bureau Details</h5>
+    </div>
+    <ul class="nav nav-tabs bg-white">
+        <li class="nav-item">
+            <a href="" class="nav-link active" data-toggle="tab" (click)="setTab(1)">Credit Bureau Details</a>
+        </li>
+        <li class=" nav-item ">
+            <a href="" class="nav-link " data-toggle="tab" (click)="setTab(2)">Eligibility</a>
+        </li>
+        </ul>
+        <div class="card pr-4 pl-4" style="width:inherit;">
+            <div [ngSwitch]="tab ">
+                <div *ngSwitchCase="1">
+
+                </div>
+            <div class="alert alert-info" role="alert">
+                <h3>Please revisit after completing Highmark Data Upload.</h3>
+            </div>
+         
+            <div *ngIf="isReportAvailable" class="alert alert-info" role="alert">
+                <div class="row">
+                    <div class="col-md-4"><strong>Report Uploaded On:</strong> &nbsp;&nbsp;
+                        {{dateUpload | date : dateFormat}}</div>
+                    <div class="col-md-4"><strong>Report Expires On:</strong> &nbsp;&nbsp;
+                        {{reportExpireDate | date : dateFormat}}</div>
+                    <div class="col-md-4"><strong>Customer Creation Date :</strong>  &nbsp;&nbsp;
+                        {{highmarkCustomerCreationDate | date : dateFormat}}</div>
+                </div>
+            </div>
+            <object *ngIf="isReportAvailable" type="application/pdf" width="100%" height="600px" ng-attr-data="{{reportURL}}"></object>
+            <br>
+            </div>
+        </div> 
+            <div class="card pr-4 pl-4" style="width:inherit;">
+                <div [ngSwitch]="tab ">
+                    <div *ngSwitchCase="2">
+            <div class="row">
+                <div class = "col-md-12">
+                    <div class="status-card col-sm-6" *ngFor="let status of statusArray"
+                         [ngClass]="'status-'+status.result.result">
+                        <h4  class="h4">{{status.result.ruleName}} 
+                            <span class="pull-right">
+                                <span *ngIf="status.result.result === 'PASS'" class="fa fa-2x fa-check"></span>
+                                <span *ngIf="status.result.result === 'FAIL'" class="fa fa-2x fa-times"></span>
+                            </span>
+                        </h4>
+                        <p *ngIf="status.result.comments">{{status.result.comments}}</p>
+                        <p *ngIf="!status.result.comments">The client satisfies this rule.</p>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        
+</div>
+<!-- </tabset> -->

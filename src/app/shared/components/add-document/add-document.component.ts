@@ -145,6 +145,15 @@ export class DocumentUploadComponent implements OnInit {
     this.identifiertypesOptions[i] = idOptions;
   }
 
+  enableField(i){
+    let form = this.formArray.controls[i] as FormGroup;
+    if(form.get('documentKey').value){
+      form.get('confirmdocumentKey').enable();
+    }else {
+    form.get('confirmdocumentKey').disable()
+    }
+  }
+  
   validateAadhaar(): ValidatorFn {
     return (array: AbstractControl): { [key: string]: any } | null => {
       let c = 0;

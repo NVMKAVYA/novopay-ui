@@ -22,17 +22,17 @@
                 </dual-entry>
                 <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" [type]="'text'" [name]="'dateOfBirth'" [placeholder]="dateOfBirthFormat" [labelname]="'Date of Birth'" [required]="true" [mininput]="18" [maxinput]="60" [submitted]="submitted">
                 </dual-entry>
-                <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" [optionvalue]="'id'" [type]="'dropdown'" [name]="'gender'" [placeholder]="'Select gender'" [labelname]="'Gender'" [required]="true" [submitted]="submitted" [options]="dropdownOptions.genderOptions"
+                <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" [optionvalue]="'id'" [type]="'dropdown'" [name]="'genderId'" [placeholder]="'Select gender'" [labelname]="'Gender'" [required]="true" [submitted]="submitted" [options]="dropdownOptions.genderOptions"
                     (valuechange)="getCustomerTitles($event)" [emitEvent]="true">
                 </dual-entry>
-                <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" [type]="'dropdown'" [name]="'category'" [placeholder]="'Select category'" [labelname]="'Category'" [required]="true" [submitted]="submitted" [options]="dropdownOptions.categoryOptions">
+                <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" [type]="'dropdown'" [name]="'categoryId'" [placeholder]="'Select category'" [labelname]="'Category'" [required]="true" [submitted]="submitted"  [optionvalue]="'id'" [options]="dropdownOptions.categoryOptions">
                 </dual-entry>
-                <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" [type]="'dropdown'" [name]="'religion'" [placeholder]="'Select religion'" [labelname]="'Religion'" [required]="true" [submitted]="submitted" [options]="dropdownOptions.religionOptions">
+                <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" [type]="'dropdown'" [name]="'religionId'" [placeholder]="'Select religion'" [labelname]="'Religion'" [required]="true" [submitted]="submitted" [optionvalue]="'id'" [options]="dropdownOptions.religionOptions">
                 </dual-entry>
-                <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" [type]="'dropdown'" [name]="'maritalstatus'" [placeholder]="'Select marital status'" [labelname]="'Marital Status'" [required]="true" [submitted]="submitted" [options]="dropdownOptions.maritalStatusOptions"
+                <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" [type]="'dropdown'" [name]="'maritalStatusId'" [placeholder]="'Select marital status'" [labelname]="'Marital Status'" [required]="true" [submitted]="submitted" [optionvalue]="'id'" [options]="dropdownOptions.maritalStatusOptions"
                     (valuechange)="addSpouseForm($event)" [emitEvent]="true">
                 </dual-entry>
-                <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" [type]="'text'" [name]="'phonenumber'" [labelname]="'Mobile Number'" [required]="true" [submitted]="submitted">
+                <dual-entry [parentform]="qdeForm.controls.personalDetails" [elementclass]="'2'" [type]="'text'" [name]="'mobileNo'" [labelname]="'Mobile Number'" [required]="true" [submitted]="submitted">
                 </dual-entry>
             </ng-wizard-step>
 
@@ -111,7 +111,7 @@
                     <app-dropdown [parentform]="qdeForm.controls.staffDetails" [name]="'staffId'" [options]="dropdownOptions.staffOptions" [optionvalue]="'id'" [labelname]="'Staff'" [required]="true" [submitted]="submitted" class="col-sm-6 nopadding" [displayfield]="'displayName'"
                         (valuechange)="getLinkedVillages($event)" [emitEvent]="true">
                     </app-dropdown>
-                    <app-input-field [parentform]="qdeForm.controls.staffDetails" [date]="true" [maxdate]="maxActivationDate" [name]="'activationdate'" [labelname]="'Activation Date'" [required]="true" [value]="maxActivationDate" [submitted]="submitted" class="col-sm-6 nopadding">
+                    <app-input-field [parentform]="qdeForm.controls.staffDetails" [date]="true" [maxdate]="maxActivationDate" [name]="'activationDate'" [labelname]="'Activation Date'" [required]="true" [value]="maxActivationDate" [submitted]="submitted" class="col-sm-6 nopadding">
                     </app-input-field>
                 </div>
             </ng-wizard-step>

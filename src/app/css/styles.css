@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-
+ @import "./_variables.scss";
+ @import "./status-colours.css";
 :root {
     --blue: #0096c5 !important;
     font-size: 14px !important;
@@ -400,4 +401,117 @@ a:hover {
 
 .no-shadow {
     box-shadow: none;
+}
+
+
+
+/* for client-view screen */
+.card-header-banner {
+    background-color: var(--darkGrey);
+    border: none !important;
+    padding: 0px !important;
+    padding-top: 0.75rem !important;
+}
+
+.card-sub-header {
+    flex-wrap: wrap;
+    max-width: 80%;
+}
+
+.card-icon {
+    border: 1px solid #dcdcdc;
+    color: #dcdcdc;
+    margin: auto;
+    height: 110px;
+    width: 110px;
+    font-size: 58px;
+    padding: 5px 27px;
+    border-radius: 50%;
+}
+
+.detail-key {
+    color: #c8c8c8;
+    margin-right: 3px;
+}
+
+ul li {
+    padding: 5px 0;
+}
+
+span>a,
+span>a:hover {
+    color: #599eca;
+    text-decoration: none;
+}
+
+.nav-link {
+    color: var(--black);
+    font-weight: 600;
+}
+
+.nav-link.active {
+    color: #007bff;
+    border-color: white;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    color: #007bff;
+    border-color: white;
+}
+
+.card-content {
+    width: 100%;
+}
+
+.imagecontainer {
+    border-radius: 50%;
+    height: 140px;
+    width: 160px;
+    background-color: white;
+}
+
+.card-header {
+    background-color: inherit;
+    border: none !important;
+    align-items: center;
+}
+
+.table th {
+    border: none !important;
+}
+
+.nav-tabs {
+    border-bottom: none;
+}
+
+.table td,
+.table th {
+    border: none;
+}
+
+.top-up {
+    font-size: 1.9rem;
+}
+
+.edit {
+    font-size: 1.64rem;
+    margin-top: 3px;
+}
+
+.card-btn {
+    margin-left: 0.5rem;
+}
+
+.dropdown-item {
+    color: #212529 !important;
+}
+
+hr {
+    margin-top: 0.5rem !important
+}
+
+.note-header {
+    background-color: var(--darkGrey);
+    height: 51px;
 }

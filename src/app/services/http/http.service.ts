@@ -296,8 +296,15 @@ export class HttpService {
     return this._http.post(`${this.baseUrl}/batches`, data);
   }
 
+  public creditBureauResource(applicationRefId): any {
+    return this._http.get(`${this.baseUrl}/creditbureau/${applicationRefId}`);
+  }
 
   public assetStandingInstructionResource(data, resource): any {
     return this._http.post(`${this.baseUrl}/assetStandingInstruction/${resource}`, data);
+  }
+
+  public generateHighmarkReport(applicationRefId, clientId): any {
+    return this._http.get(`${this.baseUrl}/creditbureau/highmarkonlinereport/${applicationRefId}/${clientId}`);
   }
 }

@@ -5,6 +5,8 @@ import { STEP_STATE, NgWizardConfig, THEME } from 'ng-wizard';
 import { Constants } from 'src/app/models/Constants';
 import { DatePipe } from '@angular/common';
 import { LoaderService } from 'src/app/services/loader/loader.service';
+import { Router} from '@angular/router';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-create-client',
@@ -41,10 +43,18 @@ export class CreateClientComponent implements OnInit {
       ],
     }
   }
+  opensavingsproduct: any;
+  first: any;
+  officeId: any;
+  groupId: any;
+  address: any;
+  
+  optlang: any;
+
 
 
   constructor(private fb: FormBuilder, private http: HttpService, private datePipe: DatePipe,
-    private loader: LoaderService) { }
+    private loader: LoaderService, private router: Router, private auth: AuthService,) { }
 
   ngOnInit(): void {
 
@@ -88,13 +98,88 @@ export class CreateClientComponent implements OnInit {
         this.formData.client.originationChannelTypeId = this.webChannelId;
         this.formData.client.locale = Constants.lang;
         this.formData.client.dateFormat = Constants.dateFormat2;
+
+
+        this.formData.client.address = [];
+        this.formData.client.officeId = this.auth.office.id;
+        this.formData.client.groupId = 28770 ;
+        this.formData.client.form60 = true;
+        this.formData.client.active = true;
+      
+
         Object.keys(this.qdeForm.controls).forEach(formName => {
           let form = this.qdeForm.get(formName) as FormGroup;
-          Object.keys(form.controls).forEach(field => {
-            if (!field.includes('confirm'))
-              this.formData.client[field] = form.get(field).value;
-          })
+          if (formName == 'addressDetails') {
+            let address : any = {};
+            Object.keys(form.controls).forEach(field => {
+              address[field] = form.get(field).value;
+            })
+            address.locale = Constants.optlang.code;
+            address.isJlgRegular = true;
+            address.addressType = "Permanent Address";
+            this.formData.client.address.push(address);
+          } else if (formName == 'communicationAddressDetails') {
+            let address: any = {};
+            address.addressLine = form.get("addressLine").value,
+            address.postalCode = form.get("postalCode").value,
+            address.locale = Constants.optlang.code;
+            address.isJlgRegular = true;
+            address.addressType = "Residential Address";
+            this.formData.client.address.push(address);
+          } else if (formName != 'documentDetails'){
+            Object.keys(form.controls).forEach(field => {
+              if (!field.includes('confirm'))
+                this.formData.client[field] = form.get(field).value;
+            })
+          }
         })
+        this.formData.activate ={
+          "locale":Constants.optlang.code,
+          "dateFormat":Constants.dateFormat2,
+          "activationDate":this.formData.client.activationDate
+        };
+        this.formData.documentupload = [];
+        this.formData.document = [];
+        let documents = this.qdeForm.get("documentDetails") as FormGroup;
+        documents.get("documents").value.forEach(element => {
+          this.formData.documentupload.push(element.file);
+          let doc= {
+          "documentTypeId":element.documentType.id,
+          "documentKey": element.documentKey,
+          "identifierTypeId": element.identifierTypeId
+        }
+        this.formData.document.push(doc); 
+        });
+        this.formData.isDemoAuthEnabledState = false;
+        this.formData.isAadharAvailable = 1;
+        this.formData.demoAuthformData = {
+           "name":"aa undefined aa",
+           "dateOfBirth":"1993-12-12",
+           "gender":"F"
+          };
+          this.formData.negDedupeCheckFormData = {
+      "firstName":"aa",
+      "lastName":"aa",
+      "dateOfBirth":"1993-12-12",
+      "address1":"hahaha hahaha haha",
+      "address2":"sedrf",
+      "groupId":"28770",
+      "centerId":28766
+    }
+    let uploadData = new FormData();
+    let data = JSON.stringify([{
+      "relativeUrl": "spawnjlgworkflow",
+      "method": "POST",
+      "body": this.formData
+    }])
+    uploadData.append('data', data);
+    //  for (i = 0; i < scope.imageFiles.length; i++) {
+    //                     scope.requestData.file.push(scope.imageFiles[i]);
+    //                     scope.requestData.fileFormDataName.push("image");
+    //                 }
+
+    this.http.batchResource(uploadData).subscribe(response => {
+    })  
       } else {
         this.parentFormError = true;
       }
@@ -144,8 +229,8 @@ export class CreateClientComponent implements OnInit {
       this.http.getstateDetailResource(value).subscribe(data => {
         this.stateOptions = data;
         this.addressForm.get('stateId').reset();
-        this.addressForm.get('districtId')?.reset();
-        this.addressForm.get('vtcId')?.reset();
+        this.addressForm.get('districtId').reset();
+        this.addressForm.get('vtcId').reset();
       })
     };
   }
@@ -155,7 +240,7 @@ export class CreateClientComponent implements OnInit {
       this.http.getdistrictDetailResource(value,
         this.addressForm.get('countryId').value).subscribe(data => {
           this.districtOptions = data;
-          this.addressForm.get('districtId')?.reset();
+          this.addressForm.get('districtId').reset();
           this.addressForm.get('vtcId')?.reset();
         })
     };
@@ -165,7 +250,7 @@ export class CreateClientComponent implements OnInit {
     if (value) {
       this.http.getvillageTownCityDetailResource(value).subscribe(data => {
         this.vtcOptions = data.pageItems;
-        this.addressForm.get('vtcId')?.reset();
+        this.addressForm.get('vtcId').reset();
       })
     };
   }
@@ -199,8 +284,8 @@ export class CreateClientComponent implements OnInit {
   validateCanExit(form) {
     let canExit = this.qdeForm.controls[form].valid ? true : false;
     this.submitted = canExit ? false : true;
-    // return canExit;
-    return true;
+    return canExit;
+    // return true;
   }
 
   actionOnEnter(form) {
@@ -220,4 +305,43 @@ export class CreateClientComponent implements OnInit {
   //   console.log(args.step);
   // }
 
+  submit() {
+    var reqDate = this.datePipe.transform(this.first.date, Constants.dateFormat2);
+
+    this.formData.locale = this.optlang.code;
+    this.formData.active = this.formData.active || false;
+    this.formData.dateFormat = Constants.dateFormat2;
+    this.formData.activationDate = reqDate;
+    //auto generate account number if client is created outside of workflow
+    this.formData.autoGenAccNo = true;
+    if(this.address){
+        this.address.locale = this.optlang.code;
+        this.address.addressType = "Residential Address";
+        this.formData.address = [];
+        this.formData.address.push(this.address);
+    }
+
+    if (this.groupId) {
+        this.formData.groupId = this.groupId;
+    }
+
+    if (this.officeId) {
+        this.formData.officeId = this.officeId;
+    }
+
+    if (this.first.submitondate) {
+        reqDate = this.datePipe.transform(this.first.submitondate, Constants.dateFormat2);
+        this.formData.submittedOnDate = reqDate;
+    }
+
+    if (this.first.dateOfBirth) {
+        this.formData.dateOfBirth = this.datePipe.transform(this.first.dateOfBirth, Constants.dateFormat2);
+    }
+
+    if (!this.opensavingsproduct) {
+        this.formData.savingsProductId = null;
+    }
+
+  
+};
 }
