@@ -26,8 +26,11 @@ const routes: Routes = [{
 		{
 			path: 'loan/view/:id',
 			loadChildren: () => import('../loan-view/loan-view.module').then(m => m.LoanViewModule)
+		},
+		{
+			path: 'creditbureau/:id',
+			loadChildren: () => import('../credit-bureau/credit-bureau.module').then(m => m.CreditBureauModule)
 		}
-
 
 	]
 }];

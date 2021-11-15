@@ -98,6 +98,7 @@ export class LoanViewComponent implements OnInit {
   enableGenerate: boolean = false;
   enableVerified: boolean = false;
   alphabetsWithSpacePattern: any = Constants.pattern.alphabetsWithSpace;
+  alphabetsPattern: any = Constants.pattern.alphabets;
 
   constructor(private http: HttpService, private route: ActivatedRoute, private datePipe: DatePipe, private auth: AuthService, private fb: FormBuilder, private toastr: ToastrService, private readonly changeDetectorRef: ChangeDetectorRef) { }
 
@@ -621,6 +622,10 @@ export class LoanViewComponent implements OnInit {
             this.siDetails.start_date = sidata.row[7] ? this.datePipe.transform(new Date(sidata.row[7]), Constants.dateFormat2) : null;
             this.siDetails.end_date = sidata.row[8] ? this.datePipe.transform(sidata.row[8], Constants.dateFormat2) : this.endDateOptions[0];
             switch (true) {
+
+              case this.siDetails.si_status == "Inactive" && this.siDetails.si_mandate_status == "Pending For Confirmation":
+                this.enableVerified = true;
+                break;
 
               case this.siDetails.si_status == "Checker Task Initiated" && this.siDetails.si_mandate_status == "CBS Verified":
                 this.enableGenerate = true;

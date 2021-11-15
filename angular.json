@@ -29,7 +29,8 @@
                             "node_modules/font-awesome/css/font-awesome.min.css",
                             "node_modules/ngx-toastr/toastr.css",
                             "node_modules/ng-wizard/themes/ng_wizard_theme_arrows.min.css",
-                            "node_modules/ngx-simple-modal/styles/simple-modal.css"
+                            "node_modules/ngx-simple-modal/styles/simple-modal.css",
+                            "src/app/css/_variables.scss"
                         ],
                         "scripts": [
                             "node_modules/jquery/dist/jquery.min.js",

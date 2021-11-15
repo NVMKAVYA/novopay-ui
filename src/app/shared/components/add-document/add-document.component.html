@@ -60,7 +60,7 @@
                     </span>
                     </td>
                     <td>
-                        <input type="text" formControlName="documentKey" (cut)="false" (copy)="false" (paste)="false" class="form-control pwd">
+                        <input type="text" formControlName="documentKey" (cut)="false" (copy)="false" (paste)="false" class="form-control pwd" (change)="enableField(i)">
                         <small class="text-danger" *ngIf="document.get('documentKey').hasError('required') && ( document.get('documentKey').touched || submitted)">
                         Required Field
                     </small>

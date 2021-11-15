@@ -13,8 +13,8 @@ import { ViewDocumentsComponent } from 'src/app/shared/components/view-documents
 
 @Component({
   selector: 'app-view-client',
-  templateUrl: './client-view.component.html',
-  styleUrls: ['./client-view.component.css']
+  templateUrl: './client-view.component.html'
+  // styleUrls: ['./client-view.component.css',]
 })
 export class ViewClientComponent implements OnInit {
 

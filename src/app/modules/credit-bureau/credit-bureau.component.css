@@ -1,0 +1,28 @@
+.card-header {
+    background-color: inherit;
+    border: none !important;
+    align-items: center;
+}
+.nav-tabs {
+    border-bottom: none;
+}
+.nav-link {
+    color: var(--black);
+    font-weight: 600;
+}
+
+.nav-link.active {
+    color: #007bff;
+    border-color: white;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    color: #007bff;
+    border-color: white;
+}
+
+.h4{
+    margin-top: 10px;
+
+}
